@@ -1,5 +1,5 @@
 # NoisyFGM 0.1.0
-Copyright (C) 2014-2017 Charles Rocabert, Jérôme Gippet, Serge Fenet.
+Copyright (C) 2014-2017 Charles Rocabert, Samuel Bernard.
 
 All rights reserved
 
