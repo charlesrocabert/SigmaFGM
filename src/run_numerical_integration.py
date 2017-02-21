@@ -2,9 +2,7 @@
 # coding: utf-8
 
 #**********************************************************************
-# Copyright (C) 2016 Charles Rocabert, Samuel Bernard
-# E-mail: charles.rocabert@gmail.com
-# Web:
+# Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

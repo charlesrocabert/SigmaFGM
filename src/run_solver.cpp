@@ -9,9 +9,7 @@
  */
 
 /***********************************************************************
- * Copyright (C) 2016 Charles Rocabert, Samuel Bernard
- * E-mail: charles.rocabert@gmail.com
- * Web:
+ * Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -369,9 +367,7 @@ void printUsage( void )
   std::cout << " " << PACKAGE << " " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << " ( release )\n";
 #endif
   std::cout << "                                                                     \n";
-  std::cout << " Copyright (C) 2016 Charles Rocabert, Samuel Bernard                 \n";
-  std::cout << " E-mail: charles.rocabert@gmail.com                                  \n";
-  std::cout << " Web:                                                                \n";
+  std::cout << " Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard            \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";
   std::cout << " This is free software, and you are welcome to redistribute it under \n";
@@ -443,9 +439,7 @@ void printHeader( void )
   std::cout << " " << PACKAGE << " " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << " ( release )\n";
 #endif
   std::cout << "                                                                     \n";
-  std::cout << " Copyright (C) 2016 Charles Rocabert, Samuel Bernard                 \n";
-  std::cout << " E-mail: charles.rocabert@gmail.com                                  \n";
-  std::cout << " Web:                                                                \n";
+  std::cout << " Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard            \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";
   std::cout << " This is free software, and you are welcome to redistribute it under \n";
