@@ -34,8 +34,11 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_linalg.h>
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_randist.h>
 #include <assert.h>
 
+#include "Macros.h"
 #include "Prng.h"
 
 
@@ -78,6 +81,7 @@ public:
   void jump( void );
   void build_phenotype( void );
   void compute_fitness( gsl_vector* z_opt );
+  void compute_fitness_QAGI( void );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES
@@ -94,6 +98,12 @@ protected:
   void Cholesky_decomposition( void );
   void draw_z( void );
   void clear_memory( void );
+  
+  static double gaussian_pdf( double x, double mu, double sigma );
+  static double w( double x );
+  static double f( double x, void* params );
+  void          QAGI( double* res, double mu, double sigma, gsl_integration_workspace* workspace, gsl_function* F );
+  void          W( double* mu, double sigma, size_t n, double& result, double& error );
   
   /*----------------------------
    * PROTECTED ATTRIBUTES

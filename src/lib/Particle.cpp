@@ -311,6 +311,37 @@ void Particle::compute_fitness( gsl_vector* z_opt )
   }
 }
 
+/**
+ * \brief    Compute the phenotype distribution fitness
+ * \details  --
+ * \param    void
+ * \return   \e void
+ */
+void Particle::compute_fitness_QAGI( void )
+{
+  if (_n > 1)
+  {
+    printf("Error in Particle::compute_fitness_QAGI(): this method is only available in 1D. Exit.\n");
+    exit(EXIT_FAILURE);
+  }
+  if (_weight_fitness)
+  {
+    printf("Error in Particle::compute_fitness_QAGI(): this method doesn't work with option \"weight fitness\". Exit.\n");
+    exit(EXIT_FAILURE);
+  }
+  _dmu = 0.0;
+  _dp  = 0.0;
+  _dmu += gsl_vector_get(_mu, 0)*gsl_vector_get(_mu, 0);
+  _dp  += gsl_vector_get(_z, 0)*gsl_vector_get(_z, 0);
+  _dmu = sqrt(_dmu);
+  _dp  = sqrt(_dp);
+  _wmu = exp(-_dmu*_dmu/2.0);
+  double mu_vec[1];
+  mu_vec[0] = gsl_vector_get(_mu, 0);
+  double error;
+  W(mu_vec, gsl_vector_get(_sigma, 0), _n, _wp, error);
+}
+
 /*----------------------------
  * PROTECTED METHODS
  *----------------------------*/
@@ -495,4 +526,102 @@ void Particle::clear_memory( void )
   _Sigma = NULL;
   gsl_vector_free(_max_Sigma_eigenvector);
   _max_Sigma_eigenvector = NULL;
+}
+
+/**
+ * \brief    Simple gaussian law pdf
+ * \details  --
+ * \param    double x
+ * \param    double mu
+ * \param    double sigma
+ * \return   \e double
+ */
+double Particle::gaussian_pdf( double x, double mu, double sigma )
+{
+  return gsl_ran_gaussian_pdf(x-mu, sigma);
+}
+
+/**
+ * \brief    Compute the most basic FGM fitness
+ * \details  --
+ * \param    double x
+ * \return   \e double
+ */
+double Particle::w( double x )
+{
+  return exp(-x*x/2);
+}
+
+/**
+ * \brief    Compute one 1d integration point
+ * \details  --
+ * \param    double x
+ * \return   \e double
+ */
+double Particle::f( double x, void* params )
+{
+  double* cast_param = (double*)params;
+  double mu          = cast_param[0];
+  double sigma       = cast_param[1];
+  return gaussian_pdf(x, mu, sigma)*w(x);
+}
+
+/**
+ * \brief    Compute 1d QAGI integral
+ * \details  --
+ * \param    double mu
+ * \param    double sigma
+ * \return   \e void
+ */
+void Particle::QAGI( double* res, double mu, double sigma, gsl_integration_workspace* workspace, gsl_function* F )
+{
+  double* params = new double[2];
+  params[0] = mu;
+  params[1] = sigma;
+  F->params = params;
+  double result, error;
+  gsl_integration_qagi(F, EPSABS, ESPREL, LIMIT, workspace, &result, &error);
+  delete[] params;
+  params = NULL;
+  F->params = NULL;
+  res[0] = result;
+  res[1] = error;
+}
+
+/**
+ * \brief    Compute the complete integral
+ * \details  --
+ * \param    double* mu
+ * \param    double sigma
+ * \param    size_t n
+ * \param    double& result
+ * \param    double& error
+ * \return   \e void
+ */
+void Particle::W( double* mu, double sigma, size_t n, double& result, double& error )
+{
+  gsl_integration_workspace* workspace = gsl_integration_workspace_alloc(LIMIT);
+  gsl_function F;
+  F.function  = &(Particle::f);
+  F.params    = NULL;
+  result      = 1.0;
+  error       = 0.0;
+  double* res = new double[2];
+  for (size_t i = 0; i < n; i++)
+  {
+    if (sigma > 0.0006)
+    {
+      QAGI(res, mu[i], sigma, workspace, &F);
+      result *= res[0];
+      error  += res[1];
+    }
+    else
+    {
+      result *= w(mu[i]);
+    }
+  }
+  delete[] res;
+  res = NULL;
+  gsl_integration_workspace_free(workspace);
+  workspace = NULL;
 }

@@ -18,17 +18,18 @@
 
 ../build/bin/run_solver \
 -stabt        0 \
--t            1000 \
+-t            10000 \
 -seed         0 \
 -nbdim        1 \
 -nbparticles  10000 \
--initmu       2.5 \
--initsigma    1e-15 \
+-initmu       4 \
+-initsigma    1 \
 -inittheta    0.0 \
 -dmu          0.01 \
--dsigma       0.01 \
--dtheta       0.01 \
+-dsigma       0.1 \
+-dtheta       0.0 \
 -statistics \
+
 #-oneaxis \
 #-nonoise \
 #-norotation \
