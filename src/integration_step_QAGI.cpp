@@ -3,7 +3,7 @@
  * \file      integration_step_QAGI.cpp
  * \authors   Charles Rocabert, Samuel Bernard
  * \date      08-11-2016
- * \copyright Copyright (C) 2016 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Integrate the fitness over the population distribution (no mutation, isotropic noise, one axis displacement), using QAGI method
  */

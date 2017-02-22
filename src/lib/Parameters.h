@@ -3,7 +3,7 @@
  * \file      Parameters.h
  * \authors   Charles Rocabert, Samuel Bernard
  * \date      07-06-2016
- * \copyright Copyright (C) 2016 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Parameters class declaration
  */
@@ -88,6 +88,7 @@ public:
   inline bool get_weight_fitness( void ) const;
   inline bool get_no_noise( void ) const;
   inline bool get_no_rotation( void ) const;
+  inline bool get_qagi( void ) const;
   
   /*----------------------------
    * SETTERS
@@ -127,6 +128,7 @@ public:
   inline void set_weight_fitness( bool weight_fitness );
   inline void set_no_noise( bool no_noise );
   inline void set_no_rotation( bool no_rotation );
+  inline void set_qagi( bool qagi );
   
   /*----------------------------
    * PUBLIC METHODS
@@ -180,6 +182,7 @@ protected:
   bool _weight_fitness; /*!< Indicates if the fitness must be weighted by the number of dimensions */
   bool _no_noise;       /*!< No noise                                                              */
   bool _no_rotation;    /*!< No rotation                                                           */
+  bool _qagi;           /*!< Compute integrative fitness instead of instantaneous one              */
   
 };
 
@@ -408,6 +411,17 @@ inline bool Parameters::get_no_rotation( void ) const
   return _no_rotation;
 }
 
+/**
+ * \brief    Get the qagi boolean
+ * \details  --
+ * \param    void
+ * \return   \e bool
+ */
+inline bool Parameters::get_qagi( void ) const
+{
+  return _qagi;
+}
+
 /*----------------------------
  * SETTERS
  *----------------------------*/
@@ -626,6 +640,17 @@ inline void Parameters::set_no_noise( bool no_noise )
 inline void Parameters::set_no_rotation( bool no_rotation )
 {
   _no_rotation = no_rotation;
+}
+
+/**
+ * \brief    Set qagi boolean
+ * \details  --
+ * \param    bool qagi
+ * \return   \e void
+ */
+inline void Parameters::set_qagi( bool qagi )
+{
+  _qagi = qagi;
 }
 
 

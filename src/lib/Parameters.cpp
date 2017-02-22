@@ -3,7 +3,7 @@
  * \file      Parameters.cpp
  * \authors   Charles Rocabert, Samuel Bernard
  * \date      07-06-2016
- * \copyright Copyright (C) 2016 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Parameters class definition
  */
@@ -73,6 +73,7 @@ Parameters::Parameters( void )
   _weight_fitness = false;
   _no_noise       = false;
   _no_rotation    = false;
+  _qagi           = false;
 }
 
 /*----------------------------
@@ -122,5 +123,6 @@ void Parameters::print_parameters( void )
   std::cout << "weight fitness      " << _weight_fitness << "\n";
   std::cout << "no noise            " << _no_noise << "\n";
   std::cout << "no rotation         " << _no_rotation << "\n";
+  std::cout << "qagi                " << _qagi << "\n";
   std::cout << "#######################################\n";
 }

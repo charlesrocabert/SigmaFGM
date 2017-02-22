@@ -3,7 +3,7 @@
  * \file      Solver.cpp
  * \authors   Charles Rocabert, Samuel Bernard
  * \date      07-06-2016
- * \copyright Copyright (C) 2016 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Solver class definition
  */
@@ -311,7 +311,14 @@ void Solver::initialize_solver_state( bool stabilize )
   for (_iterator = _particles_list.begin(); _iterator != _particles_list.end(); ++_iterator)
   {
     _iterator->second->build_phenotype();
-    _iterator->second->compute_fitness(z_opt);
+    if (!_parameters->get_qagi())
+    {
+      _iterator->second->compute_fitness(z_opt);
+    }
+    else
+    {
+      _iterator->second->compute_fitness_QAGI();
+    }
     if (_statistics != NULL)
     {
       _statistics->add_particle(_iterator->second);
@@ -329,6 +336,13 @@ void Solver::update_particle( Particle* particle, gsl_vector* z_opt )
 {
   particle->jump();
   particle->build_phenotype();
-  particle->compute_fitness(z_opt);
+  if (!_parameters->get_qagi())
+  {
+    particle->compute_fitness(z_opt);
+  }
+  else
+  {
+    particle->compute_fitness_QAGI();
+  }
 }
 

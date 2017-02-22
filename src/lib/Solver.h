@@ -3,7 +3,7 @@
  * \file      Solver.h
  * \authors   Charles Rocabert, Samuel Bernard
  * \date      07-06-2016
- * \copyright Copyright (C) 2016 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Solver class declaration
  */
