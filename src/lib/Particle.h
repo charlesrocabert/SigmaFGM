@@ -62,6 +62,9 @@ public:
   /*----------------------------
    * GETTERS
    *----------------------------*/
+  inline double get_mu( size_t i ) const;
+  inline double get_sigma( size_t i ) const;
+  inline double get_theta( size_t i ) const;
   inline double get_dmu( void ) const;
   inline double get_dp( void ) const;
   inline double get_wmu( void ) const;
@@ -146,6 +149,42 @@ protected:
 /*----------------------------
  * GETTERS
  *----------------------------*/
+
+/**
+ * \brief    Get mu value at position i
+ * \details  --
+ * \param    size_t i
+ * \return   \e double
+ */
+inline double Particle::get_mu( size_t i ) const
+{
+  assert(i < _n);
+  return gsl_vector_get(_mu, i);
+}
+
+/**
+ * \brief    Get sigma value at position i
+ * \details  --
+ * \param    size_t i
+ * \return   \e double
+ */
+inline double Particle::get_sigma( size_t i ) const
+{
+  assert(i < _n);
+  return gsl_vector_get(_sigma, i);
+}
+
+/**
+ * \brief    Get theta value at position i
+ * \details  --
+ * \param    size_t i
+ * \return   \e double
+ */
+inline double Particle::get_theta( size_t i ) const
+{
+  assert(i < _n*(_n-1)/2);
+  return gsl_vector_get(_theta, i);
+}
 
 /**
  * \brief    Get the mean distance dmu

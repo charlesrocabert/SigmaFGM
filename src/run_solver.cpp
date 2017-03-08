@@ -79,6 +79,11 @@ int main( int argc, char const** argv )
   /**************************************************/
   /* 4) Run the solver                              */
   /**************************************************/
+  std::ofstream extra_2D_statistics;
+  if (parameters->get_extra_2D_statistics())
+  {
+    extra_2D_statistics.open("2Dstatistics.txt", std::ios::out | std::ios::trunc);
+  }
   bool   stop_criterion = false;
   size_t shutoff_count  = 0;
   while (!stop_criterion)
@@ -88,6 +93,10 @@ int main( int argc, char const** argv )
     {
       solver->compute_statistics();
       solver->write_statistics();
+    }
+    if (parameters->get_extra_2D_statistics())
+    {
+      solver->write_extra_statistics(extra_2D_statistics);
     }
     if (parameters->get_shutoff_fitness() == 0.0)
     {
@@ -116,6 +125,10 @@ int main( int argc, char const** argv )
   if (parameters->get_statistics())
   {
     solver->close_statistics();
+  }
+  if (parameters->get_extra_2D_statistics())
+  {
+    extra_2D_statistics.close();
   }
   
   /**************************************************/
@@ -330,6 +343,10 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
     {
       parameters->set_statistics(true);
     }
+    else if (strcmp(argv[i], "-2Dstatistics") == 0 || strcmp(argv[i], "--2Dstatistics") == 0)
+    {
+      parameters->set_extra_2D_statistics(true);
+    }
     else if (strcmp(argv[i], "-oneaxis") == 0 || strcmp(argv[i], "--oneaxis") == 0)
     {
       parameters->set_one_axis(true);
@@ -400,7 +417,7 @@ void printUsage( void )
   std::cout << "  -shutofftime, --shutoff-time\n";
   std::cout << "        specify the shutoff time\n";
   std::cout << "  -seed, --seed\n";
-  std::cout << "        specify the prng seed (mandatory)\n";
+  std::cout << "        specify the prng seed (mandatory, random if 0)\n";
   std::cout << "  -nbdim, --nb-dimensions\n";
   std::cout << "        specify the number of dimensions (mandatory)\n";
   std::cout << "  -nbparticles, --nb-particles\n";
@@ -419,6 +436,8 @@ void printUsage( void )
   std::cout << "        specify the theta mutation size (mandatory)\n";
   std::cout << "  -statistics, --statistics\n";
   std::cout << "        Activate statistics saving\n";
+  std::cout << "  -2Dstatistics, --2Dstatistics\n";
+  std::cout << "        Activate extra 2D statistics saving\n";
   std::cout << "  -oneaxis, --oneaxis\n";
   std::cout << "        Initialize only one axis\n";
   std::cout << "  -weightfitness, --weightfitness\n";

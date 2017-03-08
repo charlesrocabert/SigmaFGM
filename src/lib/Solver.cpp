@@ -268,6 +268,37 @@ void Solver::close_statistics( void )
   _statistics->close();
 }
 
+/**
+ * \brief    Write extra statistics
+ * \details  --
+ * \param    std::ofstream& extra_file
+ * \return   \e void
+ */
+void Solver::write_extra_statistics( std::ofstream& extra_file )
+{
+  size_t n = _parameters->get_number_of_dimensions();
+  if (n != 2)
+  {
+    std::cout << "Error in Solver::write_extra_statistics(). This method must only be used in 2D. Exit.\n";
+    exit(EXIT_FAILURE);
+  }
+  double data[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
+  for (_iterator = _particles_list.begin(); _iterator != _particles_list.end(); ++_iterator)
+  {
+    data[0] += _iterator->second->get_mu(0);
+    data[1] += _iterator->second->get_mu(1);
+    data[2] += _iterator->second->get_sigma(0);
+    data[3] += _iterator->second->get_sigma(1);
+    data[4] += _iterator->second->get_theta(0);
+  }
+  double N = (double)_particles_list.size();
+  for (size_t i = 0; i < 5; i++)
+  {
+    data[i] /= N;
+  }
+  extra_file << _step << " " << _t << " " << data[0] << " " << data[1] << " " << data[2] << " " << data[3] << " " << data[4] << "\n";
+}
+
 /*----------------------------
  * PROTECTED METHODS
  *----------------------------*/

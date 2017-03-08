@@ -83,6 +83,8 @@ public:
   void write_statistics( void );
   void close_statistics( void );
   
+  void write_extra_statistics( std::ofstream& extra_file );
+  
   /*----------------------------
    * PUBLIC ATTRIBUTES
    *----------------------------*/

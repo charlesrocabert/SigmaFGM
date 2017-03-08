@@ -19,7 +19,7 @@
 ../build/bin/run_solver \
 -stabt          0 \
 -t              20000 \
--shutofffitness 0.95 \
+-shutofffitness 0.9 \
 -shutofftime    1000 \
 -seed           123 \
 -nbdim          10 \

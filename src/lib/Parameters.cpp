@@ -68,12 +68,13 @@ Parameters::Parameters( void )
   
   /*----------------------------------------------- VARIOUS */
   
-  _statistics     = false;
-  _one_axis       = false;
-  _weight_fitness = false;
-  _no_noise       = false;
-  _no_rotation    = false;
-  _qagi           = false;
+  _statistics          = false;
+  _extra_2D_statistics = false;
+  _one_axis            = false;
+  _weight_fitness      = false;
+  _no_noise            = false;
+  _no_rotation         = false;
+  _qagi                = false;
 }
 
 /*----------------------------
@@ -119,6 +120,7 @@ void Parameters::print_parameters( void )
   std::cout << "delta sigma         " << _delta_sigma << "\n";
   std::cout << "delta theta         " << _delta_theta << "\n";
   std::cout << "statistics          " << _statistics << "\n";
+  std::cout << "extra 2D statistics " << _extra_2D_statistics << "\n";
   std::cout << "one axis            " << _one_axis << "\n";
   std::cout << "weight fitness      " << _weight_fitness << "\n";
   std::cout << "no noise            " << _no_noise << "\n";

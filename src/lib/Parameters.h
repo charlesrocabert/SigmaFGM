@@ -84,6 +84,7 @@ public:
   /*----------------------------------------------- VARIOUS */
   
   inline bool get_statistics( void ) const;
+  inline bool get_extra_2D_statistics( void ) const;
   inline bool get_one_axis( void ) const;
   inline bool get_weight_fitness( void ) const;
   inline bool get_no_noise( void ) const;
@@ -124,6 +125,7 @@ public:
   /*----------------------------------------------- VARIOUS */
   
   inline void set_statistics( bool statistics );
+  inline void set_extra_2D_statistics( bool extra_2D_statistics );
   inline void set_one_axis( bool one_axis );
   inline void set_weight_fitness( bool weight_fitness );
   inline void set_no_noise( bool no_noise );
@@ -177,12 +179,13 @@ protected:
   
   /*----------------------------------------------- VARIOUS */
   
-  bool _statistics;     /*!< Indicates if statistics must be saved                                 */
-  bool _one_axis;       /*!< Indicates if only one axis must be initialized                        */
-  bool _weight_fitness; /*!< Indicates if the fitness must be weighted by the number of dimensions */
-  bool _no_noise;       /*!< No noise                                                              */
-  bool _no_rotation;    /*!< No rotation                                                           */
-  bool _qagi;           /*!< Compute integrative fitness instead of instantaneous one              */
+  bool _statistics;          /*!< Indicates if statistics must be saved                                 */
+  bool _extra_2D_statistics; /*!< Indicates if extra 2D statistics must be saved                        */
+  bool _one_axis;            /*!< Indicates if only one axis must be initialized                        */
+  bool _weight_fitness;      /*!< Indicates if the fitness must be weighted by the number of dimensions */
+  bool _no_noise;            /*!< No noise                                                              */
+  bool _no_rotation;         /*!< No rotation                                                           */
+  bool _qagi;                /*!< Compute integrative fitness instead of instantaneous one              */
   
 };
 
@@ -365,6 +368,17 @@ inline double Parameters::get_delta_theta( void ) const
 inline bool Parameters::get_statistics( void ) const
 {
   return _statistics;
+}
+
+/**
+ * \brief    Get the extra 2D statistics boolean
+ * \details  --
+ * \param    void
+ * \return   \e bool
+ */
+inline bool Parameters::get_extra_2D_statistics( void ) const
+{
+  return _extra_2D_statistics;
 }
 
 /**
@@ -596,6 +610,17 @@ inline void Parameters::set_delta_theta( double delta_theta )
 inline void Parameters::set_statistics( bool statistics )
 {
   _statistics = statistics;
+}
+
+/**
+ * \brief    Set the extra 2D statistics boolean
+ * \details  --
+ * \param    bool extra_2D_statistics
+ * \return   \e void
+ */
+inline void Parameters::set_extra_2D_statistics( bool extra_2D_statistics )
+{
+  _extra_2D_statistics = extra_2D_statistics;
 }
 
 /**
