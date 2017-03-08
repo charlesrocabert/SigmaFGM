@@ -83,6 +83,7 @@ int main( int argc, char const** argv )
   if (parameters->get_extra_2D_statistics())
   {
     extra_2D_statistics.open("2Dstatistics.txt", std::ios::out | std::ios::trunc);
+    extra_2D_statistics << "step t mu1 mu2 sigma1 sigma2 theta\n";
   }
   bool   stop_criterion = false;
   size_t shutoff_count  = 0;

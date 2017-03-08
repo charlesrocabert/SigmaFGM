@@ -18,20 +18,21 @@
 
 ../build/bin/run_solver \
 -stabt          0 \
--t              20000 \
+-t              0 \
 -shutofffitness 0.9 \
--shutofftime    1000 \
--seed           123 \
--nbdim          10 \
--nbparticles    5000 \
--initmu         3 \
+-shutofftime    20000 \
+-seed           0 \
+-nbdim          2 \
+-nbparticles    20000 \
+-initmu         2.12132 \
 -initsigma      1e-15 \
 -inittheta      0.0 \
 -dmu            0.01 \
 -dsigma         0.01 \
 -dtheta         0.01 \
 -statistics \
--oneaxis \
+-2Dstatistics \
+#-oneaxis \
 #-nonoise \
 #-norotation \
 #-weightfitness \
