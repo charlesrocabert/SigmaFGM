@@ -17,20 +17,23 @@
 #**********************************************************************
 
 ../build/bin/run_solver \
--stabt        0 \
--t            10000 \
--seed         0 \
--nbdim        1 \
--nbparticles  10000 \
--initmu       4 \
--initsigma    1 \
--inittheta    0.0 \
--dmu          0.01 \
--dsigma       0.1 \
--dtheta       0.0 \
+-stabt          0 \
+-t              20000 \
+-shutofffitness 0.95 \
+-shutofftime    1000 \
+-seed           123 \
+-nbdim          10 \
+-nbparticles    5000 \
+-initmu         3 \
+-initsigma      1e-15 \
+-inittheta      0.0 \
+-dmu            0.01 \
+-dsigma         0.01 \
+-dtheta         0.01 \
 -statistics \
-
-#-oneaxis \
+-oneaxis \
 #-nonoise \
 #-norotation \
 #-weightfitness \
+
+Rscript plot_data.R /Users/charlesrocabert/git/NoisyFGM/example/output.png

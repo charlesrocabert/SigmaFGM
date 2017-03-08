@@ -108,6 +108,10 @@ int main( int argc, char const** argv )
         stop_criterion = true;
       }
     }
+    if (solver->get_step()%1000 == 0)
+    {
+      std::cout << "> " << solver->get_step() << " elapsed steps (" << solver->get_time() << " elapsed time, wmu=" << solver->get_mean_wmu() << ")...\n";
+    }
   }
   if (parameters->get_statistics())
   {
