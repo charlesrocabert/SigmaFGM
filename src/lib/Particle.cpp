@@ -46,21 +46,23 @@
  * \param    bool one_axis
  * \param    bool weight_fitness
  * \param    bool no_noise
+ * \param    bool isotropic_noise
  * \param    bool no_rotation
  * \return   \e void
  */
-Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, double delta_theta, double mu_init, double sigma_init, double theta_init, bool one_axis, bool weight_fitness, bool no_noise, bool no_rotation )
+Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, double delta_theta, double mu_init, double sigma_init, double theta_init, bool one_axis, bool weight_fitness, bool no_noise, bool isotropic_noise, bool no_rotation )
 {
   /*----------------------------------------------- PARAMETERS */
   
-  _prng           = prng;
-  _n              = n;
-  _delta_mu       = delta_mu;
-  _delta_sigma    = delta_sigma;
-  _delta_theta    = delta_theta;
-  _weight_fitness = weight_fitness;
-  _no_noise       = no_noise;
-  _no_rotation    = no_rotation;
+  _prng            = prng;
+  _n               = n;
+  _delta_mu        = delta_mu;
+  _delta_sigma     = delta_sigma;
+  _delta_theta     = delta_theta;
+  _weight_fitness  = weight_fitness;
+  _no_noise        = no_noise;
+  _isotropic_noise = isotropic_noise;
+  _no_rotation     = no_rotation;
   
   /*----------------------------------------------- VARIABLES */
   
@@ -90,7 +92,7 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
   
   /* Initialize theta */
   _theta = NULL;
-  if (!_no_noise && !_no_rotation && _n > 1)
+  if (!_no_noise && !_isotropic_noise && !_no_rotation && _n > 1)
   {
     _theta = gsl_vector_alloc(_n*(_n-1)/2);
     gsl_vector_set_all(_theta, theta_init);
@@ -154,7 +156,7 @@ Particle::Particle( const Particle& particle )
   
   /* Initialize theta */
   _theta = NULL;
-  if (!_no_noise && !_no_rotation && _n > 1)
+  if (_n > 1 && !_no_noise && !_isotropic_noise && !_no_rotation)
   {
     _theta = gsl_vector_alloc(_n*(_n-1)/2);
     gsl_vector_memcpy(_theta, particle._theta);
@@ -203,7 +205,7 @@ Particle::~Particle( void )
     _Cholesky = NULL;
     gsl_vector_free(_max_Sigma_eigenvector);
     _max_Sigma_eigenvector = NULL;
-    if (_n > 1 && !_no_rotation)
+    if (_n > 1 && !_isotropic_noise && !_no_rotation)
     {
       gsl_vector_free(_theta);
       _theta = NULL;
@@ -241,16 +243,27 @@ void Particle::jump( void )
   /**************************/
   if (!_no_noise && _delta_sigma > 0.0)
   {
-    for (size_t i = 0; i < _n; i++)
+    if (!_isotropic_noise)
     {
-      gsl_vector_set(_sigma, i, fabs(gsl_vector_get(_sigma, i)+_prng->gaussian(0.0, _delta_sigma)));
+      for (size_t i = 0; i < _n; i++)
+      {
+        gsl_vector_set(_sigma, i, fabs(gsl_vector_get(_sigma, i)+_prng->gaussian(0.0, _delta_sigma)));
+      }
+    }
+    else
+    {
+      double new_sigma = fabs(gsl_vector_get(_sigma, 0)+_prng->gaussian(0.0, _delta_sigma));
+      for (size_t i = 0; i < _n; i++)
+      {
+        gsl_vector_set(_sigma, i, new_sigma);
+      }
     }
   }
   
   /**************************/
   /* 3) Mutate theta vector */
   /**************************/
-  if (!_no_noise && !_no_rotation && _n > 1 && _delta_theta > 0.0)
+  if (_n > 1 && !_no_noise && !_isotropic_noise && !_no_rotation && _delta_theta > 0.0)
   {
     for (size_t i = 0; i < _n*(_n-1)/2; i++)
     {

@@ -51,7 +51,7 @@ public:
    * CONSTRUCTORS
    *----------------------------*/
   Particle( void ) = delete;
-  Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, double delta_theta, double mu_init, double sigma_init, double theta_init, bool one_axis, bool weight_fitness, bool no_noise, bool no_rotation );
+  Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, double delta_theta, double mu_init, double sigma_init, double theta_init, bool one_axis, bool weight_fitness, bool no_noise, bool isotropic_noise, bool no_rotation );
   Particle( const Particle& particle );
   
   /*----------------------------
@@ -114,14 +114,15 @@ protected:
   
   /*----------------------------------------------- PARAMETERS */
   
-  Prng*  _prng;           /*!< Pseudorandom numbers generator                 */
-  size_t _n;              /*!< Number of dimensions                           */
-  double _delta_mu;       /*!< Mu values mutation size                        */
-  double _delta_sigma;    /*!< Sigma values mutation size                     */
-  double _delta_theta;    /*!< Theta values mutation size                     */
-  bool   _weight_fitness; /*!< Indicates if the fitness must be weighted by n */
-  bool   _no_noise;       /*!< Indicates if the noise must be applied         */
-  bool   _no_rotation;    /*!< Indicates if rotations must be applied         */
+  Prng*  _prng;            /*!< Pseudorandom numbers generator                 */
+  size_t _n;               /*!< Number of dimensions                           */
+  double _delta_mu;        /*!< Mu values mutation size                        */
+  double _delta_sigma;     /*!< Sigma values mutation size                     */
+  double _delta_theta;     /*!< Theta values mutation size                     */
+  bool   _weight_fitness;  /*!< Indicates if the fitness must be weighted by n */
+  bool   _no_noise;        /*!< Indicates if the noise must be applied         */
+  bool   _isotropic_noise; /*!< Indicates if the noise is isotropic            */
+  bool   _no_rotation;     /*!< Indicates if rotations must be applied         */
   
   /*----------------------------------------------- VARIABLES */
   
