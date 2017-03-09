@@ -23,13 +23,13 @@
 -shutofftime    20000 \
 -seed           0 \
 -nbdim          2 \
--nbparticles    20000 \
+-nbparticles    1000 \
 -initmu         2.12132 \
--initsigma      1e-15 \
+-initsigma      2 \
 -inittheta      0.0 \
 -dmu            0.01 \
--dsigma         0.01 \
--dtheta         0.01 \
+-dsigma         0.1 \
+-dtheta         0.1 \
 -statistics \
 -2Dstatistics \
 #-oneaxis \

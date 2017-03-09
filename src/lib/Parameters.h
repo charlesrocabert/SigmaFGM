@@ -88,6 +88,7 @@ public:
   inline bool get_one_axis( void ) const;
   inline bool get_weight_fitness( void ) const;
   inline bool get_no_noise( void ) const;
+  inline bool get_isotropic_noise( void ) const;
   inline bool get_no_rotation( void ) const;
   inline bool get_qagi( void ) const;
   
@@ -129,6 +130,7 @@ public:
   inline void set_one_axis( bool one_axis );
   inline void set_weight_fitness( bool weight_fitness );
   inline void set_no_noise( bool no_noise );
+  inline void set_isotropic_noise( bool isotropic_noise );
   inline void set_no_rotation( bool no_rotation );
   inline void set_qagi( bool qagi );
   
@@ -184,6 +186,7 @@ protected:
   bool _one_axis;            /*!< Indicates if only one axis must be initialized                        */
   bool _weight_fitness;      /*!< Indicates if the fitness must be weighted by the number of dimensions */
   bool _no_noise;            /*!< No noise                                                              */
+  bool _isotropic_noise;     /*!< Isotropic noise                                                       */
   bool _no_rotation;         /*!< No rotation                                                           */
   bool _qagi;                /*!< Compute integrative fitness instead of instantaneous one              */
   
@@ -412,6 +415,17 @@ inline bool Parameters::get_weight_fitness( void ) const
 inline bool Parameters::get_no_noise( void ) const
 {
   return _no_noise;
+}
+
+/**
+ * \brief    Get the isotropic noise boolean
+ * \details  --
+ * \param    void
+ * \return   \e bool
+ */
+inline bool Parameters::get_isotropic_noise( void ) const
+{
+  return _isotropic_noise;
 }
 
 /**
@@ -654,6 +668,17 @@ inline void Parameters::set_weight_fitness( bool weight_fitness )
 inline void Parameters::set_no_noise( bool no_noise )
 {
   _no_noise = no_noise;
+}
+
+/**
+ * \brief    Set isotropic noise boolean
+ * \details  --
+ * \param    bool isotropic_noise
+ * \return   \e void
+ */
+inline void Parameters::set_isotropic_noise( bool isotropic_noise )
+{
+  _isotropic_noise = isotropic_noise;
 }
 
 /**

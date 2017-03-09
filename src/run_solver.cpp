@@ -360,6 +360,10 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
     {
       parameters->set_no_noise(true);
     }
+    else if (strcmp(argv[i], "-isotropicnoise") == 0 || strcmp(argv[i], "--isotropicnoise") == 0)
+    {
+      parameters->set_isotropic_noise(true);
+    }
     else if (strcmp(argv[i], "-norotation") == 0 || strcmp(argv[i], "--norotation") == 0)
     {
       parameters->set_no_rotation(true);
@@ -445,6 +449,8 @@ void printUsage( void )
   std::cout << "        Weight the fitness by the number of dimensions\n";
   std::cout << "  -nonoise, --nonoise\n";
   std::cout << "        Individuals do not undergo noise\n";
+  std::cout << "  -isotropicnoise, --isotropicnoise\n";
+  std::cout << "        Noise is isotropic\n";
   std::cout << "  -norotation, --norotation\n";
   std::cout << "        Individuals do not undergo co-variance matrix rotations\n";
   std::cout << "  -qagi, --qagi\n";

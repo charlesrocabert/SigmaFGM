@@ -73,6 +73,7 @@ Parameters::Parameters( void )
   _one_axis            = false;
   _weight_fitness      = false;
   _no_noise            = false;
+  _isotropic_noise     = false;
   _no_rotation         = false;
   _qagi                = false;
 }
@@ -124,6 +125,7 @@ void Parameters::print_parameters( void )
   std::cout << "one axis            " << _one_axis << "\n";
   std::cout << "weight fitness      " << _weight_fitness << "\n";
   std::cout << "no noise            " << _no_noise << "\n";
+  std::cout << "isotropic noise     " << _isotropic_noise << "\n";
   std::cout << "no rotation         " << _no_rotation << "\n";
   std::cout << "qagi                " << _qagi << "\n";
   std::cout << "#######################################\n";
