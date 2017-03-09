@@ -92,10 +92,17 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
   
   /* Initialize theta */
   _theta = NULL;
-  if (!_no_noise && !_isotropic_noise && !_no_rotation && _n > 1)
+  if (!_no_noise && !_no_rotation && _n > 1)
   {
     _theta = gsl_vector_alloc(_n*(_n-1)/2);
-    gsl_vector_set_all(_theta, theta_init);
+    if (!_isotropic_noise)
+    {
+      gsl_vector_set_all(_theta, theta_init);
+    }
+    else
+    {
+      gsl_vector_set_all(_theta, 0.0);
+    }
   }
   
   /* Initialize z */
@@ -156,10 +163,17 @@ Particle::Particle( const Particle& particle )
   
   /* Initialize theta */
   _theta = NULL;
-  if (_n > 1 && !_no_noise && !_isotropic_noise && !_no_rotation)
+  if (_n > 1 && !_no_noise && !_no_rotation)
   {
     _theta = gsl_vector_alloc(_n*(_n-1)/2);
-    gsl_vector_memcpy(_theta, particle._theta);
+    if (!_isotropic_noise)
+    {
+      gsl_vector_memcpy(_theta, particle._theta);
+    }
+    else
+    {
+      gsl_vector_set_all(_theta, 0.0);
+    }
   }
   
   /* Initialize z */
@@ -205,7 +219,7 @@ Particle::~Particle( void )
     _Cholesky = NULL;
     gsl_vector_free(_max_Sigma_eigenvector);
     _max_Sigma_eigenvector = NULL;
-    if (_n > 1 && !_isotropic_noise && !_no_rotation)
+    if (_n > 1 && !_no_rotation)
     {
       gsl_vector_free(_theta);
       _theta = NULL;

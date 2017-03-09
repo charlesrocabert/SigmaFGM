@@ -18,23 +18,26 @@
 
 ../build/bin/run_solver \
 -stabt          0 \
--t              0 \
+-t              20000 \
 -shutofffitness 0.9 \
--shutofftime    20000 \
--seed           0 \
+-shutofftime    1000 \
+-seed           123 \
 -nbdim          2 \
--nbparticles    1000 \
--initmu         2.12132 \
--initsigma      2 \
+-nbparticles    5000 \
+-initmu         3 \
+-initsigma      1 \
 -inittheta      0.0 \
 -dmu            0.01 \
--dsigma         0.1 \
--dtheta         0.1 \
+-dsigma         0.01 \
+-dtheta         0.01 \
 -statistics \
 -2Dstatistics \
-#-oneaxis \
+-oneaxis \
+-isotropicnoise \
 #-nonoise \
 #-norotation \
 #-weightfitness \
 
 Rscript plot_data.R /Users/charlesrocabert/git/NoisyFGM/example/output.png
+
+
