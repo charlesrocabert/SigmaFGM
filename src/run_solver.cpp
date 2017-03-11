@@ -161,29 +161,22 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
   int counter = 0;
   for (int i = 0; i < argc; i++)
   {
+    /* Not mandatory */
     if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
     {
       printUsage();
       exit(EXIT_SUCCESS);
     }
+    /* Not mandatory */
     else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--version") == 0)
     {
       std::cout << PACKAGE << " (" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << ")\n";
       exit(EXIT_SUCCESS);
     }
-    else if (strcmp(argv[i], "-stabt") == 0 || strcmp(argv[i], "--stabilizing-time") == 0)
-    {
-      if (i+1 == argc)
-      {
-        std::cout << "Error: command line parameter value is missing.\n";
-        exit(EXIT_FAILURE);
-      }
-      else
-      {
-        parameters->set_stabilizing_time((size_t)atoi(argv[i+1]));
-        counter++;
-      }
-    }
+    
+    /*----------------------------------*/
+    
+    /* Mandatory */
     else if (strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--time") == 0)
     {
       if (i+1 == argc)
@@ -197,32 +190,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    else if (strcmp(argv[i], "-shutofffitness") == 0 || strcmp(argv[i], "--shutoff-fitness") == 0)
-    {
-      if (i+1 == argc)
-      {
-        std::cout << "Error: command line parameter value is missing.\n";
-        exit(EXIT_FAILURE);
-      }
-      else
-      {
-        parameters->set_shutoff_fitness(atof(argv[i+1]));
-        counter++;
-      }
-    }
-    else if (strcmp(argv[i], "-shutofftime") == 0 || strcmp(argv[i], "--shutoff-time") == 0)
-    {
-      if (i+1 == argc)
-      {
-        std::cout << "Error: command line parameter value is missing.\n";
-        exit(EXIT_FAILURE);
-      }
-      else
-      {
-        parameters->set_shutoff_time((size_t)atoi(argv[i+1]));
-        counter++;
-      }
-    }
+    /* Mandatory */
     else if (strcmp(argv[i], "-seed") == 0 || strcmp(argv[i], "--seed") == 0)
     {
       if (i+1 == argc)
@@ -236,6 +204,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    /* Mandatory */
     else if (strcmp(argv[i], "-nbdim") == 0 || strcmp(argv[i], "--nb-dimensions") == 0)
     {
       if (i+1 == argc)
@@ -249,6 +218,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    /* Mandatory */
     else if (strcmp(argv[i], "-nbparticles") == 0 || strcmp(argv[i], "--nb-particles") == 0)
     {
       if (i+1 == argc)
@@ -262,6 +232,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    /* Mandatory */
     else if (strcmp(argv[i], "-initmu") == 0 || strcmp(argv[i], "--initial-mu") == 0)
     {
       if (i+1 == argc)
@@ -275,6 +246,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    /* Mandatory */
     else if (strcmp(argv[i], "-initsigma") == 0 || strcmp(argv[i], "--initial-sigma") == 0)
     {
       if (i+1 == argc)
@@ -288,6 +260,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    /* Mandatory */
     else if (strcmp(argv[i], "-inittheta") == 0 || strcmp(argv[i], "--initial-theta") == 0)
     {
       if (i+1 == argc)
@@ -301,6 +274,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    /* Mandatory */
     else if (strcmp(argv[i], "-dmu") == 0 || strcmp(argv[i], "--delta-mu") == 0)
     {
       if (i+1 == argc)
@@ -314,6 +288,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    /* Mandatory */
     else if (strcmp(argv[i], "-dsigma") == 0 || strcmp(argv[i], "--delta-sigma") == 0)
     {
       if (i+1 == argc)
@@ -327,6 +302,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    /* Mandatory */
     else if (strcmp(argv[i], "-dtheta") == 0 || strcmp(argv[i], "--delta-theta") == 0)
     {
       if (i+1 == argc)
@@ -340,40 +316,90 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    
+    /*----------------------------------*/
+    
+    /* Not mandatory */
+    else if (strcmp(argv[i], "-stabt") == 0 || strcmp(argv[i], "--stabilizing-time") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_stabilizing_time((size_t)atoi(argv[i+1]));
+      }
+    }
+    /* Not mandatory */
+    else if (strcmp(argv[i], "-shutofffitness") == 0 || strcmp(argv[i], "--shutoff-fitness") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_shutoff_fitness(atof(argv[i+1]));
+      }
+    }
+    /* Not mandatory */
+    else if (strcmp(argv[i], "-shutofftime") == 0 || strcmp(argv[i], "--shutoff-time") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_shutoff_time((size_t)atoi(argv[i+1]));
+      }
+    }
+    /* Not mandatory */
     else if (strcmp(argv[i], "-statistics") == 0 || strcmp(argv[i], "--statistics") == 0)
     {
       parameters->set_statistics(true);
     }
+    /* Not mandatory */
     else if (strcmp(argv[i], "-2Dstatistics") == 0 || strcmp(argv[i], "--2Dstatistics") == 0)
     {
       parameters->set_extra_2D_statistics(true);
     }
+    /* Not mandatory */
     else if (strcmp(argv[i], "-oneaxis") == 0 || strcmp(argv[i], "--oneaxis") == 0)
     {
       parameters->set_one_axis(true);
     }
+    /* Not mandatory */
     else if (strcmp(argv[i], "-weightfitness") == 0 || strcmp(argv[i], "--weightfitness") == 0)
     {
       parameters->set_weight_fitness(true);
     }
+    /* Not mandatory */
     else if (strcmp(argv[i], "-nonoise") == 0 || strcmp(argv[i], "--nonoise") == 0)
     {
       parameters->set_no_noise(true);
     }
+    /* Not mandatory */
     else if (strcmp(argv[i], "-isotropicnoise") == 0 || strcmp(argv[i], "--isotropicnoise") == 0)
     {
       parameters->set_isotropic_noise(true);
     }
+    /* Not mandatory */
     else if (strcmp(argv[i], "-norotation") == 0 || strcmp(argv[i], "--norotation") == 0)
     {
       parameters->set_no_rotation(true);
     }
+    /* Not mandatory */
     else if (strcmp(argv[i], "-qagi") == 0 || strcmp(argv[i], "--qagi") == 0)
     {
       parameters->set_qagi(true);
     }
   }
-  if (counter < 11)
+  if (counter < 10)
   {
     printf("You must provide all the mandatory arguments (see -h or --help). Exit.\n");
     exit(EXIT_SUCCESS);
@@ -414,7 +440,7 @@ void printUsage( void )
   std::cout << "  -v, --version\n";
   std::cout << "        print the current version, then exit\n";
   std::cout << "  -stabt, --stabilizing-time\n";
-  std::cout << "        specify the stabilizing time (mandatory)\n";
+  std::cout << "        specify the stabilizing time\n";
   std::cout << "  -t, --time\n";
   std::cout << "        specify the solving time (mandatory)\n";
   std::cout << "  -shutofffitness, --shutoff-fitness\n";
