@@ -66,15 +66,15 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
   
   /*----------------------------------------------- VARIABLES */
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize matrices        */
-  /*----------------------------*/
+  /******************************/
   _Sigma    = NULL;
   _Cholesky = NULL;
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize mu              */
-  /*----------------------------*/
+  /******************************/
   _mu = gsl_vector_alloc(_n);
   if (one_axis)
   {
@@ -86,9 +86,9 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
     gsl_vector_set_all(_mu, mu_init);
   }
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize sigma           */
-  /*----------------------------*/
+  /******************************/
   _sigma = NULL;
   if (!_no_noise)
   {
@@ -96,9 +96,9 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
     gsl_vector_set_all(_sigma, sigma_init);
   }
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize theta           */
-  /*----------------------------*/
+  /******************************/
   _theta = NULL;
   if (_n > 1 && !_no_noise && !_no_rotation)
   {
@@ -113,15 +113,15 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
     }
   }
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize z               */
-  /*----------------------------*/
+  /******************************/
   _z = gsl_vector_alloc(_n);
   gsl_vector_set_zero(_z);
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize other variables */
-  /*----------------------------*/
+  /******************************/
   _dmu = 0.0;
   _dp  = 0.0;
   _wmu = 0.0;
@@ -157,21 +157,21 @@ Particle::Particle( const Particle& particle )
   
   /*----------------------------------------------- VARIABLES */
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize matrices        */
-  /*----------------------------*/
+  /******************************/
   _Sigma    = NULL;
   _Cholesky = NULL;
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize mu              */
-  /*----------------------------*/
+  /******************************/
   _mu = gsl_vector_alloc(_n);
   gsl_vector_memcpy(_mu, particle._mu);
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize sigma           */
-  /*----------------------------*/
+  /******************************/
   _sigma = NULL;
   if (!_no_noise)
   {
@@ -179,9 +179,9 @@ Particle::Particle( const Particle& particle )
     gsl_vector_memcpy(_sigma, particle._sigma);
   }
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize theta           */
-  /*----------------------------*/
+  /******************************/
   _theta = NULL;
   if (_n > 1 && !_no_noise && !_no_rotation)
   {
@@ -196,15 +196,15 @@ Particle::Particle( const Particle& particle )
     }
   }
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize z               */
-  /*----------------------------*/
+  /******************************/
   _z = gsl_vector_alloc(_n);
   gsl_vector_memcpy(_z, particle._z);
   
-  /*----------------------------*/
+  /******************************/
   /* Initialize other variables */
-  /*----------------------------*/
+  /******************************/
   _dmu = particle._dmu;
   _dp  = particle._dp;
   _wmu = particle._wmu;
@@ -291,10 +291,7 @@ void Particle::jump( void )
     else
     {
       double new_sigma = fabs(gsl_vector_get(_sigma, 0)+_prng->gaussian(0.0, _delta_sigma));
-      for (size_t i = 0; i < _n; i++)
-      {
-        gsl_vector_set(_sigma, i, new_sigma);
-      }
+      gsl_vector_set_all(_sigma, new_sigma);
     }
   }
   
@@ -345,8 +342,11 @@ void Particle::compute_fitness( gsl_vector* z_opt )
   _dp  = 0.0;
   for (size_t i = 0; i < _n; i++)
   {
-    _dmu += (gsl_vector_get(_mu, i)-gsl_vector_get(z_opt, i))*(gsl_vector_get(_mu, i)-gsl_vector_get(z_opt, i));
-    _dp  += (gsl_vector_get(_z, i)-gsl_vector_get(z_opt, i))*(gsl_vector_get(_z, i)-gsl_vector_get(z_opt, i));
+    double mu    = gsl_vector_get(_mu, i);
+    double z     = gsl_vector_get(_z, i);
+    double zopt  = gsl_vector_get(z_opt, i);
+    _dmu        += (mu-zopt)*(mu-zopt);
+    _dp         += (z-zopt)*(z-zopt);
   }
   _dmu = sqrt(_dmu);
   _dp  = sqrt(_dp);
@@ -434,7 +434,7 @@ void Particle::build_Sigma( void )
   gsl_matrix_set_identity(X);
   
   /*****************************************/
-  /* 2) Starting from identitity matrix,   */
+  /* 2) Starting from identity matrix,     */
   /*    apply the n(n-1)/2 rotations to    */
   /*    the eigenvectors                   */
   /*****************************************/
