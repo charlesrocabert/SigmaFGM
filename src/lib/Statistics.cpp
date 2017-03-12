@@ -195,20 +195,20 @@ void Statistics::add_particle( Particle* particle )
  */
 void Statistics::compute_statistics( void )
 {
-  _dmu_mean             /= _nb_particles;
-  _dp_mean              /= _nb_particles;
-  _wmu_mean             /= _nb_particles;
-  _wp_mean              /= _nb_particles;
-  _EV_mean              /= _nb_particles;
-  _EV_contribution_mean /= _nb_particles;
-  _EV_dot_product_mean  /= _nb_particles;
-  _dmu_sd               /= _nb_particles;
-  _dp_sd                /= _nb_particles;
-  _wmu_sd               /= _nb_particles;
-  _wp_sd                /= _nb_particles;
-  _EV_sd                /= _nb_particles;
-  _EV_contribution_sd   /= _nb_particles;
-  _EV_dot_product_sd    /= _nb_particles;
+  _dmu_mean             /= (double)_nb_particles;
+  _dp_mean              /= (double)_nb_particles;
+  _wmu_mean             /= (double)_nb_particles;
+  _wp_mean              /= (double)_nb_particles;
+  _EV_mean              /= (double)_nb_particles;
+  _EV_contribution_mean /= (double)_nb_particles;
+  _EV_dot_product_mean  /= (double)_nb_particles;
+  _dmu_sd               /= (double)_nb_particles;
+  _dp_sd                /= (double)_nb_particles;
+  _wmu_sd               /= (double)_nb_particles;
+  _wp_sd                /= (double)_nb_particles;
+  _EV_sd                /= (double)_nb_particles;
+  _EV_contribution_sd   /= (double)_nb_particles;
+  _EV_dot_product_sd    /= (double)_nb_particles;
   _dmu_sd               -= _dmu_mean*_dmu_mean;
   _dp_sd                -= _dp_mean*_dp_mean;
   _wmu_sd               -= _wmu_mean*_wmu_mean;

@@ -49,6 +49,7 @@ Solver::Solver( Parameters* parameters )
   _z_opt_stab = gsl_vector_alloc(parameters->get_number_of_dimensions());
   if (parameters->get_one_axis())
   {
+    gsl_vector_set_zero(_z_opt_stab);
     gsl_vector_set(_z_opt_stab, 0, parameters->get_initial_mu());
   }
   else
@@ -92,6 +93,11 @@ Solver::~Solver( void )
     _iterator++;
   }
   _particles_list.clear();
+  
+  /*----------------------------------------------- DYNAMIC VARIABLES */
+  
+  gsl_vector_free(_z_opt_stab);
+  gsl_vector_free(_z_opt);
   
   /*----------------------------------------------- STATISTICS */
   
