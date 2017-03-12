@@ -71,7 +71,7 @@ if __name__ == '__main__':
 	SHUTOFF_TIME     = 20000
 	SEED             = 0
 	NB_DIMENSIONS    = 2
-	NB_PARTICLES     = 10000
+	NB_PARTICLES     = 1000
 	INITIAL_MU       = 3.0
 	INITIAL_SIGMA    = 1e-15
 	INITIAL_THETA    = 0.0
@@ -82,9 +82,9 @@ if __name__ == '__main__':
 	STATISTICS_2D    = True
 	ONE_AXIS         = True
 	WEIGHT_FITNESS   = False
-	NO_NOISE         = True
-	ISOTROPIC_NOISE  = True
-	NO_ROTATION      = True
+	NO_NOISE         = False
+	ISOTROPIC_NOISE  = False
+	NO_ROTATION      = False
 	QAGI             = False
 
 	run_solver(STABILIZING_TIME, SIMULATION_TIME, SHUTOFF_FITNESS, SHUTOFF_TIME,
