@@ -157,15 +157,21 @@ Particle::Particle( const Particle& particle )
   
   /*----------------------------------------------- VARIABLES */
   
-  /* Initialize matrices */
+  /*----------------------------*/
+  /* Initialize matrices        */
+  /*----------------------------*/
   _Sigma    = NULL;
   _Cholesky = NULL;
   
-  /* Initialize mu */
+  /*----------------------------*/
+  /* Initialize mu              */
+  /*----------------------------*/
   _mu = gsl_vector_alloc(_n);
   gsl_vector_memcpy(_mu, particle._mu);
   
-  /* Initialize sigma */
+  /*----------------------------*/
+  /* Initialize sigma           */
+  /*----------------------------*/
   _sigma = NULL;
   if (!_no_noise)
   {
@@ -173,7 +179,9 @@ Particle::Particle( const Particle& particle )
     gsl_vector_memcpy(_sigma, particle._sigma);
   }
   
-  /* Initialize theta */
+  /*----------------------------*/
+  /* Initialize theta           */
+  /*----------------------------*/
   _theta = NULL;
   if (_n > 1 && !_no_noise && !_no_rotation)
   {
@@ -188,11 +196,15 @@ Particle::Particle( const Particle& particle )
     }
   }
   
-  /* Initialize z */
+  /*----------------------------*/
+  /* Initialize z               */
+  /*----------------------------*/
   _z = gsl_vector_alloc(_n);
   gsl_vector_memcpy(_z, particle._z);
   
+  /*----------------------------*/
   /* Initialize other variables */
+  /*----------------------------*/
   _dmu = particle._dmu;
   _dp  = particle._dp;
   _wmu = particle._wmu;
