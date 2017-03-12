@@ -297,7 +297,10 @@ void Solver::write_extra_statistics( std::ofstream& extra_file )
     {
       data[2] += _iterator->second->get_sigma(0);
       data[3] += _iterator->second->get_sigma(1);
-      data[4] += _iterator->second->get_theta(0);
+      if (!_parameters->get_isotropic_noise() && !_parameters->get_no_rotation())
+      {
+        data[4] += _iterator->second->get_theta(0);
+      }
     }
   }
   double N = (double)_particles_list.size();

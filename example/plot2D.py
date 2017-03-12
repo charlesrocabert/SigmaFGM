@@ -42,7 +42,7 @@ ion()
 t_vec, mu1_vec, mu2_vec, sigma1_vec, sigma2_vec, theta_vec = load_mean_state()
 
 for i in range(len(t_vec)):
-	if i%500 == 0:
+	if i%1000 == 0:
 		print i
 		clf()
 		ellipse = Ellipse(xy=[mu1_vec[i], mu2_vec[i]], width=2*sigma1_vec[i], height=2*sigma2_vec[i], angle=math.degrees(theta_vec[i]))

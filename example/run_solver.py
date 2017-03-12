@@ -57,6 +57,7 @@ def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim, nbpart,
 		cmdline += " -norotation"
 	if qagi:
 		cmdline += " -qagi"
+	print cmdline
 	os.system(cmdline)
 	os.system("Rscript plot_data.R /Users/charlesrocabert/git/NoisyFGM/example/output.png")
 
@@ -83,8 +84,8 @@ if __name__ == '__main__':
 	ONE_AXIS         = True
 	WEIGHT_FITNESS   = False
 	NO_NOISE         = False
-	ISOTROPIC_NOISE  = False
-	NO_ROTATION      = False
+	ISOTROPIC_NOISE  = True
+	NO_ROTATION      = True
 	QAGI             = False
 
 	run_solver(STABILIZING_TIME, SIMULATION_TIME, SHUTOFF_FITNESS, SHUTOFF_TIME,
