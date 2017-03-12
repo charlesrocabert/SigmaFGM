@@ -293,9 +293,12 @@ void Solver::write_extra_statistics( std::ofstream& extra_file )
   {
     data[0] += _iterator->second->get_mu(0);
     data[1] += _iterator->second->get_mu(1);
-    data[2] += _iterator->second->get_sigma(0);
-    data[3] += _iterator->second->get_sigma(1);
-    data[4] += _iterator->second->get_theta(0);
+    if (!_parameters->get_no_noise())
+    {
+      data[2] += _iterator->second->get_sigma(0);
+      data[3] += _iterator->second->get_sigma(1);
+      data[4] += _iterator->second->get_theta(0);
+    }
   }
   double N = (double)_particles_list.size();
   for (size_t i = 0; i < 5; i++)

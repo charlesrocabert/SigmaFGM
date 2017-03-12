@@ -61,6 +61,7 @@ int main( int argc, char const** argv )
   {
     parameters->set_prng_seed((unsigned long int)time(NULL));
   }
+  parameters->print_parameters();
   
   /**************************************************/
   /* 2) Create the solver                           */
@@ -89,7 +90,10 @@ int main( int argc, char const** argv )
   size_t shutoff_count  = 0;
   while (!stop_criterion)
   {
+    /* 4.1) Update the solver's state --*/
     solver->update(false);
+    
+    /* 4.2) Save statistics ------------*/
     if (parameters->get_statistics())
     {
       solver->compute_statistics();
@@ -99,6 +103,8 @@ int main( int argc, char const** argv )
     {
       solver->write_extra_statistics(extra_2D_statistics);
     }
+    
+    /* 4.3) Evaluate the stop criterion */
     if (parameters->get_shutoff_fitness() == 0.0)
     {
       stop_criterion = (solver->get_step() >= parameters->get_time());
@@ -118,6 +124,7 @@ int main( int argc, char const** argv )
         stop_criterion = true;
       }
     }
+    /* 4.4) Show solver state ----------*/
     if (solver->get_step()%1000 == 0)
     {
       std::cout << "> " << solver->get_step() << " elapsed steps (" << solver->get_time() << " elapsed time, wmu=" << solver->get_mean_wmu() << ")...\n";

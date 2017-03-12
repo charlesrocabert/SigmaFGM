@@ -100,7 +100,7 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
   /* Initialize theta           */
   /******************************/
   _theta = NULL;
-  if (_n > 1 && !_no_noise && !_no_rotation)
+  if (_n > 1 && !_no_noise)
   {
     _theta = gsl_vector_alloc(_n*(_n-1)/2);
     if (!_isotropic_noise)
@@ -183,7 +183,7 @@ Particle::Particle( const Particle& particle )
   /* Initialize theta           */
   /******************************/
   _theta = NULL;
-  if (_n > 1 && !_no_noise && !_no_rotation)
+  if (_n > 1 && !_no_noise)
   {
     _theta = gsl_vector_alloc(_n*(_n-1)/2);
     if (!_isotropic_noise)
