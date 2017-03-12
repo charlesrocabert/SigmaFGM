@@ -7,4 +7,4 @@ cmake/cmake_install.cmake
 cmake/Makefile
 cmake/Config.h
 example/**
-!example/run_solver.sh
+!example/run_solver.py
