@@ -21,6 +21,7 @@
 
 import os
 import sys
+import math
 
 def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim, nbpart,
 	initmu, initsigma, inittheta, dmu, dsigma, dtheta,
@@ -67,25 +68,25 @@ def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim, nbpart,
 ############
 if __name__ == '__main__':
 	STABILIZING_TIME = 0
-	SIMULATION_TIME  = 1
+	SIMULATION_TIME  = 0
 	SHUTOFF_FITNESS  = 0.9
 	SHUTOFF_TIME     = 20000
-	SEED             = 0
-	NB_DIMENSIONS    = 2
-	NB_PARTICLES     = 1000
-	INITIAL_MU       = 3.0
+	SEED             = 1234
+	NB_DIMENSIONS    = 1
+	NB_PARTICLES     = 10000
+	INITIAL_MU       = 3
 	INITIAL_SIGMA    = 1e-15
 	INITIAL_THETA    = 0.0
 	D_MU             = 0.01
-	D_SIGMA          = 0.01
-	D_THETA          = 0.01
+	D_SIGMA          = 0.1
+	D_THETA          = 0.1
 	STATISTICS       = True
-	STATISTICS_2D    = True
-	ONE_AXIS         = True
+	STATISTICS_2D    = False
+	ONE_AXIS         = False
 	WEIGHT_FITNESS   = False
-	NO_NOISE         = False
-	ISOTROPIC_NOISE  = True
-	NO_ROTATION      = True
+	NO_NOISE         = True
+	ISOTROPIC_NOISE  = False
+	NO_ROTATION      = False
 	QAGI             = False
 
 	run_solver(STABILIZING_TIME, SIMULATION_TIME, SHUTOFF_FITNESS, SHUTOFF_TIME,

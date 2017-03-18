@@ -471,7 +471,7 @@ void Particle::build_Sigma( void )
   }
   
   /*****************************************/
-  /* 5) Compute Sigma = X * D * D^-1       */
+  /* 5) Compute Sigma = X * D * X^-1       */
   /*****************************************/
   gsl_matrix* P = gsl_matrix_alloc(_n, _n);
   _Sigma        = gsl_matrix_alloc(_n, _n);

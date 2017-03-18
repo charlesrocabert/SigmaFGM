@@ -41,15 +41,28 @@ dbest = read.table("/Users/charlesrocabert/git/NoisyFGM/example/best.txt", h=T, 
 dmean = read.table("/Users/charlesrocabert/git/NoisyFGM/example/mean.txt", h=T, sep=" ")
 dsd = read.table("/Users/charlesrocabert/git/NoisyFGM/example/sd.txt", h=T, sep=" ")
 
-png(filename=figurename, pointsize=15, width=750, height=500)
+figurename = "/Users/charlesrocabert/git/NoisyFGM/example/output.png"
+png(filename=figurename, pointsize=15, width=1500, height=1000)
 
-par(mfrow=c(2,3), mar=c(2,2,2,2))
+par(mfrow=c(3,3), mar=c(2,2,2,2))
 
-### PLOT DISTANCE ###
-plot_data(dmean$t, dbest$dp, dmean$dp, dsd$dp, "Distance")
+D = sqrt(-2*log(0.9))
 
-### PLOT FITNESS ###
-plot_data(dmean$t, dbest$wp, dmean$wp, dsd$wp, "Fitness")
+### PLOT GENOTYPIC EUCLIDEAN DISTANCE ###
+plot_data(dmean$t, dbest$dmu, dmean$dmu, dsd$dmu, "Genotypic distance")
+abline(h=D, col="red")
+
+### PLOT PHENOTYPIC EUCLIDEAN DISTANCE ###
+plot_data(dmean$t, dbest$dp, dmean$dp, dsd$dp, "Phenotypic distance")
+abline(h=D, col="red")
+
+### PLOT GENOTYPIC FITNESS ###
+plot_data(dmean$t, dbest$wmu, dmean$wmu, dsd$wmu, "Genotypic fitness")
+abline(h=0.9, col="red")
+
+### PLOT PHENOTYPIC FITNESS ###
+plot_data(dmean$t, dbest$wp, dmean$wp, dsd$wp, "Phenotypic fitness")
+abline(h=0.9, col="red")
 
 ### PLOT EIGEN VALUE ###
 plot_data(dmean$t, dbest$EV, dmean$EV, dsd$EV, "Eigen value")

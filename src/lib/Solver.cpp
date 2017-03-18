@@ -188,7 +188,7 @@ void Solver::update( bool stabilize )
   
   for (_iterator = _particles_list.begin(); _iterator != _particles_list.end(); ++_iterator)
   {
-    if (_parameters->get_prng()->uniform() < _iterator->second->get_wp()*0.1/best_w)
+    if (_parameters->get_prng()->uniform() < _iterator->second->get_wp()*dt)
     {
       to_duplicate.push_back(_iterator->second);
     }
