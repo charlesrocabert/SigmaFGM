@@ -60,7 +60,7 @@ def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim, nbpart,
 		cmdline += " -qagi"
 	print cmdline
 	os.system(cmdline)
-	os.system("Rscript plot_data.R /Users/charlesrocabert/git/SigmaFGM/example/output.png")
+	#os.system("Rscript plot_data.R /Users/charlesrocabert/git/SigmaFGM/example/output.png")
 
 
 ############

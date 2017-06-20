@@ -107,6 +107,7 @@ endif(ZLIB_FOUND)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 add_library(
   SigmaFGM
+  src/lib/Macros.h
   src/lib/Parameters.cpp
   src/lib/Parameters.h
   src/lib/Particle.cpp
