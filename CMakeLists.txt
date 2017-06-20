@@ -25,13 +25,13 @@ cmake_minimum_required(VERSION 2.6)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Define the project name                                                          #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-project(NOISYFGM)
+project(SIGMAFGM)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Define the package name                                                          #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-set(PACKAGE "\"NOISY-FGM\"")
+set(PACKAGE "\"SIGMA-FGM\"")
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -106,7 +106,7 @@ endif(ZLIB_FOUND)
 # Create and link NoisyFGM library                                                 #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 add_library(
-  NoisyFGM
+  SigmaFGM
   src/lib/Parameters.cpp
   src/lib/Parameters.h
   src/lib/Particle.cpp
@@ -119,10 +119,10 @@ add_library(
   src/lib/Prng.h
 )
 
-target_link_libraries(NoisyFGM z tbb gsl gslcblas)
+target_link_libraries(SigmaFGM z tbb gsl gslcblas)
 
-target_link_libraries(${RUN_SOLVER_EXECUTABLE} NoisyFGM)
-target_link_libraries(${QAGI_EXECUTABLE} NoisyFGM)
+target_link_libraries(${RUN_SOLVER_EXECUTABLE} SigmaFGM)
+target_link_libraries(${QAGI_EXECUTABLE} SigmaFGM)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
