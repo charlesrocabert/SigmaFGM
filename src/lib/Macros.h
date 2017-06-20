@@ -25,8 +25,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __NoisyFGM__Macros__
-#define __NoisyFGM__Macros__
+#ifndef __SigmaFGM__Macros__
+#define __SigmaFGM__Macros__
 
 
 #define PI     3.14159265359
@@ -35,4 +35,4 @@
 #define LIMIT  1000
 
 
-#endif /* defined(__NoisyFGM__Macros__) */
+#endif /* defined(__SigmaFGM__Macros__) */

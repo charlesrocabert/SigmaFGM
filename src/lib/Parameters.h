@@ -25,8 +25,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __NoisyFGM__Parameters__
-#define __NoisyFGM__Parameters__
+#ifndef __SigmaFGM__Parameters__
+#define __SigmaFGM__Parameters__
 
 #include <iostream>
 #include <vector>
@@ -704,4 +704,4 @@ inline void Parameters::set_qagi( bool qagi )
 }
 
 
-#endif /* defined(__NoisyFGM__Parameters__) */
+#endif /* defined(__SigmaFGM__Parameters__) */

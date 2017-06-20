@@ -25,8 +25,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __NoisyFGM__Statistics__
-#define __NoisyFGM__Statistics__
+#ifndef __SigmaFGM__Statistics__
+#define __SigmaFGM__Statistics__
 
 #include <iostream>
 #include <fstream>
@@ -152,4 +152,4 @@ inline double Statistics::get_mean_wmu( void ) const
 
 
 
-#endif /* defined(__NoisyFGM__Statistics__) */
+#endif /* defined(__SigmaFGM__Statistics__) */

@@ -1,4 +1,4 @@
-# NoisyFGM 0.1.0
+# SigmaFGM 0.1.0
 Copyright (C) 2014-2017 Charles Rocabert, Samuel Bernard.
 
 All rights reserved

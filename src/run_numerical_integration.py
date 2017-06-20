@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -73,7 +74,7 @@ def integration_step_OAR( path, dim, mu, sigma, rep, points, seed ):
 #os.system("rm -rf output_data")
 #os.mkdir("output_data")
 
-PATH     = "/Users/charlesrocabert/svn/noisyfgm/branches/development/beta/build/bin/integration_step_QAGI"
+PATH     = "/Users/charlesrocabert/git/SigmaFGM/branches/development/beta/build/bin/integration_step_QAGI"
 METHOD   = "basic"
 NB_CORES = 2
 

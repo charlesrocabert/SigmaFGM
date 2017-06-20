@@ -25,8 +25,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __NoisyFGM__Solver__
-#define __NoisyFGM__Solver__
+#ifndef __SigmaFGM__Solver__
+#define __SigmaFGM__Solver__
 
 #include <iostream>
 #include <cmath>
@@ -210,4 +210,4 @@ inline double Solver::get_mean_wmu( void ) const
  *----------------------------*/
 
 
-#endif /* defined(__NoisyFGM__Solver__) */
+#endif /* defined(__SigmaFGM__Solver__) */

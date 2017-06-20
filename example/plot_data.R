@@ -37,11 +37,11 @@ plot_data <- function( vt, vbest, vmean, vsd, title )
 	lines(vt, vmean+vsd, col="cornflowerblue", lty=2)
 }
 
-dbest = read.table("/Users/charlesrocabert/git/NoisyFGM/example/best.txt", h=T, sep=" ")
-dmean = read.table("/Users/charlesrocabert/git/NoisyFGM/example/mean.txt", h=T, sep=" ")
-dsd = read.table("/Users/charlesrocabert/git/NoisyFGM/example/sd.txt", h=T, sep=" ")
+dbest = read.table("/Users/charlesrocabert/git/SigmaFGM/example/best.txt", h=T, sep=" ")
+dmean = read.table("/Users/charlesrocabert/git/SigmaFGM/example/mean.txt", h=T, sep=" ")
+dsd = read.table("/Users/charlesrocabert/git/SigmaFGM/example/sd.txt", h=T, sep=" ")
 
-figurename = "/Users/charlesrocabert/git/NoisyFGM/example/output.png"
+figurename = "/Users/charlesrocabert/git/SigmaFGM/example/output.png"
 png(filename=figurename, pointsize=15, width=1500, height=1000)
 
 par(mfrow=c(3,3), mar=c(2,2,2,2))

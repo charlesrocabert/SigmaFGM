@@ -25,8 +25,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __NoisyFGM__Prng__
-#define __NoisyFGM__Prng__
+#ifndef __SigmaFGM__Prng__
+#define __SigmaFGM__Prng__
 
 #include <iostream>
 #include <gsl/gsl_rng.h>
@@ -113,4 +113,4 @@ inline void Prng::set_seed( unsigned long int seed )
 }
 
 
-#endif /* defined(__NoisyFGM__Prng__) */
+#endif /* defined(__SigmaFGM__Prng__) */

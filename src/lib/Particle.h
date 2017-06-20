@@ -25,8 +25,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __NoisyFGM__Particle__
-#define __NoisyFGM__Particle__
+#ifndef __SigmaFGM__Particle__
+#define __SigmaFGM__Particle__
 
 #include <iostream>
 #include <cmath>
@@ -269,4 +269,4 @@ inline double Particle::get_max_dot_product( void ) const
  *----------------------------*/
 
 
-#endif /* defined(__NoisyFGM__Particle__) */
+#endif /* defined(__SigmaFGM__Particle__) */
