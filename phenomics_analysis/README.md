@@ -12,7 +12,7 @@ The code should work properly on Unix and OSX. We do not provide the code for Wi
 
 To reproduce our analysis on yeast data provided by Yvert et al. (2013), please follow the next few steps:
 
-* Download this git repository <code>SigmaFGM</code>
+* Download the git repository <code>SigmaFGM</code> (https://github.com/charlesrocabert/SigmaFGM)
 * With your terminal, navigate to the folder <code>phenomics_analysis</code> using command
 
     cd
