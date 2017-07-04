@@ -13,10 +13,7 @@ The code should work properly on Unix and OSX. We do not provide the code for Wi
 To reproduce our analysis on yeast data provided by Yvert et al. (2013), please follow the next few steps:
 
 * Download the git repository <code>SigmaFGM</code> (https://github.com/charlesrocabert/SigmaFGM/archive/master.zip)
-* With your terminal, navigate to the folder <code>SigmaFGM-master/henomics_analysis</code> using command
-
-    cd
-
+* With your terminal, navigate to the folder <code>SigmaFGM-master/henomics_analysis</code> using command <code>cd</code>
 * Simply run the bash script with this command:
 
     bash run_phenomics_analysis.sh
