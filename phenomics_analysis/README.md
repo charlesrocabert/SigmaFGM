@@ -20,5 +20,5 @@ To reproduce our analysis on yeast data provided by Yvert et al. (2013), please 
 
 * Wait
 
-The resulting data are provided in various folders, and the pictures are located in the folder <code>pic</code>.
+The resulting data is dispatched in various folders, and the pictures are located in the folder <code>pic</code>.
 
