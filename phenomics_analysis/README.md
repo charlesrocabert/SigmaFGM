@@ -16,9 +16,7 @@ To reproduce our analysis on yeast data provided by Yvert et al. (2013), please 
 * With your terminal, navigate to the folder <code>SigmaFGM-master/phenomics_analysis</code> using command <code>cd</code>
 * Simply run the bash script with this command:
 
-    bash run_phenomics_analysis.sh
-
-    bash make_debug.sh
+        bash run_phenomics_analysis.sh
 
 * Wait
 
