@@ -18,6 +18,8 @@ To reproduce our analysis on yeast data provided by Yvert et al. (2013), please 
 
     bash run_phenomics_analysis.sh
 
+    bash make_debug.sh
+
 * Wait
 
 The resulting data is dispatched in various folders, and the pictures are located in the folder <code>pic</code>.
