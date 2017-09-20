@@ -44,7 +44,7 @@ def merge_data( strain, reps ):
 	useless = ["image_number", "Cgroup", "Agroup", "Dgroup", "D115", "D111"]
 	expes   = ["actin_biological", "conA_biological", "dapi_biological"]
 	data    = {}
-	for rep in range(1,reps+1):
+	for rep in reps:
 		for expe in expes:
 			filename = strain+"_"+str(rep)+"_"+expe+".csv"
 			f = open("csv/"+filename, "r")
@@ -96,7 +96,7 @@ def merge_data( strain, reps ):
 ##################
 
 strains = load_strain_names()
-reps    = 5
+reps    = [1,2,3,4,5]
 
 os.system("rm -rf merged")
 os.mkdir("merged")
