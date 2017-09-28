@@ -4,7 +4,7 @@
 
 # Major Contributors
 * Carole Knibbe
-* Guillaume beslon
+* Guillaume Beslon
 
 # Other Contributors
 --
