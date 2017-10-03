@@ -56,6 +56,11 @@ Parameters::Parameters( void )
   
   _number_of_dimensions = 0;
   
+  /*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+  
+  _fitness_function_shape     = EXPONENTIAL;
+  _fitness_function_parameter = 2.0;
+  
   /*----------------------------------------------- PARTICLES PROPERTIES */
   
   _number_of_particles = 0.0;
@@ -71,7 +76,6 @@ Parameters::Parameters( void )
   _statistics          = false;
   _extra_2D_statistics = false;
   _one_axis            = false;
-  _weight_fitness      = false;
   _no_noise            = false;
   _isotropic_noise     = false;
   _no_rotation         = false;
@@ -107,26 +111,42 @@ Parameters::~Parameters( void )
 void Parameters::print_parameters( void )
 {
   std::cout << "### Parameters ########################\n";
-  std::cout << "stabilizing time    " << _stabilizing_time << "\n";
-  std::cout << "time                " << _time << "\n";
-  std::cout << "shutoff fitness     " << _shutoff_fitness << "\n";
-  std::cout << "shutoff time        " << _shutoff_time << "\n";
-  std::cout << "seed                " << _seed << "\n";
-  std::cout << "dimensions          " << _number_of_dimensions << "\n";
-  std::cout << "number of particles " << _number_of_particles << "\n";
-  std::cout << "initial mu          " << _initial_mu << "\n";
-  std::cout << "initial sigma       " << _initial_sigma << "\n";
-  std::cout << "initial theta       " << _initial_theta << "\n";
-  std::cout << "delta mu            " << _delta_mu << "\n";
-  std::cout << "delta sigma         " << _delta_sigma << "\n";
-  std::cout << "delta theta         " << _delta_theta << "\n";
-  std::cout << "statistics          " << _statistics << "\n";
-  std::cout << "extra 2D statistics " << _extra_2D_statistics << "\n";
-  std::cout << "one axis            " << _one_axis << "\n";
-  std::cout << "weight fitness      " << _weight_fitness << "\n";
-  std::cout << "no noise            " << _no_noise << "\n";
-  std::cout << "isotropic noise     " << _isotropic_noise << "\n";
-  std::cout << "no rotation         " << _no_rotation << "\n";
-  std::cout << "qagi                " << _qagi << "\n";
+  std::cout << "stabilizing time           " << _stabilizing_time << "\n";
+  std::cout << "time                       " << _time << "\n";
+  std::cout << "shutoff fitness            " << _shutoff_fitness << "\n";
+  std::cout << "shutoff time               " << _shutoff_time << "\n";
+  std::cout << "seed                       " << _seed << "\n";
+  std::cout << "dimensions                 " << _number_of_dimensions << "\n";
+  if (_fitness_function_shape == EXPONENTIAL)
+  {
+    std::cout << "fitness function shape     EXPONENTIAL\n";
+  }
+  else if (_fitness_function_shape == CAUCHY)
+  {
+    std::cout << "fitness function shape     CAUCHY\n";
+  }
+  else if (_fitness_function_shape == LINEAR)
+  {
+    std::cout << "fitness function shape     LINEAR\n";
+  }
+  else if (_fitness_function_shape == STEP)
+  {
+    std::cout << "fitness function shape     STEP\n";
+  }
+  std::cout << "fitness function parameter " << _fitness_function_parameter << "\n";
+  std::cout << "number of particles        " << _number_of_particles << "\n";
+  std::cout << "initial mu                 " << _initial_mu << "\n";
+  std::cout << "initial sigma              " << _initial_sigma << "\n";
+  std::cout << "initial theta              " << _initial_theta << "\n";
+  std::cout << "delta mu                   " << _delta_mu << "\n";
+  std::cout << "delta sigma                " << _delta_sigma << "\n";
+  std::cout << "delta theta                " << _delta_theta << "\n";
+  std::cout << "statistics                 " << _statistics << "\n";
+  std::cout << "extra 2D statistics        " << _extra_2D_statistics << "\n";
+  std::cout << "one axis                   " << _one_axis << "\n";
+  std::cout << "no noise                   " << _no_noise << "\n";
+  std::cout << "isotropic noise            " << _isotropic_noise << "\n";
+  std::cout << "no rotation                " << _no_rotation << "\n";
+  std::cout << "qagi                       " << _qagi << "\n";
   std::cout << "#######################################\n";
 }

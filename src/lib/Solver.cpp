@@ -326,7 +326,7 @@ void Solver::initialize_particles_list( void )
   size_t n = _parameters->get_number_of_dimensions();
   for (size_t i = 0; i < _parameters->get_number_of_particles(); i++)
   {
-    Particle* particle = new Particle(_parameters->get_prng(), n, _parameters->get_delta_mu(), _parameters->get_delta_sigma(), _parameters->get_delta_theta(), _parameters->get_initial_mu(), _parameters->get_initial_sigma(), _parameters->get_initial_theta(), _parameters->get_one_axis(), _parameters->get_weight_fitness(), _parameters->get_no_noise(), _parameters->get_isotropic_noise(), _parameters->get_no_rotation());
+    Particle* particle = new Particle(_parameters->get_prng(), n, _parameters->get_delta_mu(), _parameters->get_delta_sigma(), _parameters->get_delta_theta(), _parameters->get_initial_mu(), _parameters->get_initial_sigma(), _parameters->get_initial_theta(), _parameters->get_one_axis(), _parameters->get_no_noise(), _parameters->get_isotropic_noise(), _parameters->get_no_rotation());
     _particles_list[_current_identifier] = particle;
     _current_identifier++;
   }
@@ -356,7 +356,7 @@ void Solver::initialize_solver_state( bool stabilize )
     _iterator->second->build_phenotype();
     if (!_parameters->get_qagi())
     {
-      _iterator->second->compute_fitness(z_opt);
+      _iterator->second->compute_fitness(z_opt, _parameters->get_fitness_function_shape(), _parameters->get_fitness_function_parameter());
     }
     else
     {
@@ -381,7 +381,7 @@ void Solver::update_particle( Particle* particle, gsl_vector* z_opt )
   particle->build_phenotype();
   if (!_parameters->get_qagi())
   {
-    particle->compute_fitness(z_opt);
+    particle->compute_fitness(z_opt, _parameters->get_fitness_function_shape(), _parameters->get_fitness_function_parameter());
   }
   else
   {

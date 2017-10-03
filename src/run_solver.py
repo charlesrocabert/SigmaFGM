@@ -23,11 +23,11 @@ import os
 import sys
 import math
 
-def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim, nbpart,
-	initmu, initsigma, inittheta, dmu, dsigma, dtheta,
+def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim,
+	fitness_shape, fitness_parameter,
+	nbpart, initmu, initsigma, inittheta, dmu, dsigma, dtheta,
 	stats, stats2D,
-	oneaxis, weight,
-	nonoise, isotropic, norotation, qagi ):
+	oneaxis, nonoise, isotropic, norotation, qagi ):
 	cmdline = "../build/bin/run_solver"
 	cmdline += " -stabt "+str(stabt)
 	cmdline += " -t "+str(t)
@@ -35,6 +35,8 @@ def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim, nbpart,
 	cmdline += " -shutofftime "+str(shutofftime)
 	cmdline += " -seed "+str(seed)
 	cmdline += " -nbdim "+str(nbdim)
+	cmdline += " -fitnessshape "+str(fitness_shape)
+	cmdline += " -fitnessparameter "+str(fitness_parameter)
 	cmdline += " -nbparticles "+str(nbpart)
 	cmdline += " -initmu "+str(initmu)
 	cmdline += " -initsigma "+str(initsigma)
@@ -48,8 +50,6 @@ def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim, nbpart,
 		cmdline += " -2Dstatistics"
 	if oneaxis:
 		cmdline += " -oneaxis"
-	if weight:
-		cmdline += " -weightfitness"
 	if nonoise:
 		cmdline += " -nonoise"
 	if isotropic:
@@ -60,39 +60,41 @@ def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim, nbpart,
 		cmdline += " -qagi"
 	print cmdline
 	os.system(cmdline)
-	#os.system("Rscript plot_data.R /Users/charlesrocabert/git/SigmaFGM/example/output.png")
+	os.system("Rscript plot_data.R /Users/charlesrocabert/git/SigmaFGM/example/output.png")
 
 
 ############
 #   MAIN   #
 ############
+
 if __name__ == '__main__':
-	STABILIZING_TIME = 0
-	SIMULATION_TIME  = 0
-	SHUTOFF_FITNESS  = 0.9
-	SHUTOFF_TIME     = 20000
-	SEED             = 1234
-	NB_DIMENSIONS    = 1
-	NB_PARTICLES     = 10000
-	INITIAL_MU       = 3
-	INITIAL_SIGMA    = 1e-15
-	INITIAL_THETA    = 0.0
-	D_MU             = 0.01
-	D_SIGMA          = 0.1
-	D_THETA          = 0.1
-	STATISTICS       = True
-	STATISTICS_2D    = False
-	ONE_AXIS         = False
-	WEIGHT_FITNESS   = False
-	NO_NOISE         = True
-	ISOTROPIC_NOISE  = False
-	NO_ROTATION      = False
-	QAGI             = False
+	STABILIZING_TIME  = 0
+	SIMULATION_TIME   = 10000
+	SHUTOFF_FITNESS   = 0.0
+	SHUTOFF_TIME      = 0
+	SEED              = 1234
+	NB_DIMENSIONS     = 1
+	FITNESS_SHAPE     = "step"
+	FITNESS_PARAMETER = 1.0
+	NB_PARTICLES      = 10000
+	INITIAL_MU        = 0.0
+	INITIAL_SIGMA     = 1e-15
+	INITIAL_THETA     = 0.0
+	D_MU              = 1.0
+	D_SIGMA           = 0.01
+	D_THETA           = 0.01
+	STATISTICS        = True
+	STATISTICS_2D     = False
+	ONE_AXIS          = False
+	NO_NOISE          = False
+	ISOTROPIC_NOISE   = False
+	NO_ROTATION       = False
+	QAGI              = False
 
 	run_solver(STABILIZING_TIME, SIMULATION_TIME, SHUTOFF_FITNESS, SHUTOFF_TIME,
-		SEED, NB_DIMENSIONS, NB_PARTICLES, 
-		INITIAL_MU, INITIAL_SIGMA, INITIAL_THETA, D_MU, D_SIGMA, D_THETA,
+		SEED, NB_DIMENSIONS,
+		FITNESS_SHAPE, FITNESS_PARAMETER,
+		NB_PARTICLES, INITIAL_MU, INITIAL_SIGMA, INITIAL_THETA, D_MU, D_SIGMA, D_THETA,
 		STATISTICS, STATISTICS_2D,
-		ONE_AXIS, WEIGHT_FITNESS,
-		NO_NOISE, ISOTROPIC_NOISE, NO_ROTATION, QAGI)
+		ONE_AXIS, NO_NOISE, ISOTROPIC_NOISE, NO_ROTATION, QAGI)
 

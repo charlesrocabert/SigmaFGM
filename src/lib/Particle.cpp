@@ -44,13 +44,12 @@
  * \param    double sigma_init
  * \param    double theta_init
  * \param    bool one_axis
- * \param    bool weight_fitness
  * \param    bool no_noise
  * \param    bool isotropic_noise
  * \param    bool no_rotation
  * \return   \e void
  */
-Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, double delta_theta, double mu_init, double sigma_init, double theta_init, bool one_axis, bool weight_fitness, bool no_noise, bool isotropic_noise, bool no_rotation )
+Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, double delta_theta, double mu_init, double sigma_init, double theta_init, bool one_axis, bool no_noise, bool isotropic_noise, bool no_rotation )
 {
   /*----------------------------------------------- PARAMETERS */
   
@@ -59,7 +58,6 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
   _delta_mu        = delta_mu;
   _delta_sigma     = delta_sigma;
   _delta_theta     = delta_theta;
-  _weight_fitness  = weight_fitness;
   _no_noise        = no_noise;
   _isotropic_noise = isotropic_noise;
   _no_rotation     = no_rotation;
@@ -144,7 +142,6 @@ Particle::Particle( const Particle& particle )
   _delta_mu        = particle._delta_mu;
   _delta_sigma     = particle._delta_sigma;
   _delta_theta     = particle._delta_theta;
-  _weight_fitness  = particle._weight_fitness;
   _no_noise        = particle._no_noise;
   _isotropic_noise = particle._isotropic_noise;
   _no_rotation     = particle._no_rotation;
@@ -321,9 +318,11 @@ void Particle::build_phenotype( void )
  * \brief    Compute the instantaneous fitness
  * \details  --
  * \param    gsl_vector* z_opt
+ * \param    fitness_function_shape shape
+ * \param    double parameter
  * \return   \e void
  */
-void Particle::compute_fitness( gsl_vector* z_opt )
+void Particle::compute_fitness( gsl_vector* z_opt, fitness_function_shape shape, double parameter )
 {
   _dmu = 0.0;
   _dp  = 0.0;
@@ -337,15 +336,27 @@ void Particle::compute_fitness( gsl_vector* z_opt )
   }
   _dmu = sqrt(_dmu);
   _dp  = sqrt(_dp);
-  if (_weight_fitness)
-  {
-    _wmu = exp(-_dmu*_dmu/(2.0*_n));
-    _wp  = exp(-_dp*_dp/(2.0*_n));
-  }
-  else
+  if (shape == EXPONENTIAL)
   {
     _wmu = exp(-_dmu*_dmu/2.0);
     _wp  = exp(-_dp*_dp/2.0);
+  }
+  else if (shape == CAUCHY)
+  {
+    _wmu = 1.0/(1.0+_dmu*_dmu);
+    _wp  = 1.0/(1.0+_dp*_dp);
+  }
+  else if (shape == LINEAR)
+  {
+    _wmu = 1.0-_dmu/parameter;
+    _wmu = (_wmu > 0.0 ? _wmu : 1e-10);
+    _wp  = 1.0-_dp/parameter;
+    _wp  = (_wp > 0.0 ? _wp : 1e-10);
+  }
+  else if (shape == STEP)
+  {
+    _wmu = (_dmu < parameter ? 1.0 : 1e-10);
+    _wp  = (_dp < parameter ? 1.0 : 1e-10);
   }
 }
 
@@ -360,11 +371,6 @@ void Particle::compute_fitness_QAGI( void )
   if (_n > 1)
   {
     printf("Error in Particle::compute_fitness_QAGI(): this method is only available in 1D. Exit.\n");
-    exit(EXIT_FAILURE);
-  }
-  if (_weight_fitness)
-  {
-    printf("Error in Particle::compute_fitness_QAGI(): this method doesn't work with option \"weight fitness\". Exit.\n");
     exit(EXIT_FAILURE);
   }
   _dmu = 0.0;

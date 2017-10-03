@@ -32,6 +32,7 @@
 #include <vector>
 #include <assert.h>
 
+#include "Enums.h"
 #include "Prng.h"
 
 
@@ -71,6 +72,11 @@ public:
   
   inline size_t get_number_of_dimensions( void ) const;
   
+  /*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+  
+  inline fitness_function_shape get_fitness_function_shape( void ) const;
+  inline double                 get_fitness_function_parameter( void ) const;
+  
   /*----------------------------------------------- PARTICLES PROPERTIES */
   
   inline double get_number_of_particles( void ) const;
@@ -86,7 +92,6 @@ public:
   inline bool get_statistics( void ) const;
   inline bool get_extra_2D_statistics( void ) const;
   inline bool get_one_axis( void ) const;
-  inline bool get_weight_fitness( void ) const;
   inline bool get_no_noise( void ) const;
   inline bool get_isotropic_noise( void ) const;
   inline bool get_no_rotation( void ) const;
@@ -113,6 +118,11 @@ public:
   
   inline void set_number_of_dimensions( size_t number_of_dimensions );
   
+  /*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+  
+  inline void set_fitness_function_shape( fitness_function_shape shape );
+  inline void set_fitness_function_parameter( double parameter );
+  
   /*----------------------------------------------- PARTICLES PROPERTIES */
   
   inline void set_number_of_particles( double number_of_particles );
@@ -128,7 +138,6 @@ public:
   inline void set_statistics( bool statistics );
   inline void set_extra_2D_statistics( bool extra_2D_statistics );
   inline void set_one_axis( bool one_axis );
-  inline void set_weight_fitness( bool weight_fitness );
   inline void set_no_noise( bool no_noise );
   inline void set_isotropic_noise( bool isotropic_noise );
   inline void set_no_rotation( bool no_rotation );
@@ -169,6 +178,11 @@ protected:
   
   size_t _number_of_dimensions; /*!< Number of dimensions */
   
+  /*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+  
+  fitness_function_shape _fitness_function_shape;     /* Shape of the fitness function           */
+  double                 _fitness_function_parameter; /* Parameter value of the fitness function */
+  
   /*----------------------------------------------- PARTICLES PROPERTIES */
   
   double _number_of_particles; /*!< Number of particles */
@@ -181,14 +195,13 @@ protected:
   
   /*----------------------------------------------- VARIOUS */
   
-  bool _statistics;          /*!< Indicates if statistics must be saved                                 */
-  bool _extra_2D_statistics; /*!< Indicates if extra 2D statistics must be saved                        */
-  bool _one_axis;            /*!< Indicates if only one axis must be initialized                        */
-  bool _weight_fitness;      /*!< Indicates if the fitness must be weighted by the number of dimensions */
-  bool _no_noise;            /*!< No noise                                                              */
-  bool _isotropic_noise;     /*!< Isotropic noise                                                       */
-  bool _no_rotation;         /*!< No rotation                                                           */
-  bool _qagi;                /*!< Compute integrative fitness instead of instantaneous one              */
+  bool _statistics;          /*!< Indicates if statistics must be saved                    */
+  bool _extra_2D_statistics; /*!< Indicates if extra 2D statistics must be saved           */
+  bool _one_axis;            /*!< Indicates if only one axis must be initialized           */
+  bool _no_noise;            /*!< No noise                                                 */
+  bool _isotropic_noise;     /*!< Isotropic noise                                          */
+  bool _no_rotation;         /*!< No rotation                                              */
+  bool _qagi;                /*!< Compute integrative fitness instead of instantaneous one */
   
 };
 
@@ -278,6 +291,30 @@ inline size_t Parameters::get_shutoff_time( void ) const
 inline size_t Parameters::get_number_of_dimensions( void ) const
 {
   return _number_of_dimensions;
+}
+
+/*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+
+/**
+ * \brief    Get the fitness function shape
+ * \details  --
+ * \param    void
+ * \return   \e fitness_function_shape
+ */
+inline fitness_function_shape Parameters::get_fitness_function_shape( void ) const
+{
+  return _fitness_function_shape;
+}
+
+/**
+ * \brief    Get the fitness function parameter value
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Parameters::get_fitness_function_parameter( void ) const
+{
+  return _fitness_function_parameter;
 }
 
 /*----------------------------------------------- PARTICLES PROPERTIES */
@@ -393,17 +430,6 @@ inline bool Parameters::get_extra_2D_statistics( void ) const
 inline bool Parameters::get_one_axis( void ) const
 {
   return _one_axis;
-}
-
-/**
- * \brief    Get the weight fitness boolean
- * \details  --
- * \param    void
- * \return   \e bool
- */
-inline bool Parameters::get_weight_fitness( void ) const
-{
-  return _weight_fitness;
 }
 
 /**
@@ -529,6 +555,31 @@ inline void Parameters::set_number_of_dimensions( size_t number_of_dimensions )
   _number_of_dimensions = number_of_dimensions;
 }
 
+/*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+
+/**
+ * \brief    Set the fitness function shape
+ * \details  --
+ * \param    fitness_function_shape shape
+ * \return   \e void
+ */
+inline void Parameters::set_fitness_function_shape( fitness_function_shape shape )
+{
+  _fitness_function_shape = shape;
+}
+
+/**
+ * \brief    Set the fitness function parameter value
+ * \details  --
+ * \param    double parameter
+ * \return   \e void
+ */
+inline void Parameters::set_fitness_function_parameter( double parameter )
+{
+  assert(parameter > 0.0);
+  _fitness_function_parameter = parameter;
+}
+
 /*----------------------------------------------- PARTICLES PROPERTIES */
 
 /**
@@ -646,17 +697,6 @@ inline void Parameters::set_extra_2D_statistics( bool extra_2D_statistics )
 inline void Parameters::set_one_axis( bool one_axis )
 {
   _one_axis = one_axis;
-}
-
-/**
- * \brief    Set the weight fitness boolean
- * \details  --
- * \param    bool statistics
- * \return   \e void
- */
-inline void Parameters::set_weight_fitness( bool weight_fitness )
-{
-  _weight_fitness = weight_fitness;
 }
 
 /**

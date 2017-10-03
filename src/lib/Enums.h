@@ -1,11 +1,11 @@
 
 /**
- * \file      Macros.h
+ * \file      Enums.h
  * \authors   Charles Rocabert, Samuel Bernard
  * \date      21-02-2017
  * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Definition of macros
+ * \brief     Definition of enumerations
  */
 
 /***********************************************************************
@@ -25,14 +25,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __SigmaFGM__Macros__
-#define __SigmaFGM__Macros__
+#ifndef __SigmaFGM__Enums__
+#define __SigmaFGM__Enums__
 
 
-#define PI     3.14159265359
-#define EPSABS 0.0
-#define ESPREL 1e-12
-#define LIMIT  1000
+/**
+ * \brief   Shape of the fitness function
+ * \details THe fitness function can else be an exponential, a cauchy, a linear or a step function
+ */
+enum fitness_function_shape
+{
+  EXPONENTIAL = 0, /*!< Exponential function */
+  CAUCHY      = 1, /*!< Cauchy function      */
+  LINEAR      = 2, /*!< Linear function      */
+  STEP        = 3  /*!< Step function        */
+};
 
 
-#endif /* defined(__SigmaFGM__Macros__) */
+#endif /* defined(__SigmaFGM__Enums__) */

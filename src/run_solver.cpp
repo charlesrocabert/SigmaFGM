@@ -33,6 +33,7 @@
 #include <sys/stat.h>
 #include <assert.h>
 
+#include "./lib/Enums.h"
 #include "./lib/Parameters.h"
 #include "./lib/Solver.h"
 
@@ -226,6 +227,49 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
     }
     /* Mandatory */
+    else if (strcmp(argv[i], "-fitnessshape") == 0 || strcmp(argv[i], "--fitness-shape") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        if (strcmp(argv[i+1], "exponential") == 0 || strcmp(argv[i+1], "EXPONENTIAL") == 0)
+        {
+          parameters->set_fitness_function_shape(EXPONENTIAL);
+        }
+        else if (strcmp(argv[i+1], "cauchy") == 0 || strcmp(argv[i+1], "CAUCHY") == 0)
+        {
+          parameters->set_fitness_function_shape(CAUCHY);
+        }
+        else if (strcmp(argv[i+1], "linear") == 0 || strcmp(argv[i+1], "LINEAR") == 0)
+        {
+          parameters->set_fitness_function_shape(LINEAR);
+        }
+        else if (strcmp(argv[i+1], "step") == 0 || strcmp(argv[i+1], "STEP") == 0)
+        {
+          parameters->set_fitness_function_shape(STEP);
+        }
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-fitnessparameter") == 0 || strcmp(argv[i], "--fitness-parameter") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_fitness_function_parameter(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
     else if (strcmp(argv[i], "-nbparticles") == 0 || strcmp(argv[i], "--nb-particles") == 0)
     {
       if (i+1 == argc)
@@ -381,11 +425,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       parameters->set_one_axis(true);
     }
     /* Not mandatory */
-    else if (strcmp(argv[i], "-weightfitness") == 0 || strcmp(argv[i], "--weightfitness") == 0)
-    {
-      parameters->set_weight_fitness(true);
-    }
-    /* Not mandatory */
     else if (strcmp(argv[i], "-nonoise") == 0 || strcmp(argv[i], "--nonoise") == 0)
     {
       parameters->set_no_noise(true);
@@ -406,7 +445,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       parameters->set_qagi(true);
     }
   }
-  if (counter < 10)
+  if (counter < 12)
   {
     printf("You must provide all the mandatory arguments (see -h or --help). Exit.\n");
     exit(EXIT_SUCCESS);
@@ -458,6 +497,10 @@ void printUsage( void )
   std::cout << "        specify the prng seed (mandatory, random if 0)\n";
   std::cout << "  -nbdim, --nb-dimensions\n";
   std::cout << "        specify the number of dimensions (mandatory)\n";
+  std::cout << "  -fitnessshape, --fitness-shape\n";
+  std::cout << "        specify the shape of the fitness function (mandatory, exponential/cauchy/linear/step)\n";
+  std::cout << "  -fitnessparameter, --fitness-parameter\n";
+  std::cout << "        specify the parameter value of the fitness function (mandatory, > 0.0)\n";
   std::cout << "  -nbparticles, --nb-particles\n";
   std::cout << "        specify the number of particles (mandatory)\n";
   std::cout << "  -initmu, --initial-mu\n";
@@ -478,8 +521,6 @@ void printUsage( void )
   std::cout << "        Activate extra 2D statistics saving\n";
   std::cout << "  -oneaxis, --oneaxis\n";
   std::cout << "        Initialize only one axis\n";
-  std::cout << "  -weightfitness, --weightfitness\n";
-  std::cout << "        Weight the fitness by the number of dimensions\n";
   std::cout << "  -nonoise, --nonoise\n";
   std::cout << "        Individuals do not undergo noise\n";
   std::cout << "  -isotropicnoise, --isotropicnoise\n";
