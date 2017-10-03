@@ -23,8 +23,11 @@ import sys
 import math
 import time
 import subprocess
+import numpy as np
 
-### Load the list of strain names ###
+#################################
+# Load the list of strain names #
+#################################
 def load_strain_names():
 	strains = []
 	f = open("strain_names.txt", "r")
@@ -36,26 +39,34 @@ def load_strain_names():
 	f.close()
 	return strains
 
+####################
+# Merge replicates #
+####################
+def merge_replicates( strains, reps ):
+	f = open("interpolated/BY4743_1.txt", "r")
+	header = f.readline()
+	f.close()
+	for strain in strains:
+		f = open("interpolated/"+strain+"_merged.txt", "w")
+		f.write(header)
+		for rep in reps:
+			g = open("interpolated/"+strain+"_"+str(rep)+".txt", "r")
+			l = g.readline()
+			l = g.readline()
+			while l:
+				f.write(l)
+				l = g.readline()
+			g.close()
+		f.close()
+
 
 ##################
 #      MAIN      #
 ##################
 
 strains = load_strain_names()
-reps    = 5
-expes   = ["actin_biological", "conA_biological", "dapi_biological"]
+reps    = [1,2,3,4,5]
 
-os.system("rm -rf csv")
-os.mkdir("csv")
-
-for strain in strains:
-	for rep in range(1,reps+1):
-		for exp in expes:
-			filename = "raw_data/ex37SingleCell130219/"+strain+"_"+str(rep)+"/"+strain+"_"+str(rep)+"_"+exp+".xls"
-			print filename
-			os.system("/Applications/LibreOffice.app/Contents/MacOS/soffice --headless --convert-to csv --outdir csv/ "+filename) 
-			time.sleep(0.1)
-
-
-
+print "> Merge interpolated replicates"
+merge_replicates(strains, reps)
 

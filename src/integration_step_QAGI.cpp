@@ -82,13 +82,6 @@ int main( int argc, char const** argv )
   W(mu_vec, sigma, dim, result, error);
   delete[] mu_vec;
   mu_vec = NULL;
-  /*
-  std::stringstream filename;
-  filename << dim << "_" << mu << "_" << sigma << ".txt";
-  std::ofstream file(filename.str().c_str(), std::ios::out | std::ios::trunc);
-  file << result << " " << error << "\n";
-  file.close();
-  */
   std::cout << result << " " << error << "\n";
   
   return EXIT_SUCCESS;
@@ -247,7 +240,6 @@ void printHeader( void )
  */
 double gaussian_pdf( double x, double mu, double sigma )
 {
-  //return 1.0/(sigma*sqrt(2.0*PI))*exp(-0.5*((x-mu)/sigma)*((x-mu)/sigma));
   return gsl_ran_gaussian_pdf(x-mu, sigma);
 }
 
@@ -260,6 +252,23 @@ double gaussian_pdf( double x, double mu, double sigma )
 double w( double x )
 {
   return exp(-x*x/2);
+  //return 1.0/(1.0+x*x);
+  /*
+  double res = 1.0-fabs(x)*0.3333333;
+  if (res < 0.0)
+  {
+    res = 0.0;
+  }
+  return res;
+   */
+  /*
+  double res = 1e-10;
+  if (abs(x) <= 1.0)
+  {
+    res = 1.0;
+  }
+  return res;
+   */
 }
 
 /**
