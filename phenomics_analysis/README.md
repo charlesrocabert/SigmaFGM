@@ -3,7 +3,6 @@
 
 First, the execution of our scripts require some dependencies:
 * Python
-* LibreOffice
 * R software, with the R packages <code>corrplot</code> and <code>ellipse</code>
 
 The code should work properly on Unix and OSX. We do not provide the code for Windows.
