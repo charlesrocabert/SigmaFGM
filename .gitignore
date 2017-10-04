@@ -7,6 +7,5 @@ cmake/cmake_install.cmake
 cmake/Makefile
 cmake/Config.h
 example/**
-!example/run_solver.py
 !example/plot_data.R
 !example/plot2D.py
