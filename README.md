@@ -1,6 +1,6 @@
 # <img src="logo/logo.png" width="48"> &sigma;FGM
 
-&sigma;FGM is an extended Fisher's geometric model (FGM, Fisher 1932), accounting for evolvable phenotypic noise.
+&sigma;FGM is an extended version of Fisher's geometric model (FGM, Fisher 1932), accounting for evolvable phenotypic noise.
 
 ## License
 
