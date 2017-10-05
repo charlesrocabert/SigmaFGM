@@ -59,6 +59,5 @@ Binary executable files are in <code>build/bin</code> folder.
 Coming soon ...
 
 ## References
-
-Fisher, R. A. (1930). <em>The genetical theory of natural selection: a complete variorum edition</em>. Oxford University Press, Oxford (UK).
+* Fisher, R. A. (1930). <em>The genetical theory of natural selection: a complete variorum edition</em>. Oxford University Press, Oxford (UK).
 
