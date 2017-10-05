@@ -1,6 +1,6 @@
 # <img src="logo/logo.png" width="48"> &sigma;FGM
 
-&sigma;FGM is an extended version of Fisher's geometric model (FGM, Fisher 1932), accounting for evolvable phenotypic noise.
+&sigma;FGM is an extended version of Fisher's geometric model (FGM, Fisher 1930), accounting for evolvable phenotypic noise.
 
 ## License
 
@@ -58,4 +58,7 @@ Binary executable files are in <code>build/bin</code> folder.
 
 Coming soon ...
 
+## References
+
+Fisher, R. A. (1930). <em>The genetical theory of natural selection: a complete variorum edition</em>. Oxford University Press, Oxford (UK).
 
