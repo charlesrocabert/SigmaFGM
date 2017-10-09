@@ -35,20 +35,20 @@ echo "# You should have received a copy of the GNU General Public License"
 echo "# along with this program.  If not, see <http://www.gnu.org/licenses/>."
 echo "#**********************************************************************"
 
-#echo ""
-#echo "###### SCRIPT 1 ######"
-#echo ""
-#python generate_data.py
+echo ""
+echo "###### SCRIPT 1 ######"
+echo ""
+python generate_data.py
 
-#echo ""
-#echo "###### SCRIPT 2 ######"
-#echo ""
-#python estimate_intrastrain_data.py
+echo ""
+echo "###### SCRIPT 2 ######"
+echo ""
+python estimate_intrastrain_data.py
 
-#echo ""
-#echo "###### SCRIPT 3 ######"
-#echo ""
-#python merge_estimated_data.py
+echo ""
+echo "###### SCRIPT 3 ######"
+echo ""
+python merge_estimated_data.py
 
 echo ""
 echo "###### SCRIPT 4 ######"
