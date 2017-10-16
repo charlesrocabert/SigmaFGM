@@ -95,7 +95,7 @@ def rewrite_files( strain, reps, cell_ids ):
 
 strains = load_strain_names()
 reps    = [1,2,3,4,5]
-Dgroups = ["A1", "B"]
+Dgroups = ["A"]
 
 for strain in strains:
 	cell_ids = get_cell_ids(strain, reps, Dgroups)

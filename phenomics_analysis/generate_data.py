@@ -56,7 +56,7 @@ def generate_replicates( strain, reps ):
 		data = {}
 		for expe in expes:
 			filename = strain+"_"+str(rep)+"_"+expe+".csv"
-			f = open("csv-test/"+filename, "r")
+			f = open("csv/"+filename, "r")
 			l = f.readline().strip("\t\n").split("\t")
 			header = {}
 			count = 0
@@ -119,7 +119,7 @@ def merge_replicates( strain, reps ):
 	for rep in reps:
 		for expe in expes:
 			filename = strain+"_"+str(rep)+"_"+expe+".csv"
-			f = open("csv-test/"+filename, "r")
+			f = open("csv/"+filename, "r")
 			l = f.readline().strip("\t\n").split("\t")
 			header = {}
 			count = 0
@@ -328,8 +328,8 @@ os.system("rm -rf replicates")
 os.mkdir("replicates")
 os.system("rm -rf merged")
 os.mkdir("merged")
-#os.system("rm -rf interstrain")
-#os.mkdir("interstrain")
+os.system("rm -rf interstrain")
+os.mkdir("interstrain")
 
 print "> 2) Load raw data"
 for strain in strains:
@@ -337,8 +337,8 @@ for strain in strains:
 	generate_replicates(strain, reps)
 	merge_replicates(strain, reps)
 
-#print "> 3) Compute interstrain means"
-#compute_interstrain_means(strains)
+print "> 3) Compute interstrain means"
+compute_interstrain_means(strains)
 
 print "> 4) Center and scale data"
 print "  mean data ..."
