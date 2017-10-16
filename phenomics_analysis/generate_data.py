@@ -56,7 +56,7 @@ def generate_replicates( strain, reps ):
 		data = {}
 		for expe in expes:
 			filename = strain+"_"+str(rep)+"_"+expe+".csv"
-			f = open("csv/"+filename, "r")
+			f = open("csv-test/"+filename, "r")
 			l = f.readline().strip("\t\n").split("\t")
 			header = {}
 			count = 0
@@ -119,7 +119,7 @@ def merge_replicates( strain, reps ):
 	for rep in reps:
 		for expe in expes:
 			filename = strain+"_"+str(rep)+"_"+expe+".csv"
-			f = open("csv/"+filename, "r")
+			f = open("csv-test/"+filename, "r")
 			l = f.readline().strip("\t\n").split("\t")
 			header = {}
 			count = 0
@@ -252,7 +252,9 @@ def center_scale_interstrain_data():
 		l = l.strip("\n").split(" ")
 		line = l[0]
 		for i in range(1,len(l)):
-			val   = (float(l[i])-means[i-1])/sdevs[i-1]
+			val = 0.0
+			if sdevs[i-1] > 0.0:
+				val = (float(l[i])-means[i-1])/sdevs[i-1]
 			line += " "+str(val)
 		g.write(line+"\n")
 		l = f.readline()
@@ -282,7 +284,9 @@ def center_scale_intrastrain_data( strain, reps, means, sdevs ):
 				if l[i] == "NA":
 					line += "NA "
 				else:
-					val   = (float(l[i])-means[i])/sdevs[i]
+					val = 0.0
+					if sdevs[i] > 0.0:
+						val = (float(l[i])-means[i])/sdevs[i]
 					line += str(val)+" "
 			g.write(line.strip(" ")+"\n")
 			l = f.readline()
@@ -302,7 +306,9 @@ def center_scale_intrastrain_data( strain, reps, means, sdevs ):
 				if l[i] == "NA":
 					line += "NA "
 				else:
-					val   = (float(l[i])-means[i])/sdevs[i]
+					val = 0.0
+					if sdevs[i] > 0.0:
+						val = (float(l[i])-means[i])/sdevs[i]
 					line += str(val)+" "
 			g.write(line.strip(" ")+"\n")
 			l = f.readline()
@@ -322,8 +328,8 @@ os.system("rm -rf replicates")
 os.mkdir("replicates")
 os.system("rm -rf merged")
 os.mkdir("merged")
-os.system("rm -rf interstrain")
-os.mkdir("interstrain")
+#os.system("rm -rf interstrain")
+#os.mkdir("interstrain")
 
 print "> 2) Load raw data"
 for strain in strains:
@@ -331,8 +337,8 @@ for strain in strains:
 	generate_replicates(strain, reps)
 	merge_replicates(strain, reps)
 
-print "> 3) Compute interstrain means"
-compute_interstrain_means(strains)
+#print "> 3) Compute interstrain means"
+#compute_interstrain_means(strains)
 
 print "> 4) Center and scale data"
 print "  mean data ..."

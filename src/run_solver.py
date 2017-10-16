@@ -69,20 +69,20 @@ def run_solver( stabt, t, shutofffitness, shutofftime, seed, nbdim,
 
 if __name__ == '__main__':
 	STABILIZING_TIME  = 0
-	SIMULATION_TIME   = 10000
-	SHUTOFF_FITNESS   = 0.0
-	SHUTOFF_TIME      = 0
-	SEED              = 1234
-	NB_DIMENSIONS     = 1
-	FITNESS_SHAPE     = "step"
-	FITNESS_PARAMETER = 1.0
+	SIMULATION_TIME   = 0
+	SHUTOFF_FITNESS   = 0.9
+	SHUTOFF_TIME      = 20000
+	SEED              = 87693
+	NB_DIMENSIONS     = 10
+	FITNESS_SHAPE     = "exponential"
+	FITNESS_PARAMETER = 2.0
 	NB_PARTICLES      = 10000
-	INITIAL_MU        = 0.0
+	INITIAL_MU        = 4.0/math.sqrt(float(NB_DIMENSIONS))
 	INITIAL_SIGMA     = 1e-15
 	INITIAL_THETA     = 0.0
-	D_MU              = 1.0
-	D_SIGMA           = 0.01
-	D_THETA           = 0.01
+	D_MU              = 0.01/math.sqrt(float(NB_DIMENSIONS))
+	D_SIGMA           = 0.1/math.sqrt(float(NB_DIMENSIONS))
+	D_THETA           = 0.1/math.sqrt(float(NB_DIMENSIONS))
 	STATISTICS        = True
 	STATISTICS_2D     = False
 	ONE_AXIS          = False
