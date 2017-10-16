@@ -11,7 +11,8 @@ The code should work properly on Unix and OSX. We do not provide the code for Wi
 
 To reproduce our analysis on yeast data provided by Yvert et al. (2013), please follow the next few steps:
 
-* Download the git repository <code>SigmaFGM</code> (https://github.com/charlesrocabert/SigmaFGM/archive/master.zip)
+* Download the git repository <code>SigmaFGM</code> ((anonymized))
+* Dowload raw yeast data at http://sunlight.k.u-tokyo.ac.jp/wild37noise/index.html. You must convert <code>xls</code> files to <code>csv</code> format, and place the resulting files in the folder <code>SigmaFGM-master/phenomics_analysis/csv</code>
 * With your terminal, navigate to the folder <code>SigmaFGM-master/phenomics_analysis</code> using command <code>cd</code>
 * Simply run the bash script with this command:
 
