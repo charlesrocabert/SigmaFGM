@@ -12,7 +12,6 @@ You should have received a copy of the GNU General Public License along with thi
 
 ## Authors
 
-### 1. Original authors
 &sigma;FGM is being developed by Charles Rocabert, Samuel Bernard, Carole Knibbe and Guillaume Beslon.
 
 ## Installation instructions
