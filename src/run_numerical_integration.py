@@ -48,11 +48,11 @@ NB_DIM     = 1
 
 MIN_MU     = 0.0
 MAX_MU     = 10.0
-STEP_MU    = 0.05
+STEP_MU    = 0.1
 
 MIN_SIGMA  = 0.0
 MAX_SIGMA  = 10.0
-STEP_SIGMA = 0.05
+STEP_SIGMA = 0.1
 
 
 f = open("integration_output.txt", "w")

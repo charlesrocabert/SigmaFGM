@@ -82,7 +82,7 @@ int main( int argc, char const** argv )
   W(mu_vec, sigma, dim, result, error);
   delete[] mu_vec;
   mu_vec = NULL;
-  std::cout << result << " " << error << "\n";
+  std::cout << log(result) << " " << error << "\n";
   
   return EXIT_SUCCESS;
 }
@@ -251,7 +251,7 @@ double gaussian_pdf( double x, double mu, double sigma )
  */
 double w( double x )
 {
-  return exp(-x*x/2);
+  return exp(-x*x/2)*0.9+0.1;
   //return 1.0/(1.0+x*x);
   /*
   double res = 1.0-fabs(x)*0.3333333;
