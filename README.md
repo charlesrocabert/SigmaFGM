@@ -1,6 +1,6 @@
 # <img src="logo/logo.png" width="48"> &sigma;FGM
 
-&sigma;FGM is a numerical solver for Fisher's geometric model (FGM, Fisher 1930) with for evolvable phenotypic noise.
+&sigma;FGM is a numerical solver for Fisher's geometric model (FGM, Fisher 1930), with evolvable phenotypic noise.
 
 ## License
 
