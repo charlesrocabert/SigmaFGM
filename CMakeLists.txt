@@ -70,11 +70,8 @@ set(EXECUTABLE_OUTPUT_PATH ../build/bin)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Define the executables                                                           #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-set(RUN_SOLVER_EXECUTABLE run_solver)
-add_executable(${RUN_SOLVER_EXECUTABLE} src/run_solver.cpp)
-
-set(QAGI_EXECUTABLE integration_step_QAGI)
-add_executable(${QAGI_EXECUTABLE} src/integration_step_QAGI.cpp)
+set(RUN_EXECUTABLE SigmaFGM_run)
+add_executable(${RUN_SOLVER_EXECUTABLE} src/SigmaFGM_run.cpp)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -83,22 +80,19 @@ add_executable(${QAGI_EXECUTABLE} src/integration_step_QAGI.cpp)
 find_package(GSL REQUIRED)
 if(GSL_FOUND)
   include_directories(${GSL_INCLUDE_DIR})
-  target_link_libraries(${RUN_SOLVER_EXECUTABLE} ${GSL_LIBRARIES})
-  target_link_libraries(${QAGI_EXECUTABLE} ${GSL_LIBRARIES})
+  target_link_libraries(${RUN_EXECUTABLE} ${GSL_LIBRARIES})
 endif(GSL_FOUND)
 
 find_package(TBB REQUIRED)
 if(TBB_FOUND)
   include_directories(${TBB_INCLUDE_DIR})
-  target_link_libraries(${RUN_SOLVER_EXECUTABLE} ${TBB_LIBRARIES})
-  target_link_libraries(${QAGI_EXECUTABLE} ${TBB_LIBRARIES})
+  target_link_libraries(${RUN_EXECUTABLE} ${TBB_LIBRARIES})
 endif(TBB_FOUND)
 
 find_package(ZLIB REQUIRED)
 if(ZLIB_FOUND)
   include_directories(${ZLIB_INCLUDE_DIR})
-  target_link_libraries(${RUN_SOLVER_EXECUTABLE} ${ZLIB_LIBRARIES})
-  target_link_libraries(${QAGI_EXECUTABLE} ${ZLIB_LIBRARIES})
+  target_link_libraries(${RUN_EXECUTABLE} ${ZLIB_LIBRARIES})
 endif(ZLIB_FOUND)
 
 
@@ -123,8 +117,7 @@ add_library(
 
 target_link_libraries(SigmaFGM z tbb gsl gslcblas)
 
-target_link_libraries(${RUN_SOLVER_EXECUTABLE} SigmaFGM)
-target_link_libraries(${QAGI_EXECUTABLE} SigmaFGM)
+target_link_libraries(${RUN_EXECUTABLE} SigmaFGM)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
