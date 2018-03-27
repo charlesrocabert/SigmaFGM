@@ -1,6 +1,6 @@
 # <img src="logo/logo.png" width="48"> &sigma;FGM
 
-&sigma;FGM is an extended version of Fisher's geometric model (FGM, Fisher 1930), accounting for evolvable phenotypic noise.
+&sigma;FGM is a numerical solver for Fisher's geometric model (FGM, Fisher 1930) with for evolvable phenotypic noise.
 
 ## License
 
@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License along with thi
 ## Authors
 
 ### 1. Original authors
-&sigma;FGM is developed by Charles Rocabert and Samuel Bernard.
+&sigma;FGM is being developed by Charles Rocabert and Samuel Bernard.
 
 ### 2. Major contributors
 Carole Knibbe, Guillaume Beslon.
