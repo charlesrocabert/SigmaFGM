@@ -268,41 +268,43 @@ void Individual::mutate( void )
   /**************************/
   /* 1) Mutate mu vector    */
   /**************************/
-  if (_delta_mu > 0.0)
+  if (_prng->uniform() < _m_mu)
   {
     for (size_t i = 0; i < _n; i++)
     {
-      gsl_vector_set(_mu, i, gsl_vector_get(_mu, i)+_prng->gaussian(0.0, _delta_mu));
+      gsl_vector_set(_mu, i, gsl_vector_get(_mu, i)+_prng->gaussian(0.0, _s_mu));
     }
+    _phenotype_is_built = false;
   }
   
   /**************************/
   /* 2) Mutate sigma vector */
   /**************************/
-  if (!_no_noise && _delta_sigma > 0.0)
+  if (_noise_type != NONE && _prng->uniform() < _m_sigma)
   {
-    if (!_isotropic_noise)
+    if (_noise_type == ISOTROPIC)
+    {
+      double new_sigma = fabs(gsl_vector_get(_sigma, 0)+_prng->gaussian(0.0, _s_sigma));
+      gsl_vector_set_all(_sigma, new_sigma);
+    }
+    else if (_noise_type == UNCORRELATED || _noise_type == FULL)
     {
       for (size_t i = 0; i < _n; i++)
       {
-        gsl_vector_set(_sigma, i, fabs(gsl_vector_get(_sigma, i)+_prng->gaussian(0.0, _delta_sigma)));
+        gsl_vector_set(_sigma, i, fabs(gsl_vector_get(_sigma, i)+_prng->gaussian(0.0, _s_sigma)));
       }
     }
-    else
-    {
-      double new_sigma = fabs(gsl_vector_get(_sigma, 0)+_prng->gaussian(0.0, _delta_sigma));
-      gsl_vector_set_all(_sigma, new_sigma);
-    }
+    _phenotype_is_built = false;
   }
   
   /**************************/
   /* 3) Mutate theta vector */
   /**************************/
-  if (_n > 1 && !_no_noise && !_isotropic_noise && !_no_rotation && _delta_theta > 0.0)
+  if (_n > 1 && _noise_type == FULL && _prng->uniform() < _m_theta)
   {
     for (size_t i = 0; i < _n*(_n-1)/2; i++)
     {
-      gsl_vector_set(_theta, i, gsl_vector_get(_theta, i)+_prng->gaussian(0.0, _delta_theta));
+      gsl_vector_set(_theta, i, gsl_vector_get(_theta, i)+_prng->gaussian(0.0, _s_theta));
     }
   }
   _phenotype_is_built = false;
@@ -314,11 +316,11 @@ void Individual::mutate( void )
  * \param    void
  * \return   \e void
  */
-void Particle::build_phenotype( void )
+void Individual::build_phenotype( void )
 {
   if (!_phenotype_is_built)
   {
-    if (!_no_noise)
+    if (_noise_type != NONE)
     {
       build_Sigma();
       compute_dot_product();
@@ -331,75 +333,30 @@ void Particle::build_phenotype( void )
 }
 
 /**
- * \brief    Compute the instantaneous fitness
+ * \brief    Compute the fitness
  * \details  --
  * \param    gsl_vector* z_opt
- * \param    fitness_function_shape shape
- * \param    double parameter
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
  * \return   \e void
  */
-void Particle::compute_fitness( gsl_vector* z_opt, fitness_function_shape shape, double parameter )
+void Individual::compute_fitness( gsl_vector* z_opt, double alpha, double beta, double Q )
 {
-  _dmu = 0.0;
-  _dp  = 0.0;
+  _dg = 0.0;
+  _dp = 0.0;
   for (size_t i = 0; i < _n; i++)
   {
     double mu    = gsl_vector_get(_mu, i);
     double z     = gsl_vector_get(_z, i);
     double zopt  = gsl_vector_get(z_opt, i);
-    _dmu        += (mu-zopt)*(mu-zopt);
+    _dg         += (mu-zopt)*(mu-zopt);
     _dp         += (z-zopt)*(z-zopt);
   }
-  _dmu = sqrt(_dmu);
-  _dp  = sqrt(_dp);
-  if (shape == EXPONENTIAL)
-  {
-    _wmu = exp(-_dmu*_dmu/2.0);
-    _wp  = exp(-_dp*_dp/2.0);
-  }
-  else if (shape == CAUCHY)
-  {
-    _wmu = 1.0/(1.0+_dmu*_dmu);
-    _wp  = 1.0/(1.0+_dp*_dp);
-  }
-  else if (shape == LINEAR)
-  {
-    _wmu = 1.0-_dmu/parameter;
-    _wmu = (_wmu > 0.0 ? _wmu : 1e-10);
-    _wp  = 1.0-_dp/parameter;
-    _wp  = (_wp > 0.0 ? _wp : 1e-10);
-  }
-  else if (shape == STEP)
-  {
-    _wmu = (_dmu < parameter ? 1.0 : 1e-10);
-    _wp  = (_dp < parameter ? 1.0 : 1e-10);
-  }
-}
-
-/**
- * \brief    Compute the phenotype distribution fitness
- * \details  --
- * \param    void
- * \return   \e void
- */
-void Particle::compute_fitness_QAGI( void )
-{
-  if (_n > 1)
-  {
-    printf("Error in Particle::compute_fitness_QAGI(): this method is only available in 1D. Exit.\n");
-    exit(EXIT_FAILURE);
-  }
-  _dmu = 0.0;
-  _dp  = 0.0;
-  _dmu += gsl_vector_get(_mu, 0)*gsl_vector_get(_mu, 0);
-  _dp  += gsl_vector_get(_z, 0)*gsl_vector_get(_z, 0);
-  _dmu = sqrt(_dmu);
-  _dp  = sqrt(_dp);
-  _wmu = exp(-_dmu*_dmu/2.0);
-  double mu_vec[1];
-  mu_vec[0] = gsl_vector_get(_mu, 0);
-  double error;
-  W(mu_vec, gsl_vector_get(_sigma, 0), _n, _wp, error);
+  _dg = sqrt(_dg);
+  _dp = sqrt(_dp);
+  _wp = exp(-(1.0-beta)*alpha*pow(_dg, Q)+beta);
+  _wp = exp(-(1.0-beta)*alpha*pow(_dp, Q)+beta);
 }
 
 /*----------------------------
@@ -414,7 +371,7 @@ void Particle::compute_fitness_QAGI( void )
  * \param    double theta
  * \return   \e void
  */
-void Particle::rotate( gsl_matrix* m, size_t a, size_t b, double theta )
+void Individual::rotate( gsl_matrix* m, size_t a, size_t b, double theta )
 {
   gsl_matrix* newm = gsl_matrix_alloc(_n, _n);
   gsl_matrix_memcpy(newm, m);
@@ -434,7 +391,7 @@ void Particle::rotate( gsl_matrix* m, size_t a, size_t b, double theta )
  * \param    void
  * \return   \e void
  */
-void Particle::build_Sigma( void )
+void Individual::build_Sigma( void )
 {
   /*****************************************/
   /* 1) Create eigenvectors matrix         */
@@ -447,7 +404,7 @@ void Particle::build_Sigma( void )
   /*    apply the n(n-1)/2 rotations to    */
   /*    the eigenvectors                   */
   /*****************************************/
-  if (_n > 1 && !_isotropic_noise && !_no_rotation)
+  if (_n > 1 && _noise_type == FULL)
   {
     size_t counter = 0;
     for (size_t a = 0; a < _n; a++)
@@ -514,7 +471,7 @@ void Particle::build_Sigma( void )
  * \param    void
  * \return   \e void
  */
-void Particle::compute_dot_product( void )
+void Individual::compute_dot_product( void )
 {
   _max_dot_product = 0.0;
   gsl_vector* d    = gsl_vector_alloc(_n);
@@ -537,7 +494,7 @@ void Particle::compute_dot_product( void )
  * \param    void
  * \return   \e void
  */
-void Particle::Cholesky_decomposition( void )
+void Individual::Cholesky_decomposition( void )
 {
   gsl_matrix_free(_Cholesky);
   _Cholesky = NULL;
@@ -553,9 +510,9 @@ void Particle::Cholesky_decomposition( void )
  * \param    void
  * \return   \e void
  */
-void Particle::draw_z( void )
+void Individual::draw_z( void )
 {
-  if (_no_noise)
+  if (_noise_type == NONE)
   {
     /* Copy mu vector in z vector */
     gsl_vector_memcpy(_z, _mu);
@@ -580,7 +537,7 @@ void Particle::draw_z( void )
  * \param    void
  * \return   \e void
  */
-void Particle::clear_memory( void )
+void Individual::clear_memory( void )
 {
   gsl_matrix_free(_Sigma);
   _Sigma = NULL;
