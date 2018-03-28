@@ -1,15 +1,16 @@
 
 /**
- * \file      Particle.h
- * \authors   Charles Rocabert, Samuel Bernard
+ * \file      Individual.h
+ * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Particle class declaration
+ * \brief     Individual class declaration
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard
+ * Copyright (C) 2016-2018
+ * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +26,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __SigmaFGM__Particle__
-#define __SigmaFGM__Particle__
+#ifndef __SigmaFGM__Individual__
+#define __SigmaFGM__Individual__
 
 #include <iostream>
 #include <cmath>
@@ -44,7 +45,7 @@
 #include "Prng.h"
 
 
-class Particle
+class Individual
 {
   
 public:
@@ -52,41 +53,52 @@ public:
   /*----------------------------
    * CONSTRUCTORS
    *----------------------------*/
-  Particle( void ) = delete;
-  Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, double delta_theta, double mu_init, double sigma_init, double theta_init, bool one_axis, bool no_noise, bool isotropic_noise, bool no_rotation );
-  Particle( const Particle& particle );
+  Individual( void ) = delete;
+  Individual( Prng* prng, size_t n, double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type );
+  Individual( const Individual& individual );
   
   /*----------------------------
    * DESTRUCTORS
    *----------------------------*/
-  ~Particle( void );
+  ~Individual( void );
   
   /*----------------------------
    * GETTERS
    *----------------------------*/
+  
+  /*----------------------------------------------- VARIABLES */
+  
   inline double get_mu( size_t i ) const;
   inline double get_sigma( size_t i ) const;
   inline double get_theta( size_t i ) const;
-  inline double get_dmu( void ) const;
+  inline double get_dg( void ) const;
   inline double get_dp( void ) const;
-  inline double get_wmu( void ) const;
+  inline double get_wg( void ) const;
   inline double get_wp( void ) const;
+  
+  /*----------------------------------------------- MAPPING PROPERTIES */
+  
   inline double get_max_Sigma_eigenvalue( void ) const;
   inline double get_max_Sigma_contribution( void ) const;
   inline double get_max_dot_product( void ) const;
   
+  /*----------------------------------------------- MUTATIONS */
+  
+  inline double get_r_mu( void ) const;
+  inline double get_r_sigma( void ) const;
+  inline double get_r_theta( void ) const;
+  
   /*----------------------------
    * SETTERS
    *----------------------------*/
-  Particle& operator=(const Particle&) = delete;
+  Individual& operator=(const Individual&) = delete;
   
   /*----------------------------
    * PUBLIC METHODS
    *----------------------------*/
   void jump( void );
   void build_phenotype( void );
-  void compute_fitness( gsl_vector* z_opt, fitness_function_shape shape, double parameter );
-  void compute_fitness_QAGI( void );
+  void compute_fitness( gsl_vector* z_opt, double alpha, double beta, double Q );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES
@@ -104,26 +116,21 @@ protected:
   void draw_z( void );
   void clear_memory( void );
   
-  static double gaussian_pdf( double x, double mu, double sigma );
-  static double w( double x );
-  static double f( double x, void* params );
-  void          QAGI( double* res, double mu, double sigma, gsl_integration_workspace* workspace, gsl_function* F );
-  void          W( double* mu, double sigma, size_t n, double& result, double& error );
-  
   /*----------------------------
    * PROTECTED ATTRIBUTES
    *----------------------------*/
   
   /*----------------------------------------------- PARAMETERS */
   
-  Prng*  _prng;            /*!< Pseudorandom numbers generator         */
-  size_t _n;               /*!< Number of dimensions                   */
-  double _delta_mu;        /*!< Mu values mutation size                */
-  double _delta_sigma;     /*!< Sigma values mutation size             */
-  double _delta_theta;     /*!< Theta values mutation size             */
-  bool   _no_noise;        /*!< Indicates if the noise must be applied */
-  bool   _isotropic_noise; /*!< Indicates if the noise is isotropic    */
-  bool   _no_rotation;     /*!< Indicates if rotations must be applied */
+  Prng*         _prng;       /*!< Pseudorandom numbers generator  */
+  int           _n;          /*!< Number of dimensions            */
+  double        _m_mu;       /*!< Mu mutation rate                */
+  double        _m_sigma;    /*!< Sigma mutation rate             */
+  double        _m_theta;    /*!< Theta mutation rate             */
+  double        _s_mu;       /*!< Mu mutation size                */
+  double        _s_sigma;    /*!< Sigma mutation size             */
+  double        _s_theta;    /*!< Theta mutation size             */
+  type_of_noise _noise_type; /*!< Phenotypic noise properties     */
   
   /*----------------------------------------------- VARIABLES */
   
@@ -133,18 +140,25 @@ protected:
   gsl_matrix* _Sigma;    /*!< Co-variance matrix            */
   gsl_matrix* _Cholesky; /*!< Cholesky decomposition matrix */
   gsl_vector* _z;        /*!< Instantaneous phenotype       */
-  double      _dmu;      /*!< Mean distance                 */
-  double      _dp;       /*!< Instantaneous distance        */
-  double      _wmu;      /*!< Mean fitness                  */
-  double      _wp;       /*!< Instantaneous fitness         */
+  double      _dg;       /*!< Euclidean distance d(mu)      */
+  double      _dp;       /*!< Euclidean distance d(z)       */
+  double      _wg;       /*!< Fitness w(mu)                 */
+  double      _wp;       /*!< Fitness w(z)                  */
   
-  /*----------------------------------------------- OTHER PARAMETERS */
+  /*----------------------------------------------- MAPPING PROPERTIES */
   
   bool        _phenotype_is_built;     /*!< Indicates if the phenotype is built                             */
   gsl_vector* _max_Sigma_eigenvector;  /*!< Eigen vector corresponding to the maximum variance of Sigma     */
   double      _max_Sigma_eigenvalue;   /*!< Eigen value corresponding to the maximum variance of Sigma      */
   double      _max_Sigma_contribution; /*!< Eigen value contribution to the total variance                  */
   double      _max_dot_product;        /*!< Dot product of maximum Sigma eigen vector and optimum direction */
+  
+  /*----------------------------------------------- MUTATIONS */
+  
+  double _r_mu;    /*!< Euclidean size of Mu mutation    */
+  double _r_sigma; /*!< Euclidean size of Sigma mutation */
+  double _r_theta; /*!< Euclidean size of Theta mutation */
+  
 };
 
 
@@ -152,13 +166,15 @@ protected:
  * GETTERS
  *----------------------------*/
 
+/*----------------------------------------------- VARIABLES */
+
 /**
  * \brief    Get mu value at position i
  * \details  --
  * \param    size_t i
  * \return   \e double
  */
-inline double Particle::get_mu( size_t i ) const
+inline double Individual::get_mu( size_t i ) const
 {
   assert(i < _n);
   return gsl_vector_get(_mu, i);
@@ -170,7 +186,7 @@ inline double Particle::get_mu( size_t i ) const
  * \param    size_t i
  * \return   \e double
  */
-inline double Particle::get_sigma( size_t i ) const
+inline double Individual::get_sigma( size_t i ) const
 {
   assert(i < _n);
   return gsl_vector_get(_sigma, i);
@@ -182,55 +198,57 @@ inline double Particle::get_sigma( size_t i ) const
  * \param    size_t i
  * \return   \e double
  */
-inline double Particle::get_theta( size_t i ) const
+inline double Individual::get_theta( size_t i ) const
 {
   assert(i < _n*(_n-1)/2);
   return gsl_vector_get(_theta, i);
 }
 
 /**
- * \brief    Get the mean distance dmu
+ * \brief    Get the euclidean distance d(mu)
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Particle::get_dmu( void ) const
+inline double Individual::get_dg( void ) const
 {
-  return _dmu;
+  return _dg;
 }
 
 /**
- * \brief    Get the instantaneous distance dp
+ * \brief    Get the euclidean distance d(z)
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Particle::get_dp( void ) const
+inline double Individual::get_dp( void ) const
 {
   return _dp;
 }
 
 /**
- * \brief    Get the mean fitness wmu
+ * \brief    Get the fitness w(mu)
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Particle::get_wmu( void ) const
+inline double Individual::get_wg( void ) const
 {
-  return _wmu;
+  return _wg;
 }
 
 /**
- * \brief    Get the instantaneous fitness wp
+ * \brief    Get the fitness w(z)
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Particle::get_wp( void ) const
+inline double Individual::get_wp( void ) const
 {
   return _wp;
 }
+
+/*----------------------------------------------- MAPPING PROPERTIES */
 
 /**
  * \brief    Get the maximum eigen value of Sigma
@@ -238,7 +256,7 @@ inline double Particle::get_wp( void ) const
  * \param    void
  * \return   \e double
  */
-inline double Particle::get_max_Sigma_eigenvalue( void ) const
+inline double Individual::get_max_Sigma_eigenvalue( void ) const
 {
   return _max_Sigma_eigenvalue;
 }
@@ -249,7 +267,7 @@ inline double Particle::get_max_Sigma_eigenvalue( void ) const
  * \param    void
  * \return   \e double
  */
-inline double Particle::get_max_Sigma_contribution( void ) const
+inline double Individual::get_max_Sigma_contribution( void ) const
 {
   return _max_Sigma_contribution;
 }
@@ -260,9 +278,44 @@ inline double Particle::get_max_Sigma_contribution( void ) const
  * \param    void
  * \return   \e double
  */
-inline double Particle::get_max_dot_product( void ) const
+inline double Individual::get_max_dot_product( void ) const
 {
   return _max_dot_product;
+}
+
+/*----------------------------------------------- MUTATIONS */
+
+/**
+ * \brief    Get the euclidean size of Mu mutation
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Individual::get_r_mu( void ) const
+{
+  return _r_mu;
+}
+
+/**
+ * \brief    Get the euclidean size of Sigma mutation
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Individual::get_r_sigma( void ) const
+{
+  return _r_sigma;
+}
+
+/**
+ * \brief    Get the euclidean size of Theta mutation
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Individual::get_r_theta( void ) const
+{
+  return _r_theta;
 }
 
 /*----------------------------
@@ -270,4 +323,4 @@ inline double Particle::get_max_dot_product( void ) const
  *----------------------------*/
 
 
-#endif /* defined(__SigmaFGM__Particle__) */
+#endif /* defined(__SigmaFGM__Individual__) */

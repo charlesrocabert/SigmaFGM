@@ -103,16 +103,16 @@ add_library(
   SigmaFGM
   src/lib/Enums.h
   src/lib/Macros.h
+  src/lib/Prng.cpp
+  src/lib/Prng.h
   src/lib/Parameters.cpp
   src/lib/Parameters.h
-  src/lib/Particle.cpp
-  src/lib/Particle.h
+  src/lib/Individual.cpp
+  src/lib/Individual.h
   src/lib/Statistics.cpp
   src/lib/Statistics.h
   src/lib/Solver.cpp
   src/lib/Solver.h
-  src/lib/Prng.cpp
-  src/lib/Prng.h
 )
 
 target_link_libraries(SigmaFGM z tbb gsl gslcblas)

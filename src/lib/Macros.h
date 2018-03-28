@@ -30,10 +30,7 @@
 #define __SigmaFGM__Macros__
 
 
-#define PI     3.14159265359
-#define EPSABS 0.0
-#define ESPREL 1e-12
-#define LIMIT  1000
+
 
 
 #endif /* defined(__SigmaFGM__Macros__) */
