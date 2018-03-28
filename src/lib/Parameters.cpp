@@ -1,15 +1,16 @@
 
 /**
  * \file      Parameters.cpp
- * \authors   Charles Rocabert, Samuel Bernard
+ * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Parameters class definition
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard
+ * Copyright (C) 2016-2018
+ * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,41 +46,42 @@ Parameters::Parameters( void )
   _prng = new Prng();
   _seed = 0;
   
-  /*----------------------------------------------- SOLVER PROPERTIES */
+  /*----------------------------------------------- SIMULATION TIME */
   
   _stabilizing_time = 0;
-  _time             = 0;
+  _simulation_time  = 0;
   _shutoff_fitness  = 0.0;
   _shutoff_time     = 0;
   
-  /*----------------------------------------------- PHENOTYPIC SPACE PROPERTIES */
+  /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
   
   _number_of_dimensions = 0;
   
-  /*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+  /*----------------------------------------------- FITNESS FUNCTION */
   
-  _fitness_function_shape     = EXPONENTIAL;
-  _fitness_function_parameter = 2.0;
+  _alpha = 0.5;
+  _beta  = 0.0;
+  _Q     = 2.0;
   
-  /*----------------------------------------------- PARTICLES PROPERTIES */
+  /*----------------------------------------------- POPULATION */
   
-  _number_of_particles = 0.0;
-  _initial_mu          = 0.0;
-  _initial_sigma       = 0.0;
-  _initial_theta       = 0.0;
-  _delta_mu            = 0.0;
-  _delta_sigma         = 0.0;
-  _delta_theta         = 0.0;
+  _population_size = 0.0;
+  _initial_mu      = 0.0;
+  _initial_sigma   = 0.0;
+  _initial_theta   = 0.0;
   
-  /*----------------------------------------------- VARIOUS */
+  /*----------------------------------------------- MUTATIONS */
   
-  _statistics          = false;
-  _extra_2D_statistics = false;
-  _one_axis            = false;
-  _no_noise            = false;
-  _isotropic_noise     = false;
-  _no_rotation         = false;
-  _qagi                = false;
+  _m_mu    = 0.0;
+  _m_sigma = 0.0;
+  _m_theta = 0.0;
+  _s_mu    = 0.0;
+  _s_sigma = 0.0;
+  _s_theta = 0.0;
+  
+  /*----------------------------------------------- NOISE PROPERTIES */
+  
+  _noise_type = NONE;
 }
 
 /*----------------------------
@@ -111,42 +113,29 @@ Parameters::~Parameters( void )
 void Parameters::print_parameters( void )
 {
   std::cout << "### Parameters ########################\n";
-  std::cout << "stabilizing time           " << _stabilizing_time << "\n";
-  std::cout << "time                       " << _time << "\n";
-  std::cout << "shutoff fitness            " << _shutoff_fitness << "\n";
-  std::cout << "shutoff time               " << _shutoff_time << "\n";
-  std::cout << "seed                       " << _seed << "\n";
-  std::cout << "dimensions                 " << _number_of_dimensions << "\n";
-  if (_fitness_function_shape == EXPONENTIAL)
-  {
-    std::cout << "fitness function shape     EXPONENTIAL\n";
-  }
-  else if (_fitness_function_shape == CAUCHY)
-  {
-    std::cout << "fitness function shape     CAUCHY\n";
-  }
-  else if (_fitness_function_shape == LINEAR)
-  {
-    std::cout << "fitness function shape     LINEAR\n";
-  }
-  else if (_fitness_function_shape == STEP)
-  {
-    std::cout << "fitness function shape     STEP\n";
-  }
-  std::cout << "fitness function parameter " << _fitness_function_parameter << "\n";
-  std::cout << "number of particles        " << _number_of_particles << "\n";
-  std::cout << "initial mu                 " << _initial_mu << "\n";
-  std::cout << "initial sigma              " << _initial_sigma << "\n";
-  std::cout << "initial theta              " << _initial_theta << "\n";
-  std::cout << "delta mu                   " << _delta_mu << "\n";
-  std::cout << "delta sigma                " << _delta_sigma << "\n";
-  std::cout << "delta theta                " << _delta_theta << "\n";
-  std::cout << "statistics                 " << _statistics << "\n";
-  std::cout << "extra 2D statistics        " << _extra_2D_statistics << "\n";
-  std::cout << "one axis                   " << _one_axis << "\n";
-  std::cout << "no noise                   " << _no_noise << "\n";
-  std::cout << "isotropic noise            " << _isotropic_noise << "\n";
-  std::cout << "no rotation                " << _no_rotation << "\n";
-  std::cout << "qagi                       " << _qagi << "\n";
+  std::cout << "seed              " << _seed << "\n";
+  std::cout << "stabilizing time  " << _stabilizing_time << "\n";
+  std::cout << "simulation time   " << _simulation_time << "\n";
+  std::cout << "shutoff fitness   " << _shutoff_fitness << "\n";
+  std::cout << "shutoff time      " << _shutoff_time << "\n";
+  std::cout << "dimensions        " << _number_of_dimensions << "\n";
+  std::cout << "alpha             " << _alpha << "\n";
+  std::cout << "beta              " << _beta << "\n";
+  std::cout << "Q                 " << _Q << "\n";
+  std::cout << "population size   " << _population_size << "\n";
+  std::cout << "initial mu        " << _initial_mu << "\n";
+  std::cout << "initial sigma     " << _initial_sigma << "\n";
+  std::cout << "initial theta     " << _initial_theta << "\n";
+  std::cout << "mu mut rate       " << _m_mu << "\n";
+  std::cout << "sigma mut rate    " << _m_sigma << "\n";
+  std::cout << "theta mut rate    " << _m_theta << "\n";
+  std::cout << "mu mut size       " << _s_mu << "\n";
+  std::cout << "sigma mut size    " << _s_sigma << "\n";
+  std::cout << "theta mut size    " << _s_theta << "\n";
+  if (_noise_type == NONE) std::cout << "noise type    NONE\n";
+  else if (_noise_type == ISOTROPIC) std::cout << "noise type    ISOTROPIC\n";
+  else if (_noise_type == UNCORRELATED) std::cout << "noise type    UNCORRELATED\n";
+  else if (_noise_type == FULL) std::cout << "noise type    FULL\n";
+  else if (_noise_type == OPTIMAL) std::cout << "noise type    OPTIMAL\n";
   std::cout << "#######################################\n";
 }

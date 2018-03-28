@@ -71,7 +71,7 @@ set(EXECUTABLE_OUTPUT_PATH ../build/bin)
 # Define the executables                                                           #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 set(RUN_EXECUTABLE SigmaFGM_run)
-add_executable(${RUN_SOLVER_EXECUTABLE} src/SigmaFGM_run.cpp)
+add_executable(${RUN_EXECUTABLE} src/SigmaFGM_run.cpp)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

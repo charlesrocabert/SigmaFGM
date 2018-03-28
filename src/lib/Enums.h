@@ -1,15 +1,16 @@
 
 /**
  * \file      Enums.h
- * \authors   Charles Rocabert, Samuel Bernard
+ * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      21-02-2017
- * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Definition of enumerations
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard
+ * Copyright (C) 2016-2018
+ * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,15 +31,16 @@
 
 
 /**
- * \brief   Shape of the fitness function
- * \details THe fitness function can else be an exponential, a cauchy, a linear or a step function
+ * \brief   Type of phenotypic noise
+ * \details --
  */
-enum fitness_function_shape
+enum type_of_noise
 {
-  EXPONENTIAL = 0, /*!< Exponential function */
-  CAUCHY      = 1, /*!< Cauchy function      */
-  LINEAR      = 2, /*!< Linear function      */
-  STEP        = 3  /*!< Step function        */
+  NONE         = 0, /*!< No phenotypic noise (classical FGM case) */
+  ISOTROPIC    = 1, /*!< Isotropic noise                          */
+  UNCORRELATED = 2, /*!< Anisotropic and uncorrelated noise       */
+  FULL         = 3, /*!< Fully evolvable noise                    */
+  OPTIMAL      = 4  /*!< Optimally shaped noise (based on maths)  */
 };
 
 

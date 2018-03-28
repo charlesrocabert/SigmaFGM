@@ -1,15 +1,16 @@
 
 /**
  * \file      Parameters.h
- * \authors   Charles Rocabert, Samuel Bernard
+ * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Parameters class declaration
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard
+ * Copyright (C) 2016-2018
+ * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +33,7 @@
 #include <vector>
 #include <assert.h>
 
+#include "Macros.h"
 #include "Enums.h"
 #include "Prng.h"
 
@@ -59,43 +61,45 @@ public:
   /*----------------------------------------------- PSEUDORANDOM NUMBERS GENERATOR SEED */
   
   inline Prng*             get_prng( void );
-  inline unsigned long int get_prng_seed( void ) const;
+  inline unsigned long int get_seed( void ) const;
   
-  /*----------------------------------------------- SOLVER PROPERTIES */
+  /*----------------------------------------------- SIMULATION TIME */
   
-  inline size_t get_stabilizing_time( void ) const;
-  inline size_t get_time( void ) const;
+  inline int    get_stabilizing_time( void ) const;
+  inline int    get_simulation_time( void ) const;
   inline double get_shutoff_fitness( void ) const;
-  inline size_t get_shutoff_time( void ) const;
+  inline int    get_shutoff_time( void ) const;
   
-  /*----------------------------------------------- PHENOTYPIC SPACE PROPERTIES */
+  /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
   
-  inline size_t get_number_of_dimensions( void ) const;
+  inline int get_number_of_dimensions( void ) const;
   
-  /*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+  /*----------------------------------------------- FITNESS FUNCTION */
   
-  inline fitness_function_shape get_fitness_function_shape( void ) const;
-  inline double                 get_fitness_function_parameter( void ) const;
+  inline double get_alpha( void ) const;
+  inline double get_beta( void ) const;
+  inline double get_Q( void ) const;
   
-  /*----------------------------------------------- PARTICLES PROPERTIES */
+  /*----------------------------------------------- POPULATION */
   
-  inline double get_number_of_particles( void ) const;
+  inline int    get_population_size( void ) const;
   inline double get_initial_mu( void ) const;
   inline double get_initial_sigma( void ) const;
   inline double get_initial_theta( void ) const;
-  inline double get_delta_mu( void ) const;
-  inline double get_delta_sigma( void ) const;
-  inline double get_delta_theta( void ) const;
+  inline bool   get_oneD_shift( void ) const;
   
-  /*----------------------------------------------- VARIOUS */
+  /*----------------------------------------------- MUTATIONS */
   
-  inline bool get_statistics( void ) const;
-  inline bool get_extra_2D_statistics( void ) const;
-  inline bool get_one_axis( void ) const;
-  inline bool get_no_noise( void ) const;
-  inline bool get_isotropic_noise( void ) const;
-  inline bool get_no_rotation( void ) const;
-  inline bool get_qagi( void ) const;
+  inline double get_m_mu( void ) const;
+  inline double get_m_sigma( void ) const;
+  inline double get_m_theta( void ) const;
+  inline double get_s_mu( void ) const;
+  inline double get_s_sigma( void ) const;
+  inline double get_s_theta( void ) const;
+  
+  /*----------------------------------------------- NOISE PROPERTIES */
+  
+  inline type_of_noise get_noise_type( void ) const;
   
   /*----------------------------
    * SETTERS
@@ -105,43 +109,45 @@ public:
   /*----------------------------------------------- PSEUDORANDOM NUMBERS GENERATOR SEED */
   
   inline void set_prng( Prng* prng );
-  inline void set_prng_seed( unsigned long int seed );
+  inline void set_seed( unsigned long int seed );
   
-  /*----------------------------------------------- SOLVER PROPERTIES */
+  /*----------------------------------------------- SIMULATION TIME */
   
-  inline void set_stabilizing_time( size_t time );
-  inline void set_time( size_t time );
+  inline void set_stabilizing_time( int stabilizing_time );
+  inline void set_simulation_time( int simulation_time );
   inline void set_shutoff_fitness( double shutoff_fitness );
-  inline void set_shutoff_time( size_t shutoff_time );
+  inline void set_shutoff_time( int shutoff_time );
   
-  /*----------------------------------------------- PHENOTYPIC SPACE PROPERTIES */
+  /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
   
-  inline void set_number_of_dimensions( size_t number_of_dimensions );
+  inline void set_number_of_dimensions( int number_of_dimensions );
   
-  /*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+  /*----------------------------------------------- FITNESS FUNCTION */
   
-  inline void set_fitness_function_shape( fitness_function_shape shape );
-  inline void set_fitness_function_parameter( double parameter );
+  inline void set_alpha( double alpha );
+  inline void set_beta( double beta );
+  inline void set_Q( double Q );
   
-  /*----------------------------------------------- PARTICLES PROPERTIES */
+  /*----------------------------------------------- POPULATION */
   
-  inline void set_number_of_particles( double number_of_particles );
+  inline void set_population_size( int population_size );
   inline void set_initial_mu( double initial_mu );
   inline void set_initial_sigma( double initial_sigma );
   inline void set_initial_theta( double initial_theta );
-  inline void set_delta_mu( double delta_mu );
-  inline void set_delta_sigma( double delta_sigma );
-  inline void set_delta_theta( double delta_theta );
+  inline void set_oneD_shift( bool oneD_shift );
   
-  /*----------------------------------------------- VARIOUS */
+  /*----------------------------------------------- MUTATIONS */
   
-  inline void set_statistics( bool statistics );
-  inline void set_extra_2D_statistics( bool extra_2D_statistics );
-  inline void set_one_axis( bool one_axis );
-  inline void set_no_noise( bool no_noise );
-  inline void set_isotropic_noise( bool isotropic_noise );
-  inline void set_no_rotation( bool no_rotation );
-  inline void set_qagi( bool qagi );
+  inline void set_m_mu( double m_mu );
+  inline void set_m_sigma( double m_sigma );
+  inline void set_m_theta( double m_theta );
+  inline void set_s_mu( double s_mu );
+  inline void set_s_sigma( double s_sigma );
+  inline void set_s_theta( double s_theta );
+  
+  /*----------------------------------------------- NOISE PROPERTIES */
+  
+  inline void set_noise_type( type_of_noise noise_type );
   
   /*----------------------------
    * PUBLIC METHODS
@@ -167,41 +173,43 @@ protected:
   Prng*             _prng; /*!< Pseudorandom numbers generator */
   unsigned long int _seed; /*!< Prng seed                      */
   
-  /*----------------------------------------------- SOLVER PROPERTIES */
+  /*----------------------------------------------- SIMULATION TIME */
   
-  size_t _stabilizing_time; /*!< Stabilizing simulation time      */
-  size_t _time;             /*!< Solving simulation time          */
-  double _shutoff_fitness;  /*!< Shutoff fitness to reach         */
-  size_t _shutoff_time;     /*!< Shutoff time to maintain fitness */
+  int    _stabilizing_time; /*!< Time used to stabilize initial population */
+  int    _simulation_time;  /*!< Real simulation time                      */
+  double _shutoff_fitness;  /*!< Shutoff fitness to reach                  */
+  int    _shutoff_time;     /*!< Shutoff time to maintain shutoff fitness  */
   
-  /*----------------------------------------------- PHENOTYPIC SPACE PROPERTIES */
+  /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
   
-  size_t _number_of_dimensions; /*!< Number of dimensions */
+  int _number_of_dimensions; /*!< Number of dimensions */
   
-  /*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+  /*----------------------------------------------- FITNESS FUNCTION */
   
-  fitness_function_shape _fitness_function_shape;     /* Shape of the fitness function           */
-  double                 _fitness_function_parameter; /* Parameter value of the fitness function */
+  double _alpha; /*!< Alpha parameter (controls the decay rate)    */
+  double _beta;  /*!< Beta parameter (controls the initial height) */
+  double _Q;     /*!< Q parameter (controls the curvature)         */
   
-  /*----------------------------------------------- PARTICLES PROPERTIES */
+  /*----------------------------------------------- POPULATION */
   
-  double _number_of_particles; /*!< Number of particles */
-  double _initial_mu;          /*!< Initial mu value    */
-  double _initial_sigma;       /*!< Initial sigma value */
-  double _initial_theta;       /*!< Initial theta value */
-  double _delta_mu;            /*!< Mu mutation size    */
-  double _delta_sigma;         /*!< Sigma mutation size */
-  double _delta_theta;         /*!< Mu mutation size    */
+  int    _population_size; /*!< Number of particles                        */
+  double _initial_mu;      /*!< Initial mu value                           */
+  double _initial_sigma;   /*!< Initial sigma value                        */
+  double _initial_theta;   /*!< Initial theta value                        */
+  bool   _oneD_shift;      /*!< The population is shifted in one dimension */
   
-  /*----------------------------------------------- VARIOUS */
+  /*----------------------------------------------- MUTATIONS */
   
-  bool _statistics;          /*!< Indicates if statistics must be saved                    */
-  bool _extra_2D_statistics; /*!< Indicates if extra 2D statistics must be saved           */
-  bool _one_axis;            /*!< Indicates if only one axis must be initialized           */
-  bool _no_noise;            /*!< No noise                                                 */
-  bool _isotropic_noise;     /*!< Isotropic noise                                          */
-  bool _no_rotation;         /*!< No rotation                                              */
-  bool _qagi;                /*!< Compute integrative fitness instead of instantaneous one */
+  double _m_mu;        /*!< Mu mutation rate    */
+  double _m_sigma;     /*!< Sigma mutation rate */
+  double _m_theta;     /*!< Mu mutation rate    */
+  double _s_mu;        /*!< Mu mutation size    */
+  double _s_sigma;     /*!< Sigma mutation size */
+  double _s_theta;     /*!< Mu mutation size    */
+  
+  /*----------------------------------------------- NOISE PROPERTIES */
+  
+  type_of_noise _noise_type; /*!< Type of phenotypic noise (none, isotropic, ...) */
   
 };
 
@@ -229,33 +237,33 @@ inline Prng* Parameters::get_prng( void )
  * \param    void
  * \return   \e size_t
  */
-inline unsigned long int Parameters::get_prng_seed( void ) const
+inline unsigned long int Parameters::get_seed( void ) const
 {
   return _seed;
 }
 
-/*----------------------------------------------- SOLVER PROPERTIES */
+/*----------------------------------------------- SIMULATION TIME */
 
 /**
  * \brief    Get the stabilizing time
  * \details  --
  * \param    void
- * \return   \e size_t
+ * \return   \e int
  */
-inline size_t Parameters::get_stabilizing_time( void ) const
+inline int Parameters::get_stabilizing_time( void ) const
 {
   return _stabilizing_time;
 }
 
 /**
- * \brief    Get the solving time
+ * \brief    Get the simulation time
  * \details  --
  * \param    void
- * \return   \e size_t
+ * \return   \e int
  */
-inline size_t Parameters::get_time( void ) const
+inline int Parameters::get_simulation_time( void ) const
 {
-  return _time;
+  return _simulation_time;
 }
 
 /**
@@ -273,62 +281,73 @@ inline double Parameters::get_shutoff_fitness( void ) const
  * \brief    Get the shutoff time
  * \details  --
  * \param    void
- * \return   \e size_t
+ * \return   \e int
  */
-inline size_t Parameters::get_shutoff_time( void ) const
+inline int Parameters::get_shutoff_time( void ) const
 {
   return _shutoff_time;
 }
 
-/*----------------------------------------------- PHENOTYPIC SPACE PROPERTIES */
+/*----------------------------------------------- PHENOTYPIC COMPLEXITY */
 
 /**
  * \brief    Get the number of dimensions
  * \details  --
  * \param    void
- * \return   \e size_t
+ * \return   \e int
  */
-inline size_t Parameters::get_number_of_dimensions( void ) const
+inline int Parameters::get_number_of_dimensions( void ) const
 {
   return _number_of_dimensions;
 }
 
-/*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+/*----------------------------------------------- FITNESS FUNCTION */
 
 /**
- * \brief    Get the fitness function shape
- * \details  --
- * \param    void
- * \return   \e fitness_function_shape
- */
-inline fitness_function_shape Parameters::get_fitness_function_shape( void ) const
-{
-  return _fitness_function_shape;
-}
-
-/**
- * \brief    Get the fitness function parameter value
+ * \brief    Get alpha parameter
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_fitness_function_parameter( void ) const
+inline double Parameters::get_alpha( void ) const
 {
-  return _fitness_function_parameter;
+  return _alpha;
 }
 
-/*----------------------------------------------- PARTICLES PROPERTIES */
-
-
 /**
- * \brief    Get the number of particles
+ * \brief    Get beta parameter
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_number_of_particles( void ) const
+inline double Parameters::get_beta( void ) const
 {
-  return _number_of_particles;
+  return _beta;
+}
+
+/**
+ * \brief    Get Q parameter
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Parameters::get_Q( void ) const
+{
+  return _Q;
+}
+
+/*----------------------------------------------- POPULATION */
+
+
+/**
+ * \brief    Get the population size
+ * \details  --
+ * \param    void
+ * \return   \e int
+ */
+inline int Parameters::get_population_size( void ) const
+{
+  return _population_size;
 }
 
 /**
@@ -365,115 +384,95 @@ inline double Parameters::get_initial_theta( void ) const
 }
 
 /**
- * \brief    Get the mu mutation size
+ * \brief    Get oneD shift boolean
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_delta_mu( void ) const
+inline bool Parameters::get_oneD_shift( void ) const
 {
-  return _delta_mu;
+  return _oneD_shift;
 }
 
+/*----------------------------------------------- MUTATIONS */
+
 /**
- * \brief    Get the sigma mutation size
+ * \brief    Get mu mutation rate
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_delta_sigma( void ) const
+inline double Parameters::get_m_mu( void ) const
 {
-  return _delta_sigma;
+  return _m_mu;
 }
 
 /**
- * \brief    Get the theta mutation size
+ * \brief    Get sigma mutation rate
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_delta_theta( void ) const
+inline double Parameters::get_m_sigma( void ) const
 {
-  return _delta_theta;
-}
-
-/*----------------------------------------------- VARIOUS */
-
-/**
- * \brief    Get the statistics boolean
- * \details  --
- * \param    void
- * \return   \e bool
- */
-inline bool Parameters::get_statistics( void ) const
-{
-  return _statistics;
+  return _m_sigma;
 }
 
 /**
- * \brief    Get the extra 2D statistics boolean
+ * \brief    Get theta mutation rate
  * \details  --
  * \param    void
- * \return   \e bool
+ * \return   \e double
  */
-inline bool Parameters::get_extra_2D_statistics( void ) const
+inline double Parameters::get_m_theta( void ) const
 {
-  return _extra_2D_statistics;
+  return _m_theta;
 }
 
 /**
- * \brief    Get the one axis boolean
+ * \brief    Get mu mutation size
  * \details  --
  * \param    void
- * \return   \e bool
+ * \return   \e double
  */
-inline bool Parameters::get_one_axis( void ) const
+inline double Parameters::get_s_mu( void ) const
 {
-  return _one_axis;
+  return _s_mu;
 }
 
 /**
- * \brief    Get the no noise boolean
+ * \brief    Get sigma mutation size
  * \details  --
  * \param    void
- * \return   \e bool
+ * \return   \e double
  */
-inline bool Parameters::get_no_noise( void ) const
+inline double Parameters::get_s_sigma( void ) const
 {
-  return _no_noise;
+  return _s_sigma;
 }
 
 /**
- * \brief    Get the isotropic noise boolean
+ * \brief    Get theta mutation size
  * \details  --
  * \param    void
- * \return   \e bool
+ * \return   \e double
  */
-inline bool Parameters::get_isotropic_noise( void ) const
+inline double Parameters::get_s_theta( void ) const
 {
-  return _isotropic_noise;
+  return _s_theta;
 }
 
-/**
- * \brief    Get the no rotation boolean
- * \details  --
- * \param    void
- * \return   \e bool
- */
-inline bool Parameters::get_no_rotation( void ) const
-{
-  return _no_rotation;
-}
+/*----------------------------------------------- NOISE PROPERTIES */
 
 /**
- * \brief    Get the qagi boolean
+ * \brief    Get phenotypic noise type
  * \details  --
  * \param    void
- * \return   \e bool
+ * \return   \e double
  */
-inline bool Parameters::get_qagi( void ) const
+inline type_of_noise Parameters::get_noise_type( void ) const
 {
-  return _qagi;
+  return _noise_type;
 }
 
 /*----------------------------
@@ -488,34 +487,36 @@ inline void Parameters::set_prng( Prng* prng )
   _prng = new Prng(*prng);
 }
 
-inline void Parameters::set_prng_seed( unsigned long int seed )
+inline void Parameters::set_seed( unsigned long int seed )
 {
   _prng->set_seed(seed);
   _seed = seed;
 }
 
-/*----------------------------------------------- SOLVER PROPERTIES */
+/*----------------------------------------------- SIMULATION TIME */
 
 /**
  * \brief    Set the stabilizing time
  * \details  --
- * \param    size_t time
+ * \param    int stabilizing_time
  * \return   \e void
  */
-inline void Parameters::set_stabilizing_time( size_t time )
+inline void Parameters::set_stabilizing_time( int stabilizing_time)
 {
-  _stabilizing_time = time;
+  assert(stabilizing_time >= 0);
+  _stabilizing_time = stabilizing_time;
 }
 
 /**
- * \brief    Set the solving time
+ * \brief    Set the simulation time
  * \details  --
- * \param    size_t time
+ * \param    int simulation_time
  * \return   \e void
  */
-inline void Parameters::set_time( size_t time )
+inline void Parameters::set_simulation_time( int simulation_time )
 {
-  _time = time;
+  assert(simulation_time >= 0);
+  _simulation_time = simulation_time;
 }
 
 /**
@@ -533,65 +534,79 @@ inline void Parameters::set_shutoff_fitness( double shutoff_fitness )
 /**
  * \brief    Set the shutoff time
  * \details  --
- * \param    size_t shutoff time
+ * \param    int shutoff time
  * \return   \e void
  */
-inline void Parameters::set_shutoff_time( size_t shutoff_time )
+inline void Parameters::set_shutoff_time( int shutoff_time )
 {
+  assert(shutoff_time >= 0);
   _shutoff_time = shutoff_time;
 }
 
-/*----------------------------------------------- PHENOTYPIC SPACE PROPERTIES */
+/*----------------------------------------------- PHENOTYPIC COMPLEXITY */
 
 /**
  * \brief    Set the number of dimensions
  * \details  --
- * \param    size_t number_of_dimensions
+ * \param    int number_of_dimensions
  * \return   \e void
  */
-inline void Parameters::set_number_of_dimensions( size_t number_of_dimensions )
+inline void Parameters::set_number_of_dimensions( int number_of_dimensions )
 {
   assert(number_of_dimensions > 0);
   _number_of_dimensions = number_of_dimensions;
 }
 
-/*----------------------------------------------- FITNESS FUNCTION PROPERTIES */
+/*----------------------------------------------- FITNESS FUNCTION */
 
 /**
- * \brief    Set the fitness function shape
+ * \brief    Set alpha parameter
  * \details  --
- * \param    fitness_function_shape shape
+ * \param    double alpha
  * \return   \e void
  */
-inline void Parameters::set_fitness_function_shape( fitness_function_shape shape )
+inline void Parameters::set_alpha( double alpha )
 {
-  _fitness_function_shape = shape;
+  _alpha = alpha;
 }
 
 /**
- * \brief    Set the fitness function parameter value
+ * \brief    Set beta parameter
  * \details  --
- * \param    double parameter
+ * \param    double beta
  * \return   \e void
  */
-inline void Parameters::set_fitness_function_parameter( double parameter )
+inline void Parameters::set_beta( double beta )
 {
-  assert(parameter > 0.0);
-  _fitness_function_parameter = parameter;
+  assert(beta >= 0.0);
+  assert(beta <= 1.0);
+  _beta = beta;
 }
 
-/*----------------------------------------------- PARTICLES PROPERTIES */
-
 /**
- * \brief    Set the number of particles
+ * \brief    Set Q parameter
  * \details  --
- * \param    double number_of_particles
+ * \param    double Q
  * \return   \e void
  */
-inline void Parameters::set_number_of_particles( double number_of_particles )
+inline void Parameters::set_Q( double Q )
 {
-  assert(number_of_particles > 0);
-  _number_of_particles = number_of_particles;
+  assert(Q >= 0);
+  _Q = Q;
+}
+
+/*----------------------------------------------- POPULATION */
+
+/**
+ * \brief    Set the population size
+ * \details  --
+ * \param    int population_size
+ * \return   \e void
+ */
+inline void Parameters::set_population_size( int population_size )
+{
+  assert(population_size > 0);
+  _population_size = population_size;
 }
 
 /**
@@ -628,119 +643,94 @@ inline void Parameters::set_initial_theta( double initial_theta )
   _initial_theta = initial_theta;
 }
 
+/*----------------------------------------------- MUTATIONS */
+
+/**
+ * \brief    Set the mu mutation rate
+ * \details  --
+ * \param    double m_mu
+ * \return   \e void
+ */
+inline void Parameters::set_m_mu( double m_mu )
+{
+  assert(m_mu >= 0.0);
+  assert(m_mu <= 1.0);
+  _m_mu = m_mu;
+}
+
+/**
+ * \brief    Set the sigma mutation rate
+ * \details  --
+ * \param    double m_sigma
+ * \return   \e void
+ */
+inline void Parameters::set_m_sigma( double m_sigma )
+{
+  assert(m_sigma >= 0.0);
+  assert(m_sigma <= 1.0);
+  _m_sigma = m_sigma;
+}
+
+/**
+ * \brief    Set the theta mutation rate
+ * \details  --
+ * \param    double m_theta
+ * \return   \e void
+ */
+inline void Parameters::set_m_theta( double m_theta )
+{
+  assert(m_theta >= 0.0);
+  assert(m_theta <= 1.0);
+  _m_theta = m_theta;
+}
+
 /**
  * \brief    Set the mu mutation size
  * \details  --
- * \param    double delta_mu
+ * \param    double s_mu
  * \return   \e void
  */
-inline void Parameters::set_delta_mu( double delta_mu )
+inline void Parameters::set_s_mu( double s_mu )
 {
-  assert(delta_mu >= 0.0);
-  _delta_mu = delta_mu;
+  assert(s_mu >= 0.0);
+  _s_mu = s_mu;
 }
 
 /**
  * \brief    Set the sigma mutation size
  * \details  --
- * \param    double delta_sigma
+ * \param    double s_sigma
  * \return   \e void
  */
-inline void Parameters::set_delta_sigma( double delta_sigma )
+inline void Parameters::set_s_sigma( double s_sigma )
 {
-  assert(delta_sigma >= 0.0);
-  _delta_sigma = delta_sigma;
+  assert(s_sigma >= 0.0);
+  _s_sigma = s_sigma;
 }
 
 /**
  * \brief    Set the theta mutation size
  * \details  --
- * \param    double delta_theta
+ * \param    double s_theta
  * \return   \e void
  */
-inline void Parameters::set_delta_theta( double delta_theta )
+inline void Parameters::set_s_theta( double s_theta )
 {
-  assert(delta_theta >= 0.0);
-  _delta_theta = delta_theta;
+  assert(s_theta >= 0.0);
+  _s_theta = s_theta;
 }
 
-/*----------------------------------------------- VARIOUS */
+/*----------------------------------------------- NOISE PROPERTIES */
 
 /**
- * \brief    Set the statistics boolean
+ * \brief    Set phenotypic noise type
  * \details  --
- * \param    bool statistics
+ * \param    type_of_noise noise_type
  * \return   \e void
  */
-inline void Parameters::set_statistics( bool statistics )
+inline void Parameters::set_noise_type( type_of_noise noise_type )
 {
-  _statistics = statistics;
-}
-
-/**
- * \brief    Set the extra 2D statistics boolean
- * \details  --
- * \param    bool extra_2D_statistics
- * \return   \e void
- */
-inline void Parameters::set_extra_2D_statistics( bool extra_2D_statistics )
-{
-  _extra_2D_statistics = extra_2D_statistics;
-}
-
-/**
- * \brief    Set the one axis boolean
- * \details  --
- * \param    bool statistics
- * \return   \e void
- */
-inline void Parameters::set_one_axis( bool one_axis )
-{
-  _one_axis = one_axis;
-}
-
-/**
- * \brief    Set no noise boolean
- * \details  --
- * \param    bool no_noise
- * \return   \e void
- */
-inline void Parameters::set_no_noise( bool no_noise )
-{
-  _no_noise = no_noise;
-}
-
-/**
- * \brief    Set isotropic noise boolean
- * \details  --
- * \param    bool isotropic_noise
- * \return   \e void
- */
-inline void Parameters::set_isotropic_noise( bool isotropic_noise )
-{
-  _isotropic_noise = isotropic_noise;
-}
-
-/**
- * \brief    Set no rotation boolean
- * \details  --
- * \param    bool no_rotation
- * \return   \e void
- */
-inline void Parameters::set_no_rotation( bool no_rotation )
-{
-  _no_rotation = no_rotation;
-}
-
-/**
- * \brief    Set qagi boolean
- * \details  --
- * \param    bool qagi
- * \return   \e void
- */
-inline void Parameters::set_qagi( bool qagi )
-{
-  _qagi = qagi;
+  _noise_type = noise_type;
 }
 
 
