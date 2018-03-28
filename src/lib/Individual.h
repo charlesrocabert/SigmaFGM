@@ -54,7 +54,7 @@ public:
    * CONSTRUCTORS
    *----------------------------*/
   Individual( void ) = delete;
-  Individual( Prng* prng, size_t n, double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type );
+  Individual( Prng* prng, int n, double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type );
   Individual( const Individual& individual );
   
   /*----------------------------
@@ -96,7 +96,7 @@ public:
   /*----------------------------
    * PUBLIC METHODS
    *----------------------------*/
-  void jump( void );
+  void mutate( void );
   void build_phenotype( void );
   void compute_fitness( gsl_vector* z_opt, double alpha, double beta, double Q );
   

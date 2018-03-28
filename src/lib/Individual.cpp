@@ -37,31 +37,33 @@
  * \brief    Constructor
  * \details  --
  * \param    Prng* prng
- * \param    size_t n
- * \param    double delta_mu
- * \param    double delta_sigma
- * \param    double delta_theta
+ * \param    int n
+ * \param    double m_mu
+ * \param    double m_sigma
+ * \param    double m_theta
+ * \param    double s_mu
+ * \param    double s_sigma
+ * \param    double s_theta
  * \param    double mu_init
  * \param    double sigma_init
  * \param    double theta_init
- * \param    bool one_axis
- * \param    bool no_noise
- * \param    bool isotropic_noise
- * \param    bool no_rotation
+ * \param    bool oneD_shift
+ * \param    bool type_of_noise noise_type
  * \return   \e void
  */
-Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, double delta_theta, double mu_init, double sigma_init, double theta_init, bool one_axis, bool no_noise, bool isotropic_noise, bool no_rotation )
+Individual::Individual( Prng* prng, int n, double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type )
 {
   /*----------------------------------------------- PARAMETERS */
   
-  _prng            = prng;
-  _n               = n;
-  _delta_mu        = delta_mu;
-  _delta_sigma     = delta_sigma;
-  _delta_theta     = delta_theta;
-  _no_noise        = no_noise;
-  _isotropic_noise = isotropic_noise;
-  _no_rotation     = no_rotation;
+  _prng       = prng;
+  _n          = n;
+  _m_mu       = m_mu;
+  _m_sigma    = m_sigma;
+  _m_theta    = m_theta;
+  _s_mu       = s_mu;
+  _s_sigma    = s_sigma;
+  _s_theta    = s_theta;
+  _noise_type = noise_type;
   
   /*----------------------------------------------- VARIABLES */
   
@@ -75,7 +77,7 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
   /* Initialize mu              */
   /******************************/
   _mu = gsl_vector_alloc(_n);
-  if (one_axis)
+  if (oneD_shift)
   {
     gsl_vector_set_zero(_mu);
     gsl_vector_set(_mu, 0, mu_init);
@@ -89,7 +91,7 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
   /* Initialize sigma           */
   /******************************/
   _sigma = NULL;
-  if (!_no_noise)
+  if (_noise_type != NONE)
   {
     _sigma = gsl_vector_alloc(_n);
     gsl_vector_set_all(_sigma, sigma_init);
@@ -99,7 +101,7 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
   /* Initialize theta           */
   /******************************/
   _theta = NULL;
-  if (_n > 1 && !_no_noise && !_isotropic_noise && !_no_rotation)
+  if (_n > 1 && _noise_type == FULL)
   {
     _theta = gsl_vector_alloc(_n*(_n-1)/2);
     gsl_vector_set_all(_theta, theta_init);
@@ -114,38 +116,45 @@ Particle::Particle( Prng* prng, size_t n, double delta_mu, double delta_sigma, d
   /******************************/
   /* Initialize other variables */
   /******************************/
-  _dmu = 0.0;
-  _dp  = 0.0;
-  _wmu = 0.0;
-  _wp  = 0.0;
+  _dg = 0.0;
+  _dp = 0.0;
+  _wg = 0.0;
+  _wp = 0.0;
   
-  /*----------------------------------------------- OTHER PARAMETERS */
+  /*----------------------------------------------- MAPPING PROPERTIES */
   
   _phenotype_is_built     = false;
   _max_Sigma_eigenvector  = NULL;
   _max_Sigma_eigenvalue   = 0.0;
   _max_Sigma_contribution = 0.0;
   _max_dot_product        = 0.0;
+  
+  /*----------------------------------------------- MUTATIONS */
+  
+  _r_mu    = 0.0;
+  _r_sigma = 0.0;
+  _r_theta = 0.0;
 }
 
 /**
  * \brief    Copy constructor
  * \details  --
- * \param    const Particle& particle
+ * \param    const Individual& individual
  * \return   \e void
  */
-Particle::Particle( const Particle& particle )
+Individual::Individual( const Individual& individual )
 {
   /*----------------------------------------------- PARAMETERS */
   
-  _prng            = particle._prng;
-  _n               = particle._n;
-  _delta_mu        = particle._delta_mu;
-  _delta_sigma     = particle._delta_sigma;
-  _delta_theta     = particle._delta_theta;
-  _no_noise        = particle._no_noise;
-  _isotropic_noise = particle._isotropic_noise;
-  _no_rotation     = particle._no_rotation;
+  _prng       = individual._prng;
+  _n          = individual._n;
+  _m_mu       = individual._m_mu;
+  _m_sigma    = individual._m_sigma;
+  _m_theta    = individual._m_theta;
+  _s_mu       = individual._s_mu;
+  _s_sigma    = individual._s_sigma;
+  _s_theta    = individual._s_theta;
+  _noise_type = individual._noise_type;
   
   /*----------------------------------------------- VARIABLES */
   
@@ -159,49 +168,55 @@ Particle::Particle( const Particle& particle )
   /* Initialize mu              */
   /******************************/
   _mu = gsl_vector_alloc(_n);
-  gsl_vector_memcpy(_mu, particle._mu);
+  gsl_vector_memcpy(_mu, individual._mu);
   
   /******************************/
   /* Initialize sigma           */
   /******************************/
   _sigma = NULL;
-  if (!_no_noise)
+  if (_noise_type != NONE)
   {
     _sigma = gsl_vector_alloc(_n);
-    gsl_vector_memcpy(_sigma, particle._sigma);
+    gsl_vector_memcpy(_sigma, individual._sigma);
   }
   
   /******************************/
   /* Initialize theta           */
   /******************************/
   _theta = NULL;
-  if (_n > 1 && !_no_noise && !_isotropic_noise && !_no_rotation)
+  if (_n > 1 && _noise_type == FULL)
   {
     _theta = gsl_vector_alloc(_n*(_n-1)/2);
-    gsl_vector_memcpy(_theta, particle._theta);
+    gsl_vector_memcpy(_theta, individual._theta);
   }
   
   /******************************/
   /* Initialize z               */
   /******************************/
   _z = gsl_vector_alloc(_n);
-  gsl_vector_memcpy(_z, particle._z);
+  gsl_vector_memcpy(_z, individual._z);
   
   /******************************/
   /* Initialize other variables */
   /******************************/
-  _dmu = particle._dmu;
-  _dp  = particle._dp;
-  _wmu = particle._wmu;
-  _wp  = particle._wp;
+  _dg = individual._dg;
+  _dp = individual._dp;
+  _wg = individual._wg;
+  _wp = individual._wp;
   
-  /*----------------------------------------------- OTHER PARAMETERS */
+  /*----------------------------------------------- MAPPING PROPERTIES */
   
   _phenotype_is_built     = false;
   _max_Sigma_eigenvector  = NULL;
-  _max_Sigma_eigenvalue   = particle._max_Sigma_eigenvalue;
-  _max_Sigma_contribution = particle._max_Sigma_contribution;
-  _max_dot_product        = particle._max_dot_product;
+  _max_Sigma_eigenvalue   = individual._max_Sigma_eigenvalue;
+  _max_Sigma_contribution = individual._max_Sigma_contribution;
+  _max_dot_product        = individual._max_dot_product;
+  
+  /*----------------------------------------------- MUTATIONS */
+  
+  _r_mu    = individual._r_mu;
+  _r_sigma = individual._r_sigma;
+  _r_theta = individual._r_theta;
 }
 
 /*----------------------------
@@ -214,11 +229,11 @@ Particle::Particle( const Particle& particle )
  * \param    void
  * \return   \e void
  */
-Particle::~Particle( void )
+Individual::~Individual( void )
 {
   gsl_vector_free(_mu);
   _mu = NULL;
-  if (!_no_noise)
+  if (_noise_type != NONE)
   {
     gsl_vector_free(_sigma);
     _sigma = NULL;
@@ -228,7 +243,7 @@ Particle::~Particle( void )
     _Cholesky = NULL;
     gsl_vector_free(_max_Sigma_eigenvector);
     _max_Sigma_eigenvector = NULL;
-    if (_n > 1 && !_isotropic_noise && !_no_rotation)
+    if (_n > 1 && _noise_type == FULL)
     {
       gsl_vector_free(_theta);
       _theta = NULL;
@@ -243,12 +258,12 @@ Particle::~Particle( void )
  *----------------------------*/
 
 /**
- * \brief    Jump in the profile space
- * \details  The profile space is the composition of mu, sigma and theta space --> (3n+n^2)/2 dimensions
+ * \brief    Mutate the individual genotype
+ * \details  --
  * \param    void
  * \return   \e void
  */
-void Particle::jump( void )
+void Individual::mutate( void )
 {
   /**************************/
   /* 1) Mutate mu vector    */
@@ -571,102 +586,4 @@ void Particle::clear_memory( void )
   _Sigma = NULL;
   gsl_vector_free(_max_Sigma_eigenvector);
   _max_Sigma_eigenvector = NULL;
-}
-
-/**
- * \brief    Simple gaussian law pdf
- * \details  --
- * \param    double x
- * \param    double mu
- * \param    double sigma
- * \return   \e double
- */
-double Particle::gaussian_pdf( double x, double mu, double sigma )
-{
-  return gsl_ran_gaussian_pdf(x-mu, sigma);
-}
-
-/**
- * \brief    Compute the most basic FGM fitness
- * \details  --
- * \param    double x
- * \return   \e double
- */
-double Particle::w( double x )
-{
-  return exp(-x*x/2);
-}
-
-/**
- * \brief    Compute one 1d integration point
- * \details  --
- * \param    double x
- * \return   \e double
- */
-double Particle::f( double x, void* params )
-{
-  double* cast_param = (double*)params;
-  double mu          = cast_param[0];
-  double sigma       = cast_param[1];
-  return gaussian_pdf(x, mu, sigma)*w(x);
-}
-
-/**
- * \brief    Compute 1d QAGI integral
- * \details  --
- * \param    double mu
- * \param    double sigma
- * \return   \e void
- */
-void Particle::QAGI( double* res, double mu, double sigma, gsl_integration_workspace* workspace, gsl_function* F )
-{
-  double* params = new double[2];
-  params[0] = mu;
-  params[1] = sigma;
-  F->params = params;
-  double result, error;
-  gsl_integration_qagi(F, EPSABS, ESPREL, LIMIT, workspace, &result, &error);
-  delete[] params;
-  params = NULL;
-  F->params = NULL;
-  res[0] = result;
-  res[1] = error;
-}
-
-/**
- * \brief    Compute the complete integral
- * \details  --
- * \param    double* mu
- * \param    double sigma
- * \param    size_t n
- * \param    double& result
- * \param    double& error
- * \return   \e void
- */
-void Particle::W( double* mu, double sigma, size_t n, double& result, double& error )
-{
-  gsl_integration_workspace* workspace = gsl_integration_workspace_alloc(LIMIT);
-  gsl_function F;
-  F.function  = &(Particle::f);
-  F.params    = NULL;
-  result      = 1.0;
-  error       = 0.0;
-  double* res = new double[2];
-  for (size_t i = 0; i < n; i++)
-  {
-    if (sigma > 0.0006)
-    {
-      QAGI(res, mu[i], sigma, workspace, &F);
-      result *= res[0];
-      error  += res[1];
-    }
-    else
-    {
-      result *= w(mu[i]);
-    }
-  }
-  delete[] res;
-  res = NULL;
-  gsl_integration_workspace_free(workspace);
-  workspace = NULL;
 }

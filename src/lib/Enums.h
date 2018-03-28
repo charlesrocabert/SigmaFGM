@@ -39,8 +39,8 @@ enum type_of_noise
   NONE         = 0, /*!< No phenotypic noise (classical FGM case) */
   ISOTROPIC    = 1, /*!< Isotropic noise                          */
   UNCORRELATED = 2, /*!< Anisotropic and uncorrelated noise       */
-  FULL         = 3, /*!< Fully evolvable noise                    */
-  OPTIMAL      = 4  /*!< Optimally shaped noise (based on maths)  */
+  FULL         = 3  /*!< Fully evolvable noise                    */
+  //OPTIMAL      = 4  /*!< Optimally shaped noise (based on maths)  */
 };
 
 
