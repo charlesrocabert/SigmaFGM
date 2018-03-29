@@ -50,7 +50,7 @@ Parameters::Parameters( void )
   
   _stabilizing_time = 0;
   _simulation_time  = 0;
-  _shutoff_fitness  = 0.0;
+  _shutoff_distance = 0.0;
   _shutoff_time     = 0;
   
   /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
@@ -116,7 +116,7 @@ void Parameters::print_parameters( void )
   std::cout << "seed              " << _seed << "\n";
   std::cout << "stabilizing time  " << _stabilizing_time << "\n";
   std::cout << "simulation time   " << _simulation_time << "\n";
-  std::cout << "shutoff fitness   " << _shutoff_fitness << "\n";
+  std::cout << "shutoff distance  " << _shutoff_distance << "\n";
   std::cout << "shutoff time      " << _shutoff_time << "\n";
   std::cout << "dimensions        " << _number_of_dimensions << "\n";
   std::cout << "alpha             " << _alpha << "\n";
@@ -132,10 +132,9 @@ void Parameters::print_parameters( void )
   std::cout << "mu mut size       " << _s_mu << "\n";
   std::cout << "sigma mut size    " << _s_sigma << "\n";
   std::cout << "theta mut size    " << _s_theta << "\n";
-  if (_noise_type == NONE) std::cout << "noise type    NONE\n";
-  else if (_noise_type == ISOTROPIC) std::cout << "noise type    ISOTROPIC\n";
-  else if (_noise_type == UNCORRELATED) std::cout << "noise type    UNCORRELATED\n";
-  else if (_noise_type == FULL) std::cout << "noise type    FULL\n";
-  else if (_noise_type == OPTIMAL) std::cout << "noise type    OPTIMAL\n";
+  if (_noise_type == NONE) std::cout << "noise type        NONE\n";
+  else if (_noise_type == ISOTROPIC) std::cout << "noise type        ISOTROPIC\n";
+  else if (_noise_type == UNCORRELATED) std::cout << "noise type        UNCORRELATED\n";
+  else if (_noise_type == FULL) std::cout << "noise type        FULL\n";
   std::cout << "#######################################\n";
 }

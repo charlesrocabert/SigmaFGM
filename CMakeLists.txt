@@ -109,10 +109,10 @@ add_library(
   src/lib/Parameters.h
   src/lib/Individual.cpp
   src/lib/Individual.h
+  src/lib/Population.cpp
+  src/lib/Population.h
   src/lib/Statistics.cpp
   src/lib/Statistics.h
-  src/lib/Solver.cpp
-  src/lib/Solver.h
 )
 
 target_link_libraries(SigmaFGM z tbb gsl gslcblas)

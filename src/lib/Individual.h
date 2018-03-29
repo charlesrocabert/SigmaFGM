@@ -2,7 +2,7 @@
 /**
  * \file      Individual.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
- * \date      07-06-2016
+ * \date      28-03-2018
  * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Individual class declaration
@@ -54,7 +54,7 @@ public:
    * CONSTRUCTORS
    *----------------------------*/
   Individual( void ) = delete;
-  Individual( Prng* prng, int n, double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type );
+  Individual( Prng* prng, int n, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type );
   Individual( const Individual& individual );
   
   /*----------------------------
@@ -68,9 +68,9 @@ public:
   
   /*----------------------------------------------- VARIABLES */
   
-  inline double get_mu( size_t i ) const;
-  inline double get_sigma( size_t i ) const;
-  inline double get_theta( size_t i ) const;
+  inline double get_mu( int i ) const;
+  inline double get_sigma( int i ) const;
+  inline double get_theta( int i ) const;
   inline double get_dg( void ) const;
   inline double get_dp( void ) const;
   inline double get_wg( void ) const;
@@ -96,9 +96,9 @@ public:
   /*----------------------------
    * PUBLIC METHODS
    *----------------------------*/
-  void mutate( void );
+  void mutate( double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta );
   void build_phenotype( void );
-  void compute_fitness( gsl_vector* z_opt, double alpha, double beta, double Q );
+  void compute_fitness( double alpha, double beta, double Q );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES
@@ -109,7 +109,7 @@ protected:
   /*----------------------------
    * PROTECTED METHODS
    *----------------------------*/
-  void rotate( gsl_matrix* m, size_t a, size_t b, double theta );
+  void rotate( gsl_matrix* m, int a, int b, double theta );
   void build_Sigma( void );
   void compute_dot_product( void );
   void Cholesky_decomposition( void );
@@ -124,12 +124,6 @@ protected:
   
   Prng*         _prng;       /*!< Pseudorandom numbers generator  */
   int           _n;          /*!< Number of dimensions            */
-  double        _m_mu;       /*!< Mu mutation rate                */
-  double        _m_sigma;    /*!< Sigma mutation rate             */
-  double        _m_theta;    /*!< Theta mutation rate             */
-  double        _s_mu;       /*!< Mu mutation size                */
-  double        _s_sigma;    /*!< Sigma mutation size             */
-  double        _s_theta;    /*!< Theta mutation size             */
   type_of_noise _noise_type; /*!< Phenotypic noise properties     */
   
   /*----------------------------------------------- VARIABLES */
@@ -171,10 +165,10 @@ protected:
 /**
  * \brief    Get mu value at position i
  * \details  --
- * \param    size_t i
+ * \param    int i
  * \return   \e double
  */
-inline double Individual::get_mu( size_t i ) const
+inline double Individual::get_mu( int i ) const
 {
   assert(i < _n);
   return gsl_vector_get(_mu, i);
@@ -183,10 +177,10 @@ inline double Individual::get_mu( size_t i ) const
 /**
  * \brief    Get sigma value at position i
  * \details  --
- * \param    size_t i
+ * \param    int i
  * \return   \e double
  */
-inline double Individual::get_sigma( size_t i ) const
+inline double Individual::get_sigma( int i ) const
 {
   assert(i < _n);
   return gsl_vector_get(_sigma, i);
@@ -195,10 +189,10 @@ inline double Individual::get_sigma( size_t i ) const
 /**
  * \brief    Get theta value at position i
  * \details  --
- * \param    size_t i
+ * \param    int i
  * \return   \e double
  */
-inline double Individual::get_theta( size_t i ) const
+inline double Individual::get_theta( int i ) const
 {
   assert(i < _n*(_n-1)/2);
   return gsl_vector_get(_theta, i);

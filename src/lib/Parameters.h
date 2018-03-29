@@ -67,7 +67,7 @@ public:
   
   inline int    get_stabilizing_time( void ) const;
   inline int    get_simulation_time( void ) const;
-  inline double get_shutoff_fitness( void ) const;
+  inline double get_shutoff_distance( void ) const;
   inline int    get_shutoff_time( void ) const;
   
   /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
@@ -115,7 +115,7 @@ public:
   
   inline void set_stabilizing_time( int stabilizing_time );
   inline void set_simulation_time( int simulation_time );
-  inline void set_shutoff_fitness( double shutoff_fitness );
+  inline void set_shutoff_distance( double shutoff_distance );
   inline void set_shutoff_time( int shutoff_time );
   
   /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
@@ -177,7 +177,7 @@ protected:
   
   int    _stabilizing_time; /*!< Time used to stabilize initial population */
   int    _simulation_time;  /*!< Real simulation time                      */
-  double _shutoff_fitness;  /*!< Shutoff fitness to reach                  */
+  double _shutoff_distance; /*!< Shutoff distance to reach                 */
   int    _shutoff_time;     /*!< Shutoff time to maintain shutoff fitness  */
   
   /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
@@ -224,7 +224,7 @@ protected:
  * \brief    Get the prng
  * \details  --
  * \param    void
- * \return   \e size_t
+ * \return   \e Prng*
  */
 inline Prng* Parameters::get_prng( void )
 {
@@ -235,7 +235,7 @@ inline Prng* Parameters::get_prng( void )
  * \brief    Get the prng seed
  * \details  --
  * \param    void
- * \return   \e size_t
+ * \return   \e unsigned long int
  */
 inline unsigned long int Parameters::get_seed( void ) const
 {
@@ -267,14 +267,14 @@ inline int Parameters::get_simulation_time( void ) const
 }
 
 /**
- * \brief    Get the shutoff fitness
+ * \brief    Get the shutoff distance
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_shutoff_fitness( void ) const
+inline double Parameters::get_shutoff_distance( void ) const
 {
-  return _shutoff_fitness;
+  return _shutoff_distance;
 }
 
 /**
@@ -520,15 +520,15 @@ inline void Parameters::set_simulation_time( int simulation_time )
 }
 
 /**
- * \brief    Set the shutoff fitness
+ * \brief    Set the shutoff distance
  * \details  --
- * \param    double shutoff_fitness
+ * \param    double shutoff_distance
  * \return   \e void
  */
-inline void Parameters::set_shutoff_fitness( double shutoff_fitness )
+inline void Parameters::set_shutoff_distance( double shutoff_distance )
 {
-  assert(shutoff_fitness >= 0.0);
-  _shutoff_fitness = shutoff_fitness;
+  assert(shutoff_distance >= 0.0);
+  _shutoff_distance = shutoff_distance;
 }
 
 /**
@@ -641,6 +641,17 @@ inline void Parameters::set_initial_sigma( double initial_sigma )
 inline void Parameters::set_initial_theta( double initial_theta )
 {
   _initial_theta = initial_theta;
+}
+
+/**
+ * \brief    Set the oneD shift boolean
+ * \details  --
+ * \param    bool oneD_shift
+ * \return   \e void
+ */
+inline void Parameters::set_oneD_shift( bool oneD_shift )
+{
+  _oneD_shift = oneD_shift;
 }
 
 /*----------------------------------------------- MUTATIONS */

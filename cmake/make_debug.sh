@@ -1,7 +1,8 @@
 #!/bin/bash
 
-#**********************************************************************
-# Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard
+#***********************************************************************
+# Copyright (C) 2016-2018
+# Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#**********************************************************************
+#***********************************************************************
 
 bash make_clean.sh
 cmake -DCMAKE_BUILD_TYPE=Debug ..

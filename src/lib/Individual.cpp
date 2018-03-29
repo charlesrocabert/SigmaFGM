@@ -1,11 +1,11 @@
 
 /**
- * \file      Particle.cpp
+ * \file      Individual.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
- * \date      07-06-2016
+ * \date      28-03-2018
  * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Particle class definition
+ * \brief     Individual class definition
  */
 
 /***********************************************************************
@@ -38,12 +38,6 @@
  * \details  --
  * \param    Prng* prng
  * \param    int n
- * \param    double m_mu
- * \param    double m_sigma
- * \param    double m_theta
- * \param    double s_mu
- * \param    double s_sigma
- * \param    double s_theta
  * \param    double mu_init
  * \param    double sigma_init
  * \param    double theta_init
@@ -51,18 +45,12 @@
  * \param    bool type_of_noise noise_type
  * \return   \e void
  */
-Individual::Individual( Prng* prng, int n, double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type )
+Individual::Individual( Prng* prng, int n, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type )
 {
   /*----------------------------------------------- PARAMETERS */
   
   _prng       = prng;
   _n          = n;
-  _m_mu       = m_mu;
-  _m_sigma    = m_sigma;
-  _m_theta    = m_theta;
-  _s_mu       = s_mu;
-  _s_sigma    = s_sigma;
-  _s_theta    = s_theta;
   _noise_type = noise_type;
   
   /*----------------------------------------------- VARIABLES */
@@ -148,12 +136,6 @@ Individual::Individual( const Individual& individual )
   
   _prng       = individual._prng;
   _n          = individual._n;
-  _m_mu       = individual._m_mu;
-  _m_sigma    = individual._m_sigma;
-  _m_theta    = individual._m_theta;
-  _s_mu       = individual._s_mu;
-  _s_sigma    = individual._s_sigma;
-  _s_theta    = individual._s_theta;
   _noise_type = individual._noise_type;
   
   /*----------------------------------------------- VARIABLES */
@@ -260,54 +242,104 @@ Individual::~Individual( void )
 /**
  * \brief    Mutate the individual genotype
  * \details  --
- * \param    void
+ * \param    double m_mu
+ * \param    double m_sigma
+ * \param    double m_theta
+ * \param    double s_mu
+ * \param    double s_sigma
+ * \param    double s_theta
  * \return   \e void
  */
-void Individual::mutate( void )
+void Individual::mutate( double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta )
 {
-  /**************************/
-  /* 1) Mutate mu vector    */
-  /**************************/
-  if (_prng->uniform() < _m_mu)
+  /*****************************/
+  /* 1) Save current genotype  */
+  /*****************************/
+  gsl_vector* previous_mu = gsl_vector_alloc(_n);
+  gsl_vector_memcpy(previous_mu, _mu);
+  gsl_vector* previous_sigma = gsl_vector_alloc(_n);
+  gsl_vector_memcpy(previous_sigma, _sigma);
+  gsl_vector* previous_theta = NULL;
+  if (_n > 1 && _noise_type == FULL)
   {
-    for (size_t i = 0; i < _n; i++)
+    gsl_vector* previous_theta = gsl_vector_alloc(_n*(_n-1)/2);
+    gsl_vector_memcpy(previous_theta, _theta);
+  }
+  
+  /*****************************/
+  /* 2) Mutate mu vector       */
+  /*****************************/
+  if (_prng->uniform() < m_mu)
+  {
+    for (int i = 0; i < _n; i++)
     {
-      gsl_vector_set(_mu, i, gsl_vector_get(_mu, i)+_prng->gaussian(0.0, _s_mu));
+      gsl_vector_set(_mu, i, gsl_vector_get(_mu, i)+_prng->gaussian(0.0, s_mu));
     }
     _phenotype_is_built = false;
   }
   
-  /**************************/
-  /* 2) Mutate sigma vector */
-  /**************************/
-  if (_noise_type != NONE && _prng->uniform() < _m_sigma)
+  /*****************************/
+  /* 3) Mutate sigma vector    */
+  /*****************************/
+  if (_noise_type != NONE && _prng->uniform() < m_sigma)
   {
     if (_noise_type == ISOTROPIC)
     {
-      double new_sigma = fabs(gsl_vector_get(_sigma, 0)+_prng->gaussian(0.0, _s_sigma));
+      double new_sigma = fabs(gsl_vector_get(_sigma, 0)+_prng->gaussian(0.0, s_sigma));
       gsl_vector_set_all(_sigma, new_sigma);
     }
     else if (_noise_type == UNCORRELATED || _noise_type == FULL)
     {
-      for (size_t i = 0; i < _n; i++)
+      for (int i = 0; i < _n; i++)
       {
-        gsl_vector_set(_sigma, i, fabs(gsl_vector_get(_sigma, i)+_prng->gaussian(0.0, _s_sigma)));
+        gsl_vector_set(_sigma, i, fabs(gsl_vector_get(_sigma, i)+_prng->gaussian(0.0, s_sigma)));
       }
     }
     _phenotype_is_built = false;
   }
   
-  /**************************/
-  /* 3) Mutate theta vector */
-  /**************************/
-  if (_n > 1 && _noise_type == FULL && _prng->uniform() < _m_theta)
+  /*****************************/
+  /* 4) Mutate theta vector    */
+  /*****************************/
+  if (_n > 1 && _noise_type == FULL && _prng->uniform() < m_theta)
   {
-    for (size_t i = 0; i < _n*(_n-1)/2; i++)
+    for (int i = 0; i < _n*(_n-1)/2; i++)
     {
-      gsl_vector_set(_theta, i, gsl_vector_get(_theta, i)+_prng->gaussian(0.0, _s_theta));
+      gsl_vector_set(_theta, i, gsl_vector_get(_theta, i)+_prng->gaussian(0.0, s_theta));
     }
   }
   _phenotype_is_built = false;
+  
+  /*****************************/
+  /* 5) Compute mutation sizes */
+  /*****************************/
+  _r_mu    = 0.0;
+  _r_sigma = 0.0;
+  _r_theta = 0.0;
+  for (int i = 0; i < _n; i++)
+  {
+    double p_mu    = gsl_vector_get(previous_mu, i);
+    double mu      = gsl_vector_get(_mu, i);
+    double p_sigma = gsl_vector_get(previous_sigma, i);
+    double sigma   = gsl_vector_get(_sigma, i);
+    _r_mu         += (mu-p_mu)*(mu-p_mu);
+    _r_sigma      += (sigma-p_sigma)*(sigma-p_sigma);
+  }
+  for (int i = 0; i < _n*(_n-1)/2; i++)
+  {
+    double p_theta  = gsl_vector_get(previous_theta, i);
+    double theta    = gsl_vector_get(_theta, i);
+    _r_theta       += (theta-p_theta)*(theta-p_theta);
+  }
+  _r_mu    = sqrt(_r_mu);
+  _r_sigma = sqrt(_r_sigma);
+  _r_theta = sqrt(_r_theta);
+  gsl_vector_free(previous_mu);
+  previous_mu = NULL;
+  gsl_vector_free(previous_sigma);
+  previous_sigma = NULL;
+  gsl_vector_free(previous_theta);
+  previous_theta = NULL;
 }
 
 /**
@@ -335,27 +367,25 @@ void Individual::build_phenotype( void )
 /**
  * \brief    Compute the fitness
  * \details  --
- * \param    gsl_vector* z_opt
  * \param    double alpha
  * \param    double beta
  * \param    double Q
  * \return   \e void
  */
-void Individual::compute_fitness( gsl_vector* z_opt, double alpha, double beta, double Q )
+void Individual::compute_fitness( double alpha, double beta, double Q )
 {
   _dg = 0.0;
   _dp = 0.0;
-  for (size_t i = 0; i < _n; i++)
+  for (int i = 0; i < _n; i++)
   {
-    double mu    = gsl_vector_get(_mu, i);
-    double z     = gsl_vector_get(_z, i);
-    double zopt  = gsl_vector_get(z_opt, i);
-    _dg         += (mu-zopt)*(mu-zopt);
-    _dp         += (z-zopt)*(z-zopt);
+    double mu  = gsl_vector_get(_mu, i);
+    double z   = gsl_vector_get(_z, i);
+    _dg       += mu*mu;
+    _dp       += z*z;
   }
   _dg = sqrt(_dg);
   _dp = sqrt(_dp);
-  _wp = exp(-(1.0-beta)*alpha*pow(_dg, Q)+beta);
+  _wg = exp(-(1.0-beta)*alpha*pow(_dg, Q)+beta);
   _wp = exp(-(1.0-beta)*alpha*pow(_dp, Q)+beta);
 }
 
@@ -366,16 +396,16 @@ void Individual::compute_fitness( gsl_vector* z_opt, double alpha, double beta, 
 /**
  * \brief    Rotate the matrix m by angle theta on the plane (a, b)
  * \details  --
- * \param    size_t a
- * \param    size_t b
+ * \param    int a
+ * \param    int b
  * \param    double theta
  * \return   \e void
  */
-void Individual::rotate( gsl_matrix* m, size_t a, size_t b, double theta )
+void Individual::rotate( gsl_matrix* m, int a, int b, double theta )
 {
   gsl_matrix* newm = gsl_matrix_alloc(_n, _n);
   gsl_matrix_memcpy(newm, m);
-  for (size_t k = 0; k < _n; k++)
+  for (int k = 0; k < _n; k++)
   {
     gsl_matrix_set(newm, a, k, cos(theta)*gsl_matrix_get(m, a, k)-sin(theta)*gsl_matrix_get(m, b, k));
     gsl_matrix_set(newm, b, k, sin(theta)*gsl_matrix_get(m, a, k)+cos(theta)*gsl_matrix_get(m, b, k));
@@ -406,10 +436,10 @@ void Individual::build_Sigma( void )
   /*****************************************/
   if (_n > 1 && _noise_type == FULL)
   {
-    size_t counter = 0;
-    for (size_t a = 0; a < _n; a++)
+    int counter = 0;
+    for (int a = 0; a < _n; a++)
     {
-      for (size_t b = a+1; b < _n; b++)
+      for (int b = a+1; b < _n; b++)
       {
         rotate(X, a, b, gsl_vector_get(_theta, counter));
         counter++;
@@ -421,12 +451,12 @@ void Individual::build_Sigma( void )
   /*****************************************/
   /* 3) Create the matrix D of eigenvalues */
   /*****************************************/
-  _max_Sigma_eigenvalue  = 0.0;
-  size_t max_sigma_index = 0;
-  double sigma_sum       = 0.0;
+  _max_Sigma_eigenvalue = 0.0;
+  int max_sigma_index   = 0;
+  double sigma_sum      = 0.0;
   gsl_matrix* D = gsl_matrix_alloc(_n, _n);
   gsl_matrix_set_zero(D);
-  for (size_t i = 0; i < _n; i++)
+  for (int i = 0; i < _n; i++)
   {
     double sigma = gsl_vector_get(_sigma, i);
     gsl_matrix_set(D, i, i, sigma);
@@ -444,7 +474,7 @@ void Individual::build_Sigma( void )
   /*****************************************/
   _max_Sigma_eigenvector  = gsl_vector_alloc(_n);
   _max_Sigma_contribution = _max_Sigma_eigenvalue/sigma_sum;
-  for (size_t i = 0; i < _n; i++)
+  for (int i = 0; i < _n; i++)
   {
     gsl_vector_set(_max_Sigma_eigenvector, i, gsl_matrix_get(X, i, max_sigma_index));
   }
@@ -478,7 +508,7 @@ void Individual::compute_dot_product( void )
   gsl_vector_set_zero(d);
   gsl_vector_sub(d, _mu);
   double norm = gsl_blas_dnrm2(d);
-  for (size_t i = 0; i < _n; i++)
+  for (int i = 0; i < _n; i++)
   {
     gsl_vector_set(d, i, gsl_vector_get(d, i)/norm);
   }
@@ -520,7 +550,7 @@ void Individual::draw_z( void )
   else
   {
     /* Draw the uniform vector N(0,1) */
-    for (size_t i = 0; i < _n; i++)
+    for (int i = 0; i < _n; i++)
     {
       gsl_vector_set(_z, i, _prng->gaussian(0.0, 1.0));
     }

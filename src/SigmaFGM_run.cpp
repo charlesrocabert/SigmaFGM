@@ -1,15 +1,16 @@
 
 /**
  * \file      run_solver.cpp
- * \authors   Charles Rocabert, Samuel Bernard
+ * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard. All rights reserved
+ * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Run the solver
+ * \brief     Run the simulation
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard
+ * Copyright (C) 2016-2018
+ * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,9 +34,11 @@
 #include <sys/stat.h>
 #include <assert.h>
 
+#include "./lib/Macros.h"
 #include "./lib/Enums.h"
 #include "./lib/Parameters.h"
-#include "./lib/Solver.h"
+#include "./lib/Population.h"
+#include "./lib/Statistics.h"
 
 const std::string EXECUTABLE_NAME = "build/bin/run_solver";
 
@@ -53,98 +56,44 @@ void printHeader( void );
  */
 int main( int argc, char const** argv )
 {
-  /**************************************************/
-  /* 1) Read parameters                             */
-  /**************************************************/
+  /****************************/
+  /* 1) Read parameters       */
+  /****************************/
   Parameters* parameters = new Parameters();
   readArgs(argc, argv, parameters);
-  if (parameters->get_prng_seed() == 0)
+  if (parameters->get_seed() == 0)
   {
-    parameters->set_prng_seed((unsigned long int)time(NULL));
+    parameters->set_seed((unsigned long int)time(NULL));
   }
   parameters->print_parameters();
   
-  /**************************************************/
-  /* 2) Create the solver                           */
-  /**************************************************/
-  Solver* solver = new Solver(parameters);
-  solver->initialize();
+  /****************************/
+  /* 2) Create the simulation */
+  /****************************/
+  Population* pop   = new Population(parameters);
+  Statistics* stats = new Statistics();
+  stats->write_headers();
   
-  /**************************************************/
-  /* 3) Bring the solver to an initial stable state */
-  /**************************************************/
-  if (parameters->get_stabilizing_time() > 0)
+  /****************************/
+  /* 3) Run the simulation    */
+  /****************************/
+  for (int t = 1; t <= parameters->get_simulation_time(); t++)
   {
-    solver->stabilize();
+    stats->reset();
+    stats->compute_statistics(pop);
+    stats->write_statistics(t);
+    stats->flush();
+    pop->compute_next_generation();
   }
+  stats->close();
   
-  /**************************************************/
-  /* 4) Run the solver                              */
-  /**************************************************/
-  std::ofstream extra_2D_statistics;
-  if (parameters->get_extra_2D_statistics())
-  {
-    extra_2D_statistics.open("2Dstatistics.txt", std::ios::out | std::ios::trunc);
-    extra_2D_statistics << "step t mu1 mu2 sigma1 sigma2 theta\n";
-  }
-  bool   stop_criterion = false;
-  size_t shutoff_count  = 0;
-  while (!stop_criterion)
-  {
-    /* 4.1) Update the solver's state --*/
-    solver->update(false);
-    
-    /* 4.2) Save statistics ------------*/
-    if (parameters->get_statistics())
-    {
-      solver->compute_statistics();
-      solver->write_statistics();
-    }
-    if (parameters->get_extra_2D_statistics())
-    {
-      solver->write_extra_statistics(extra_2D_statistics);
-    }
-    
-    /* 4.3) Evaluate the stop criterion */
-    if (parameters->get_shutoff_fitness() == 0.0)
-    {
-      stop_criterion = (solver->get_step() >= parameters->get_time());
-    }
-    else
-    {
-      if (solver->get_mean_wmu() > parameters->get_shutoff_fitness())
-      {
-        shutoff_count++;
-      }
-      else
-      {
-        shutoff_count = 0;
-      }
-      if (shutoff_count >= parameters->get_shutoff_time())
-      {
-        stop_criterion = true;
-      }
-    }
-    /* 4.4) Show solver state ----------*/
-    if (solver->get_step()%1000 == 0)
-    {
-      std::cout << "> " << solver->get_step() << " elapsed steps (" << solver->get_time() << " elapsed time, wmu=" << solver->get_mean_wmu() << ")...\n";
-    }
-  }
-  if (parameters->get_statistics())
-  {
-    solver->close_statistics();
-  }
-  if (parameters->get_extra_2D_statistics())
-  {
-    extra_2D_statistics.close();
-  }
-  
-  /**************************************************/
-  /* 5) Free memory                                 */
-  /**************************************************/
-  delete solver;
-  solver = NULL;
+  /****************************/
+  /* 4) Free memory           */
+  /****************************/
+  delete stats;
+  stats = NULL;
+  delete pop;
+  pop = NULL;
   delete parameters;
   parameters = NULL;
   
@@ -182,22 +131,8 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       exit(EXIT_SUCCESS);
     }
     
-    /*----------------------------------*/
+    /****************************************************************/
     
-    /* Mandatory */
-    else if (strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--time") == 0)
-    {
-      if (i+1 == argc)
-      {
-        std::cout << "Error: command line parameter value is missing.\n";
-        exit(EXIT_FAILURE);
-      }
-      else
-      {
-        parameters->set_time((size_t)atoi(argv[i+1]));
-        counter++;
-      }
-    }
     /* Mandatory */
     else if (strcmp(argv[i], "-seed") == 0 || strcmp(argv[i], "--seed") == 0)
     {
@@ -208,7 +143,21 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_prng_seed((unsigned long int)atoi(argv[i+1]));
+        parameters->set_seed((unsigned long int)atoi(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-simt") == 0 || strcmp(argv[i], "--simulation-time") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_simulation_time(atoi(argv[i+1]));
         counter++;
       }
     }
@@ -222,12 +171,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_number_of_dimensions((size_t)atoi(argv[i+1]));
+        parameters->set_number_of_dimensions(atoi(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-fitnessshape") == 0 || strcmp(argv[i], "--fitness-shape") == 0)
+    else if (strcmp(argv[i], "-alpha") == 0 || strcmp(argv[i], "--alpha") == 0)
     {
       if (i+1 == argc)
       {
@@ -236,27 +185,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        if (strcmp(argv[i+1], "exponential") == 0 || strcmp(argv[i+1], "EXPONENTIAL") == 0)
-        {
-          parameters->set_fitness_function_shape(EXPONENTIAL);
-        }
-        else if (strcmp(argv[i+1], "cauchy") == 0 || strcmp(argv[i+1], "CAUCHY") == 0)
-        {
-          parameters->set_fitness_function_shape(CAUCHY);
-        }
-        else if (strcmp(argv[i+1], "linear") == 0 || strcmp(argv[i+1], "LINEAR") == 0)
-        {
-          parameters->set_fitness_function_shape(LINEAR);
-        }
-        else if (strcmp(argv[i+1], "step") == 0 || strcmp(argv[i+1], "STEP") == 0)
-        {
-          parameters->set_fitness_function_shape(STEP);
-        }
+        parameters->set_alpha(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-fitnessparameter") == 0 || strcmp(argv[i], "--fitness-parameter") == 0)
+    else if (strcmp(argv[i], "-beta") == 0 || strcmp(argv[i], "--beta") == 0)
     {
       if (i+1 == argc)
       {
@@ -265,12 +199,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_fitness_function_parameter(atof(argv[i+1]));
+        parameters->set_beta(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-nbparticles") == 0 || strcmp(argv[i], "--nb-particles") == 0)
+    else if (strcmp(argv[i], "-Q") == 0 || strcmp(argv[i], "--Q") == 0)
     {
       if (i+1 == argc)
       {
@@ -279,7 +213,21 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_number_of_particles(atof(argv[i+1]));
+        parameters->set_Q(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-popsize") == 0 || strcmp(argv[i], "--population-size") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_population_size(atoi(argv[i+1]));
         counter++;
       }
     }
@@ -326,7 +274,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-dmu") == 0 || strcmp(argv[i], "--delta-mu") == 0)
+    else if (strcmp(argv[i], "-mmu") == 0 || strcmp(argv[i], "--m-mu") == 0)
     {
       if (i+1 == argc)
       {
@@ -335,12 +283,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_delta_mu(atof(argv[i+1]));
+        parameters->set_m_mu(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-dsigma") == 0 || strcmp(argv[i], "--delta-sigma") == 0)
+    else if (strcmp(argv[i], "-msigma") == 0 || strcmp(argv[i], "--m-sigma") == 0)
     {
       if (i+1 == argc)
       {
@@ -349,12 +297,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_delta_sigma(atof(argv[i+1]));
+        parameters->set_m_sigma(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-dtheta") == 0 || strcmp(argv[i], "--delta-theta") == 0)
+    else if (strcmp(argv[i], "-mtheta") == 0 || strcmp(argv[i], "--m-theta") == 0)
     {
       if (i+1 == argc)
       {
@@ -363,12 +311,88 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_delta_theta(atof(argv[i+1]));
+        parameters->set_m_theta(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-smu") == 0 || strcmp(argv[i], "--s-mu") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_s_mu(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-ssigma") == 0 || strcmp(argv[i], "--s-sigma") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_s_sigma(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-stheta") == 0 || strcmp(argv[i], "--s-theta") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_s_theta(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-noise") == 0 || strcmp(argv[i], "--noise-type") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        if (strcmp(argv[i+1], "NONE") == 0)
+        {
+          parameters->set_noise_type(NONE);
+        }
+        else if (strcmp(argv[i+1], "ISOTROPIC") == 0)
+        {
+          parameters->set_noise_type(ISOTROPIC);
+        }
+        else if (strcmp(argv[i+1], "UNCORRELATED") == 0)
+        {
+          parameters->set_noise_type(UNCORRELATED);
+        }
+        else if (strcmp(argv[i+1], "FULL") == 0)
+        {
+          parameters->set_noise_type(FULL);
+        }
+        else
+        {
+          std::cout << "Error: wrong value for parameter -noise (--noise-type).\n";
+          exit(EXIT_FAILURE);
+        }
         counter++;
       }
     }
     
-    /*----------------------------------*/
+    /****************************************************************/
     
     /* Not mandatory */
     else if (strcmp(argv[i], "-stabt") == 0 || strcmp(argv[i], "--stabilizing-time") == 0)
@@ -380,11 +404,11 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_stabilizing_time((size_t)atoi(argv[i+1]));
+        parameters->set_stabilizing_time(atoi(argv[i+1]));
       }
     }
     /* Not mandatory */
-    else if (strcmp(argv[i], "-shutofffitness") == 0 || strcmp(argv[i], "--shutoff-fitness") == 0)
+    else if (strcmp(argv[i], "-shutoffdistance") == 0 || strcmp(argv[i], "--shutoff-distance") == 0)
     {
       if (i+1 == argc)
       {
@@ -393,7 +417,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_shutoff_fitness(atof(argv[i+1]));
+        parameters->set_shutoff_distance(atof(argv[i+1]));
       }
     }
     /* Not mandatory */
@@ -406,46 +430,15 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_shutoff_time((size_t)atoi(argv[i+1]));
+        parameters->set_shutoff_time(atoi(argv[i+1]));
       }
     }
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-statistics") == 0 || strcmp(argv[i], "--statistics") == 0)
+    else if (strcmp(argv[i], "-oneDshift") == 0 || strcmp(argv[i], "--oneD-shift") == 0)
     {
-      parameters->set_statistics(true);
-    }
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-2Dstatistics") == 0 || strcmp(argv[i], "--2Dstatistics") == 0)
-    {
-      parameters->set_extra_2D_statistics(true);
-    }
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-oneaxis") == 0 || strcmp(argv[i], "--oneaxis") == 0)
-    {
-      parameters->set_one_axis(true);
-    }
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-nonoise") == 0 || strcmp(argv[i], "--nonoise") == 0)
-    {
-      parameters->set_no_noise(true);
-    }
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-isotropicnoise") == 0 || strcmp(argv[i], "--isotropicnoise") == 0)
-    {
-      parameters->set_isotropic_noise(true);
-    }
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-norotation") == 0 || strcmp(argv[i], "--norotation") == 0)
-    {
-      parameters->set_no_rotation(true);
-    }
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-qagi") == 0 || strcmp(argv[i], "--qagi") == 0)
-    {
-      parameters->set_qagi(true);
+      parameters->set_oneD_shift(true);
     }
   }
-  if (counter < 12)
+  if (counter < 17)
   {
     printf("You must provide all the mandatory arguments (see -h or --help). Exit.\n");
     exit(EXIT_SUCCESS);
@@ -469,15 +462,14 @@ void printUsage( void )
   std::cout << " " << PACKAGE << " " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << " ( release )\n";
 #endif
   std::cout << "                                                                     \n";
-  std::cout << " Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard            \n";
+  std::cout << " Copyright (C) 2016-2018                                             \n";
+  std::cout << " Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon   \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";
   std::cout << " This is free software, and you are welcome to redistribute it under \n";
   std::cout << " certain conditions; See the GNU General Public License for details  \n";
   std::cout << "*********************************************************************\n";
   std::cout << "\n";
-  std::cout << "Run the solver:\n";
-  std::cout << "---------------\n";
   std::cout << "Usage: run_solver -h or --help\n";
   std::cout << "   or: run_solver [options]\n";
   std::cout << "Options are:\n";
@@ -485,50 +477,48 @@ void printUsage( void )
   std::cout << "        print this help, then exit\n";
   std::cout << "  -v, --version\n";
   std::cout << "        print the current version, then exit\n";
-  std::cout << "  -stabt, --stabilizing-time\n";
-  std::cout << "        specify the stabilizing time\n";
-  std::cout << "  -t, --time\n";
-  std::cout << "        specify the solving time (mandatory)\n";
-  std::cout << "  -shutofffitness, --shutoff-fitness\n";
-  std::cout << "        specify the shutoff fitness\n";
-  std::cout << "  -shutofftime, --shutoff-time\n";
-  std::cout << "        specify the shutoff time\n";
   std::cout << "  -seed, --seed\n";
   std::cout << "        specify the prng seed (mandatory, random if 0)\n";
+  std::cout << "  -stabt, --stabilizing-time\n";
+  std::cout << "        specify the stabilizing time\n";
+  std::cout << "  -simt, --simulation-time\n";
+  std::cout << "        specify the simulation time (mandatory)\n";
+  std::cout << "  -shutoffdistance, --shutoff-distance\n";
+  std::cout << "        specify the shutoff distance\n";
+  std::cout << "  -shutofftime, --shutoff-time\n";
+  std::cout << "        specify the shutoff time\n";
   std::cout << "  -nbdim, --nb-dimensions\n";
   std::cout << "        specify the number of dimensions (mandatory)\n";
-  std::cout << "  -fitnessshape, --fitness-shape\n";
-  std::cout << "        specify the shape of the fitness function (mandatory, exponential/cauchy/linear/step)\n";
-  std::cout << "  -fitnessparameter, --fitness-parameter\n";
-  std::cout << "        specify the parameter value of the fitness function (mandatory, > 0.0)\n";
-  std::cout << "  -nbparticles, --nb-particles\n";
-  std::cout << "        specify the number of particles (mandatory)\n";
+  std::cout << "  -alpha, --alpha\n";
+  std::cout << "        specify the alpha parameter of the fitness function (0.0 < mandatory)\n";
+  std::cout << "  -beta, --beta\n";
+  std::cout << "        specify the beta parameter of the fitness function (0.0 <= mandatory <= 1.0)\n";
+  std::cout << "  -Q, --Q\n";
+  std::cout << "        specify the Q parameter of the fitness function (0.0 <= mandatory)\n";
+  std::cout << "  -popsize, --population-size\n";
+  std::cout << "        specify the population size (mandatory)\n";
   std::cout << "  -initmu, --initial-mu\n";
   std::cout << "        specify the initial mu value (mandatory)\n";
   std::cout << "  -initsigma, --initial-sigma\n";
   std::cout << "        specify initial sigma value (mandatory)\n";
   std::cout << "  -inittheta, --initial-theta\n";
   std::cout << "        specify initial theta value (mandatory)\n";
-  std::cout << "  -dmu, --delta-mu\n";
+  std::cout << "  -oneDshift, --oneD-shift\n";
+  std::cout << "        Indicates if the initial population is shifted in a single dimension\n";
+  std::cout << "  -mmu, --m-mu\n";
+  std::cout << "        specify the mu mutation rate (mandatory)\n";
+  std::cout << "  -msigma, --m-sigma\n";
+  std::cout << "        specify the sigma mutation rate (mandatory)\n";
+  std::cout << "  -mtheta, --m-theta\n";
+  std::cout << "        specify the theta mutation rate (mandatory)\n";
+  std::cout << "  -smu, --s-mu\n";
   std::cout << "        specify the mu mutation size (mandatory)\n";
-  std::cout << "  -dsigma, --delta-sigma\n";
+  std::cout << "  -ssigma, --s-sigma\n";
   std::cout << "        specify the sigma mutation size (mandatory)\n";
-  std::cout << "  -dtheta, --delta-theta\n";
+  std::cout << "  -stheta, --stheta\n";
   std::cout << "        specify the theta mutation size (mandatory)\n";
-  std::cout << "  -statistics, --statistics\n";
-  std::cout << "        Activate statistics saving\n";
-  std::cout << "  -2Dstatistics, --2Dstatistics\n";
-  std::cout << "        Activate extra 2D statistics saving\n";
-  std::cout << "  -oneaxis, --oneaxis\n";
-  std::cout << "        Initialize only one axis\n";
-  std::cout << "  -nonoise, --nonoise\n";
-  std::cout << "        Individuals do not undergo noise\n";
-  std::cout << "  -isotropicnoise, --isotropicnoise\n";
-  std::cout << "        Noise is isotropic\n";
-  std::cout << "  -norotation, --norotation\n";
-  std::cout << "        Individuals do not undergo co-variance matrix rotations\n";
-  std::cout << "  -qagi, --qagi\n";
-  std::cout << "        Integrative fitness will be computed, instead of instantaneous one\n";
+  std::cout << "  -noise, --noise-type\n";
+  std::cout << "        Specify the type of noise (mandatory, NONE/ISOTROPIC/UNCORRELATED/FULL)\n";
   std::cout << "\n";
 }
 
@@ -549,12 +539,12 @@ void printHeader( void )
   std::cout << " " << PACKAGE << " " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << " ( release )\n";
 #endif
   std::cout << "                                                                     \n";
-  std::cout << " Copyright (C) 2016-2017 Charles Rocabert, Samuel Bernard            \n";
+  std::cout << " Copyright (C) 2016-2018                                             \n";
+  std::cout << " Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon   \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";
   std::cout << " This is free software, and you are welcome to redistribute it under \n";
   std::cout << " certain conditions; See the GNU General Public License for details  \n";
   std::cout << "*********************************************************************\n";
-  std::cout << "Run the solver.\n";
   std::cout << "\n";
 }
