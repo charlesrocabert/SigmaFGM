@@ -8,3 +8,5 @@ cmake/Makefile
 cmake/Config.h
 example/**
 !example/run.py
+!example/plot.R
+
