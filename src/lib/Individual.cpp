@@ -598,3 +598,34 @@ void Individual::clear_memory( void )
   gsl_vector_free(_max_Sigma_eigenvector);
   _max_Sigma_eigenvector = NULL;
 }
+
+/**
+ * \brief    Delete all vectors and matrices
+ * \details  --
+ * \param    void
+ * \return   \e void
+ */
+void Individual::delete_vectors_and_matrices( void )
+{
+  gsl_vector_free(_mu);
+  _mu = NULL;
+  if (_noise_type != NONE)
+  {
+    gsl_vector_free(_sigma);
+    _sigma = NULL;
+    gsl_matrix_free(_Sigma);
+    _Sigma = NULL;
+    gsl_matrix_free(_Cholesky);
+    _Cholesky = NULL;
+    gsl_vector_free(_max_Sigma_eigenvector);
+    _max_Sigma_eigenvector = NULL;
+    if (_n > 1 && _noise_type == FULL)
+    {
+      gsl_vector_free(_theta);
+      _theta = NULL;
+    }
+  }
+  gsl_vector_free(_z);
+  _z = NULL;
+}
+

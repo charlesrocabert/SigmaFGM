@@ -63,20 +63,20 @@ def run_simulation( seed, stabt, simt, shutoffdistance, shutofftime, nbdim,
 if __name__ == '__main__':
 	SEED             = 0
 	STABILIZING_TIME = 0
-	SIMULATION_TIME  = 2000
+	SIMULATION_TIME  = 300
 	SHUTOFF_DISTANCE = 0
 	SHUTOFF_TIME     = 0
 	NB_DIMENSIONS    = 1
 	ALPHA            = 0.5
 	BETA             = 0.0
 	Q                = 2.0
-	POPULATION_SIZE  = 1000
-	INITIAL_MU       = 4.0/math.sqrt(float(NB_DIMENSIONS))
+	POPULATION_SIZE  = 500
+	INITIAL_MU       = 2.0/math.sqrt(float(NB_DIMENSIONS))
 	INITIAL_SIGMA    = 1e-15
 	INITIAL_THETA    = 0.0
-	M_MU             = 1.0
-	M_SIGMA          = 1.0
-	M_THETA          = 1.0
+	M_MU             = 1e-0
+	M_SIGMA          = 1e-0
+	M_THETA          = 1e-0
 	S_MU             = 0.01/math.sqrt(float(NB_DIMENSIONS))
 	S_SIGMA          = 0.01
 	S_THETA          = 0.01

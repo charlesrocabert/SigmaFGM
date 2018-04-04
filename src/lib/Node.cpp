@@ -64,6 +64,7 @@ Node::Node( Individual* individual )
   _identifier = individual->get_identifier();
   _generation = individual->get_generation();
   _individual = new Individual(*individual);
+  _individual->delete_vectors_and_matrices();
   _parent     = NULL;
   _children.clear();
   _node_class = NORMAL;

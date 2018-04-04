@@ -270,34 +270,6 @@ void Tree::write_best_lineage_statistics( void )
  *----------------------------*/
 
 /**
- * \brief    Tag all the nodes
- * \details  --
- * \param    void
- * \return   \e void
- */
-void Tree::tag_tree()
-{
-  for (_iterator = _node_map.begin(); _iterator != _node_map.end(); ++_iterator)
-  {
-    _iterator->second->tag();
-  }
-}
-
-/**
- * \brief    Untag all the nodes
- * \details  --
- * \param    void
- * \return   \e void
- */
-void Tree::untag_tree()
-{
-  for (_iterator = _node_map.begin(); _iterator != _node_map.end(); ++_iterator)
-  {
-    _iterator->second->untag();
-  }
-}
-
-/**
  * \brief    Tag all the offspring of this node
  * \details  --
  * \param    Node* node

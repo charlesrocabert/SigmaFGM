@@ -91,9 +91,9 @@ protected:
   /*----------------------------
    * PROTECTED METHODS
    *----------------------------*/
-  void tag_tree();
-  void untag_tree();
-  void tag_offspring( Node* node, std::vector<Node*>* tagged_nodes );
+  inline void tag_tree();
+  inline void untag_tree();
+  void        tag_offspring( Node* node, std::vector<Node*>* tagged_nodes );
   
   /*----------------------------
    * PROTECTED ATTRIBUTES
@@ -192,6 +192,38 @@ inline Node* Tree::get_best_alive_node( void )
 /*----------------------------
  * SETTERS
  *----------------------------*/
+
+/*----------------------------
+ * PROTECTED METHODS
+ *----------------------------*/
+
+/**
+ * \brief    Tag all the nodes
+ * \details  --
+ * \param    void
+ * \return   \e void
+ */
+inline void Tree::tag_tree()
+{
+  for (_iterator = _node_map.begin(); _iterator != _node_map.end(); ++_iterator)
+  {
+    _iterator->second->tag();
+  }
+}
+
+/**
+ * \brief    Untag all the nodes
+ * \details  --
+ * \param    void
+ * \return   \e void
+ */
+inline void Tree::untag_tree()
+{
+  for (_iterator = _node_map.begin(); _iterator != _node_map.end(); ++_iterator)
+  {
+    _iterator->second->untag();
+  }
+}
 
 
 #endif /* defined(__SigmaFGM__Tree__) */

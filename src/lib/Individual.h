@@ -104,6 +104,7 @@ public:
   void mutate( double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta );
   void build_phenotype( void );
   void compute_fitness( double alpha, double beta, double Q );
+  void delete_vectors_and_matrices( void );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES
