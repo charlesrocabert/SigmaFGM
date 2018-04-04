@@ -252,18 +252,24 @@ Individual::~Individual( void )
  */
 void Individual::mutate( double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta )
 {
+  gsl_vector* previous_mu    = NULL;
+  gsl_vector* previous_sigma = NULL;
+  gsl_vector* previous_theta = NULL;
+  
   /*****************************/
   /* 1) Save current genotype  */
   /*****************************/
-  gsl_vector* previous_mu = gsl_vector_alloc(_n);
+  previous_mu = gsl_vector_alloc(_n);
   gsl_vector_memcpy(previous_mu, _mu);
-  gsl_vector* previous_sigma = gsl_vector_alloc(_n);
-  gsl_vector_memcpy(previous_sigma, _sigma);
-  gsl_vector* previous_theta = NULL;
-  if (_n > 1 && _noise_type == FULL)
+  if (_noise_type != NONE)
   {
-    gsl_vector* previous_theta = gsl_vector_alloc(_n*(_n-1)/2);
-    gsl_vector_memcpy(previous_theta, _theta);
+    previous_sigma = gsl_vector_alloc(_n);
+    gsl_vector_memcpy(previous_sigma, _sigma);
+    if (_n > 1 && _noise_type == FULL)
+    {
+      previous_theta = gsl_vector_alloc(_n*(_n-1)/2);
+      gsl_vector_memcpy(previous_theta, _theta);
+    }
   }
   
   /*****************************/
@@ -318,19 +324,26 @@ void Individual::mutate( double m_mu, double m_sigma, double m_theta, double s_m
   _r_theta = 0.0;
   for (int i = 0; i < _n; i++)
   {
-    double p_mu    = gsl_vector_get(previous_mu, i);
-    double mu      = gsl_vector_get(_mu, i);
-    double p_sigma = gsl_vector_get(previous_sigma, i);
-    double sigma   = gsl_vector_get(_sigma, i);
-    _r_mu         += (mu-p_mu)*(mu-p_mu);
-    _r_sigma      += (sigma-p_sigma)*(sigma-p_sigma);
+    double p_mu = gsl_vector_get(previous_mu, i);
+    double mu   = gsl_vector_get(_mu, i);
+    _r_mu      += (mu-p_mu)*(mu-p_mu);
+    if (_noise_type != NONE)
+    {
+      double p_sigma = gsl_vector_get(previous_sigma, i);
+      double sigma   = gsl_vector_get(_sigma, i);
+      _r_sigma      += (sigma-p_sigma)*(sigma-p_sigma);
+    }
   }
-  for (int i = 0; i < _n*(_n-1)/2; i++)
+  if (_n > 1 && _noise_type == FULL)
   {
-    double p_theta  = gsl_vector_get(previous_theta, i);
-    double theta    = gsl_vector_get(_theta, i);
-    _r_theta       += (theta-p_theta)*(theta-p_theta);
+    for (int i = 0; i < _n*(_n-1)/2; i++)
+    {
+      double p_theta  = gsl_vector_get(previous_theta, i);
+      double theta    = gsl_vector_get(_theta, i);
+      _r_theta       += (theta-p_theta)*(theta-p_theta);
+    }
   }
+  
   _r_mu    = sqrt(_r_mu);
   _r_sigma = sqrt(_r_sigma);
   _r_theta = sqrt(_r_theta);

@@ -61,16 +61,16 @@ def run_simulation( seed, stabt, simt, shutoffdistance, shutofftime, nbdim,
 ############
 
 if __name__ == '__main__':
-	SEED             = 87693
+	SEED             = 0
 	STABILIZING_TIME = 0
-	SIMULATION_TIME  = 2000
+	SIMULATION_TIME  = 10000
 	SHUTOFF_DISTANCE = 0
 	SHUTOFF_TIME     = 0
 	NB_DIMENSIONS    = 1
 	ALPHA            = 0.5
 	BETA             = 0.0
 	Q                = 2.0
-	POPULATION_SIZE  = 100000
+	POPULATION_SIZE  = 5000
 	INITIAL_MU       = 4.0/math.sqrt(float(NB_DIMENSIONS))
 	INITIAL_SIGMA    = 1e-15
 	INITIAL_THETA    = 0.0
@@ -78,8 +78,8 @@ if __name__ == '__main__':
 	M_SIGMA          = 1.0
 	M_THETA          = 1.0
 	S_MU             = 0.01/math.sqrt(float(NB_DIMENSIONS))
-	S_SIGMA          = 0.01/math.sqrt(float(NB_DIMENSIONS))
-	S_THETA          = 0.01/math.sqrt(float(NB_DIMENSIONS))
+	S_SIGMA          = 0.01
+	S_THETA          = 0.01
 	NOISE            = "FULL"
 	ONED_SHIFT       = False
 

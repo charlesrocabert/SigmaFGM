@@ -56,9 +56,10 @@ void printHeader( void );
  */
 int main( int argc, char const** argv )
 {
-  /****************************/
-  /* 1) Read parameters       */
-  /****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 1) Read parameters                 */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  std::cout << "> Read parameters ...\n";
   Parameters* parameters = new Parameters();
   readArgs(argc, argv, parameters);
   if (parameters->get_seed() == 0)
@@ -67,29 +68,82 @@ int main( int argc, char const** argv )
   }
   parameters->print_parameters();
   
-  /****************************/
-  /* 2) Create the simulation */
-  /****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 2) Create the simulation           */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  std::cout << "> Create simulation ...\n";
   Population* pop   = new Population(parameters);
   Statistics* stats = new Statistics();
   stats->write_headers();
   
-  /****************************/
-  /* 3) Run the simulation    */
-  /****************************/
-  for (int t = 1; t <= parameters->get_simulation_time(); t++)
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 3) Stabilize the population        */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  if (parameters->get_stabilizing_time() > 0)
   {
-    stats->reset();
-    stats->compute_statistics(pop);
-    stats->write_statistics(t);
-    stats->flush();
-    pop->compute_next_generation();
+    std::cout << "> Stabilize population ...\n";
+    for (int t = 1; t <= parameters->get_stabilizing_time(); t++)
+    {
+      pop->compute_next_generation();
+    }
   }
-  stats->close();
   
-  /****************************/
-  /* 4) Free memory           */
-  /****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 4) Run the simulation normally     */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  if (parameters->get_shutoff_distance() == 0)
+  {
+    std::cout << "> Run simulation normally ...\n";
+    for (int t = 1; t <= parameters->get_simulation_time(); t++)
+    {
+      stats->reset();
+      stats->compute_statistics(pop);
+      stats->write_statistics(t);
+      stats->flush();
+      pop->compute_next_generation();
+    }
+    stats->close();
+  }
+  
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 5) Run the simulation with shutoff */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  if (parameters->get_shutoff_distance() > 0.0)
+  {
+    std::cout << "> Run simulation with shutoff ...\n";
+    bool reached = false;
+    int  counter = 0;
+    int  t       = 1;
+    while (counter < parameters->get_shutoff_time())
+    {
+      stats->reset();
+      stats->compute_statistics(pop);
+      stats->write_statistics(t);
+      stats->flush();
+      pop->compute_next_generation();
+      t++;
+      if (stats->get_dg_mean() <= parameters->get_shutoff_distance() && !reached)
+      {
+        reached = true;
+        counter = 1;
+      }
+      else if (stats->get_dg_mean() <= parameters->get_shutoff_distance() && reached)
+      {
+        counter += 1;
+      }
+      else if (stats->get_dg_mean() > parameters->get_shutoff_distance() && reached)
+      {
+        reached = false;
+        counter = 0;
+      }
+    }
+    stats->close();
+  }
+  
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 6) Free memory                     */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  std::cout << "> Clear memory.\n";
   delete stats;
   stats = NULL;
   delete pop;
