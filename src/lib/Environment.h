@@ -1,11 +1,11 @@
 
 /**
- * \file      Population.h
+ * \file      Environment.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
- * \date      28-03-2018
+ * \date      04-04-2018
  * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Population class declaration
+ * \brief     Environment class declaration
  */
 
 /***********************************************************************
@@ -26,22 +26,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __SigmaFGM__Population__
-#define __SigmaFGM__Population__
+#ifndef __SigmaFGM__Environment__
+#define __SigmaFGM__Environment__
 
 #include <iostream>
 #include <assert.h>
-#include <tbb/tbb.h>
+#include <gsl/gsl_vector.h>
 
 #include "Macros.h"
 #include "Enums.h"
 #include "Prng.h"
 #include "Parameters.h"
-#include "Individual.h"
-#include "Environment.h"
 
 
-class Population
+class Environment
 {
   
 public:
@@ -49,30 +47,31 @@ public:
   /*----------------------------
    * CONSTRUCTORS
    *----------------------------*/
-  Population( void ) = delete;
-  Population( Parameters* parameters, Environment* environment );
-  Population( const Population& population ) = delete;
+  Environment( void ) = delete;
+  Environment( Parameters* parameters );
+  Environment( const Environment& environment ) = delete;
   
   /*----------------------------
    * DESTRUCTORS
    *----------------------------*/
-  ~Population( void );
+  ~Environment( void );
   
   /*----------------------------
    * GETTERS
    *----------------------------*/
-  inline int         get_population_size( void ) const;
-  inline Individual* get_individual( int i );
+  inline gsl_vector* get_z_opt( void );
+  inline double      get_z_opt( int i );
   
   /*----------------------------
    * SETTERS
    *----------------------------*/
-  Population& operator=(const Population&) = delete;
+  Environment& operator=(const Environment&) = delete;
   
   /*----------------------------
    * PUBLIC METHODS
    *----------------------------*/
-  void compute_next_generation( void );
+  void stabilizing_environment( void );
+  void normal_environment( void );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES
@@ -90,15 +89,13 @@ protected:
   
   /*----------------------------------------------- PARAMETERS */
   
-  Prng*        _prng;        /*!< Pseudorandom numbers generator */
-  Parameters*  _parameters;  /*!< Parameters                     */
-  Environment* _environment; /*!< Environment (fitness optimum)  */
+  Prng*       _prng;       /*!< Pseudorandom numbers generator */
+  Parameters* _parameters; /*!< Parameters                     */
   
-  /*----------------------------------------------- POPULATION */
+  /*----------------------------------------------- ENVIRONMENT */
   
-  Individual** _pop;   /*!< Population vector               */
-  double*      _w;     /*!< Fitness vector                  */
-  double       _w_sum; /*!< Fitness sum (for normalization) */
+  gsl_vector* _z_opt; /*!< Fitness optimum */
+  
 };
 
 /*----------------------------
@@ -106,25 +103,27 @@ protected:
  *----------------------------*/
 
 /**
- * \brief    Get the population size
+ * \brief    Get the fitness optimum vector
  * \details  --
  * \param    void
- * \return   \e int
+ * \return   \e double*
  */
-inline int Population::get_population_size( void ) const
+inline gsl_vector* Environment::get_z_opt( void )
 {
-  return _parameters->get_population_size();
+  return _z_opt;
 }
 
 /**
- * \brief    Get individual i
+ * \brief    Get the ith value of the fitness optimum vector
  * \details  --
- * \param    int i
- * \return   \e Individual*
+ * \param    void
+ * \return   \e double
  */
-inline Individual* Population::get_individual( int i )
+inline double Environment::get_z_opt( int i )
 {
-  return _pop[i];
+  assert(i >= 0);
+  assert(i < _parameters->get_number_of_dimensions());
+  return gsl_vector_get(_z_opt, i);
 }
 
 /*----------------------------
@@ -132,4 +131,4 @@ inline Individual* Population::get_individual( int i )
  *----------------------------*/
 
 
-#endif /* defined(__SigmaFGM__Population__) */
+#endif /* defined(__SigmaFGM__Environment__) */

@@ -37,8 +37,7 @@
 #include "./lib/Macros.h"
 #include "./lib/Enums.h"
 #include "./lib/Parameters.h"
-#include "./lib/Population.h"
-#include "./lib/Statistics.h"
+#include "./lib/Simulation.h"
 
 const std::string EXECUTABLE_NAME = "build/bin/run_solver";
 
@@ -72,9 +71,7 @@ int main( int argc, char const** argv )
   /* 2) Create the simulation           */
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   std::cout << "> Create simulation ...\n";
-  Population* pop   = new Population(parameters);
-  Statistics* stats = new Statistics();
-  stats->write_headers();
+  Simulation* sim = new Simulation(parameters);
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 3) Stabilize the population        */
@@ -82,10 +79,7 @@ int main( int argc, char const** argv )
   if (parameters->get_stabilizing_time() > 0)
   {
     std::cout << "> Stabilize population ...\n";
-    for (int t = 1; t <= parameters->get_stabilizing_time(); t++)
-    {
-      pop->compute_next_generation();
-    }
+    sim->stabilize(parameters->get_stabilizing_time());
   }
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -94,15 +88,7 @@ int main( int argc, char const** argv )
   if (parameters->get_shutoff_distance() == 0)
   {
     std::cout << "> Run simulation normally ...\n";
-    for (int t = 1; t <= parameters->get_simulation_time(); t++)
-    {
-      stats->reset();
-      stats->compute_statistics(pop);
-      stats->write_statistics(t);
-      stats->flush();
-      pop->compute_next_generation();
-    }
-    stats->close();
+    sim->run(parameters->get_simulation_time());
   }
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -111,43 +97,15 @@ int main( int argc, char const** argv )
   if (parameters->get_shutoff_distance() > 0.0)
   {
     std::cout << "> Run simulation with shutoff ...\n";
-    bool reached = false;
-    int  counter = 0;
-    int  t       = 1;
-    while (counter < parameters->get_shutoff_time())
-    {
-      stats->reset();
-      stats->compute_statistics(pop);
-      stats->write_statistics(t);
-      stats->flush();
-      pop->compute_next_generation();
-      t++;
-      if (stats->get_dg_mean() <= parameters->get_shutoff_distance() && !reached)
-      {
-        reached = true;
-        counter = 1;
-      }
-      else if (stats->get_dg_mean() <= parameters->get_shutoff_distance() && reached)
-      {
-        counter += 1;
-      }
-      else if (stats->get_dg_mean() > parameters->get_shutoff_distance() && reached)
-      {
-        reached = false;
-        counter = 0;
-      }
-    }
-    stats->close();
+    sim->run_with_shutoff(parameters->get_shutoff_distance(), parameters->get_shutoff_time());
   }
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 6) Free memory                     */
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   std::cout << "> Clear memory.\n";
-  delete stats;
-  stats = NULL;
-  delete pop;
-  pop = NULL;
+  delete sim;
+  sim = NULL;
   delete parameters;
   parameters = NULL;
   

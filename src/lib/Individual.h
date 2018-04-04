@@ -54,7 +54,7 @@ public:
    * CONSTRUCTORS
    *----------------------------*/
   Individual( void ) = delete;
-  Individual( Prng* prng, int n, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type );
+  Individual( Prng* prng, int n, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type, gsl_vector* z_opt );
   Individual( const Individual& individual );
   
   /*----------------------------
@@ -122,9 +122,10 @@ protected:
   
   /*----------------------------------------------- PARAMETERS */
   
-  Prng*         _prng;       /*!< Pseudorandom numbers generator  */
-  int           _n;          /*!< Number of dimensions            */
-  type_of_noise _noise_type; /*!< Phenotypic noise properties     */
+  Prng*         _prng;       /*!< Pseudorandom numbers generator */
+  int           _n;          /*!< Number of dimensions           */
+  type_of_noise _noise_type; /*!< Phenotypic noise properties    */
+  gsl_vector*   _z_opt;      /*!< Fitness optimum                */
   
   /*----------------------------------------------- VARIABLES */
   

@@ -37,16 +37,19 @@
  * \brief    Constructor
  * \details  --
  * \param    Parameters* parameters
+ * \param    Environment* environment
  * \return   \e void
  */
-Population::Population( Parameters* parameters )
+Population::Population( Parameters* parameters, Environment* environment )
 {
   assert(parameters != NULL);
+  assert(environment != NULL);
   
   /*----------------------------------------------- PARAMETERS */
   
-  _prng       = parameters->get_prng();
-  _parameters = parameters;
+  _prng        = parameters->get_prng();
+  _parameters  = parameters;
+  _environment = environment;
   
   /*----------------------------------------------- POPULATION */
   
@@ -55,7 +58,7 @@ Population::Population( Parameters* parameters )
   _w_sum = 0.0;
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
-    _pop[i] = new Individual(_prng, _parameters->get_number_of_dimensions(), _parameters->get_initial_mu(), _parameters->get_initial_sigma(), _parameters->get_initial_sigma(), _parameters->get_oneD_shift(), _parameters->get_noise_type());
+    _pop[i] = new Individual(_prng, _parameters->get_number_of_dimensions(), _parameters->get_initial_mu(), _parameters->get_initial_sigma(), _parameters->get_initial_sigma(), _parameters->get_oneD_shift(), _parameters->get_noise_type(), _environment->get_z_opt());
     _pop[i]->build_phenotype();
     _pop[i]->compute_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
     _w[i]   = _pop[i]->get_wp();
@@ -79,7 +82,8 @@ Population::Population( Parameters* parameters )
  */
 Population::~Population( void )
 {
-  _prng = NULL;
+  _prng        = NULL;
+  _environment = NULL;
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
     delete _pop[i];

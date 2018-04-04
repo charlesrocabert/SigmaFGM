@@ -1,11 +1,11 @@
 
 /**
- * \file      Population.h
+ * \file      Simulation.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
- * \date      28-03-2018
+ * \date      04-04-2018
  * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Population class declaration
+ * \brief     Simulation class declaration
  */
 
 /***********************************************************************
@@ -26,22 +26,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __SigmaFGM__Population__
-#define __SigmaFGM__Population__
+#ifndef __SigmaFGM__Simulation__
+#define __SigmaFGM__Simulation__
 
 #include <iostream>
 #include <assert.h>
-#include <tbb/tbb.h>
 
 #include "Macros.h"
 #include "Enums.h"
 #include "Prng.h"
 #include "Parameters.h"
-#include "Individual.h"
+#include "Population.h"
 #include "Environment.h"
+#include "Statistics.h"
 
 
-class Population
+class Simulation
 {
   
 public:
@@ -49,30 +49,30 @@ public:
   /*----------------------------
    * CONSTRUCTORS
    *----------------------------*/
-  Population( void ) = delete;
-  Population( Parameters* parameters, Environment* environment );
-  Population( const Population& population ) = delete;
+  Simulation( void ) = delete;
+  Simulation( Parameters* parameters );
+  Simulation( const Simulation& simulation ) = delete;
   
   /*----------------------------
    * DESTRUCTORS
    *----------------------------*/
-  ~Population( void );
+  ~Simulation( void );
   
   /*----------------------------
    * GETTERS
    *----------------------------*/
-  inline int         get_population_size( void ) const;
-  inline Individual* get_individual( int i );
   
   /*----------------------------
    * SETTERS
    *----------------------------*/
-  Population& operator=(const Population&) = delete;
+  Simulation& operator=(const Simulation&) = delete;
   
   /*----------------------------
    * PUBLIC METHODS
    *----------------------------*/
-  void compute_next_generation( void );
+  void stabilize( int time );
+  void run( int time );
+  void run_with_shutoff( double shutoff_distance, int shutoff_time );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES
@@ -92,44 +92,22 @@ protected:
   
   Prng*        _prng;        /*!< Pseudorandom numbers generator */
   Parameters*  _parameters;  /*!< Parameters                     */
-  Environment* _environment; /*!< Environment (fitness optimum)  */
   
-  /*----------------------------------------------- POPULATION */
+  /*----------------------------------------------- SIMULATION */
   
-  Individual** _pop;   /*!< Population vector               */
-  double*      _w;     /*!< Fitness vector                  */
-  double       _w_sum; /*!< Fitness sum (for normalization) */
+  Environment* _environment; /*!< Environment */
+  Population*  _population;  /*!< Population  */
+  Statistics*  _statistics;  /*!< Statistics  */
+  
 };
 
 /*----------------------------
  * GETTERS
  *----------------------------*/
 
-/**
- * \brief    Get the population size
- * \details  --
- * \param    void
- * \return   \e int
- */
-inline int Population::get_population_size( void ) const
-{
-  return _parameters->get_population_size();
-}
-
-/**
- * \brief    Get individual i
- * \details  --
- * \param    int i
- * \return   \e Individual*
- */
-inline Individual* Population::get_individual( int i )
-{
-  return _pop[i];
-}
-
 /*----------------------------
  * SETTERS
  *----------------------------*/
 
 
-#endif /* defined(__SigmaFGM__Population__) */
+#endif /* defined(__SigmaFGM__Simulation__) */

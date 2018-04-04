@@ -43,15 +43,17 @@
  * \param    double theta_init
  * \param    bool oneD_shift
  * \param    bool type_of_noise noise_type
+ * \param    gsl_vector* z_opt
  * \return   \e void
  */
-Individual::Individual( Prng* prng, int n, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type )
+Individual::Individual( Prng* prng, int n, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type, gsl_vector* z_opt )
 {
   /*----------------------------------------------- PARAMETERS */
   
   _prng       = prng;
   _n          = n;
   _noise_type = noise_type;
+  _z_opt      = z_opt;
   
   /*----------------------------------------------- VARIABLES */
   
@@ -137,6 +139,7 @@ Individual::Individual( const Individual& individual )
   _prng       = individual._prng;
   _n          = individual._n;
   _noise_type = individual._noise_type;
+  _z_opt      = individual._z_opt;
   
   /*----------------------------------------------- VARIABLES */
   
@@ -213,6 +216,8 @@ Individual::Individual( const Individual& individual )
  */
 Individual::~Individual( void )
 {
+  _prng  = NULL;
+  _z_opt = NULL;
   gsl_vector_free(_mu);
   _mu = NULL;
   if (_noise_type != NONE)
@@ -391,10 +396,10 @@ void Individual::compute_fitness( double alpha, double beta, double Q )
   _dp = 0.0;
   for (int i = 0; i < _n; i++)
   {
-    double mu  = gsl_vector_get(_mu, i);
-    double z   = gsl_vector_get(_z, i);
-    _dg       += mu*mu;
-    _dp       += z*z;
+    double mu_diff  = gsl_vector_get(_mu, i)-gsl_vector_get(_z_opt, i);
+    double z_diff   = gsl_vector_get(_z, i)-gsl_vector_get(_z_opt, i);
+    _dg            += mu_diff*mu_diff;
+    _dp            += z_diff*z_diff;
   }
   _dg = sqrt(_dg);
   _dp = sqrt(_dp);
@@ -518,7 +523,7 @@ void Individual::compute_dot_product( void )
 {
   _max_dot_product = 0.0;
   gsl_vector* d    = gsl_vector_alloc(_n);
-  gsl_vector_set_zero(d);
+  gsl_vector_memcpy(d, _z_opt);
   gsl_vector_sub(d, _mu);
   double norm = gsl_blas_dnrm2(d);
   for (int i = 0; i < _n; i++)
