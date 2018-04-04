@@ -51,7 +51,8 @@ Simulation::Simulation( Parameters* parameters )
   /*----------------------------------------------- SIMULATION */
   
   _environment = new Environment(_parameters);
-  _population  = new Population(_parameters, _environment);
+  _tree        = new Tree();
+  _population  = new Population(_parameters, _environment, _tree);
   _statistics  = new Statistics();
 }
 
@@ -78,6 +79,8 @@ Simulation::~Simulation( void )
   _environment = NULL;
   delete _population;
   _population = NULL;
+  delete _tree;
+  _tree = NULL;
   delete _statistics;
   _statistics = NULL;
 }
@@ -97,7 +100,7 @@ void Simulation::stabilize( int time )
   _environment->stabilizing_environment();
   for (int t = 1; t <= time; t++)
   {
-    _population->compute_next_generation();
+    _population->compute_next_generation(t);
   }
 }
 
@@ -117,9 +120,10 @@ void Simulation::run( int time )
     _statistics->compute_statistics(_population);
     _statistics->write_statistics(t);
     _statistics->flush();
-    _population->compute_next_generation();
+    _population->compute_next_generation(t);
   }
   _statistics->close();
+  _tree->write_best_lineage_statistics();
 }
 
 /**
@@ -141,7 +145,7 @@ void Simulation::run_with_shutoff( double shutoff_distance, int shutoff_time )
     _statistics->compute_statistics(_population);
     _statistics->write_statistics(t);
     _statistics->flush();
-    _population->compute_next_generation();
+    _population->compute_next_generation(t);
     t++;
     if (_statistics->get_dg_mean() <= shutoff_distance && !reached)
     {
@@ -159,6 +163,7 @@ void Simulation::run_with_shutoff( double shutoff_distance, int shutoff_time )
     }
   }
   _statistics->close();
+  _tree->write_best_lineage_statistics();
 }
 
 /*----------------------------

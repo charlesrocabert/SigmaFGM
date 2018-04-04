@@ -68,13 +68,15 @@ public:
   
   /*----------------------------------------------- VARIABLES */
   
-  inline double get_mu( int i ) const;
-  inline double get_sigma( int i ) const;
-  inline double get_theta( int i ) const;
-  inline double get_dg( void ) const;
-  inline double get_dp( void ) const;
-  inline double get_wg( void ) const;
-  inline double get_wp( void ) const;
+  inline unsigned long long int get_identifier( void ) const;
+  inline int                    get_generation( void ) const;
+  inline double                 get_mu( int i ) const;
+  inline double                 get_sigma( int i ) const;
+  inline double                 get_theta( int i ) const;
+  inline double                 get_dg( void ) const;
+  inline double                 get_dp( void ) const;
+  inline double                 get_wg( void ) const;
+  inline double                 get_wp( void ) const;
   
   /*----------------------------------------------- MAPPING PROPERTIES */
   
@@ -92,6 +94,9 @@ public:
    * SETTERS
    *----------------------------*/
   Individual& operator=(const Individual&) = delete;
+  
+  inline void set_identifier( unsigned long long int identifier );
+  inline void set_generation( int generation );
   
   /*----------------------------
    * PUBLIC METHODS
@@ -129,16 +134,18 @@ protected:
   
   /*----------------------------------------------- VARIABLES */
   
-  gsl_vector* _mu;       /*!< Mu vector                     */
-  gsl_vector* _sigma;    /*!< Sigma vector                  */
-  gsl_vector* _theta;    /*!< Theta vector                  */
-  gsl_matrix* _Sigma;    /*!< Co-variance matrix            */
-  gsl_matrix* _Cholesky; /*!< Cholesky decomposition matrix */
-  gsl_vector* _z;        /*!< Instantaneous phenotype       */
-  double      _dg;       /*!< Euclidean distance d(mu)      */
-  double      _dp;       /*!< Euclidean distance d(z)       */
-  double      _wg;       /*!< Fitness w(mu)                 */
-  double      _wp;       /*!< Fitness w(z)                  */
+  unsigned long long int _identifier; /*!< Individual's identifier       */
+  int                    _generation; /*!< Individual's generation       */
+  gsl_vector*            _mu;         /*!< Mu vector                     */
+  gsl_vector*            _sigma;      /*!< Sigma vector                  */
+  gsl_vector*            _theta;      /*!< Theta vector                  */
+  gsl_matrix*            _Sigma;      /*!< Co-variance matrix            */
+  gsl_matrix*            _Cholesky;   /*!< Cholesky decomposition matrix */
+  gsl_vector*            _z;          /*!< Instantaneous phenotype       */
+  double                 _dg;         /*!< Euclidean distance d(mu)      */
+  double                 _dp;         /*!< Euclidean distance d(z)       */
+  double                 _wg;         /*!< Fitness w(mu)                 */
+  double                 _wp;         /*!< Fitness w(z)                  */
   
   /*----------------------------------------------- MAPPING PROPERTIES */
   
@@ -162,6 +169,28 @@ protected:
  *----------------------------*/
 
 /*----------------------------------------------- VARIABLES */
+
+/**
+ * \brief    Get individual's identifier
+ * \details  --
+ * \param    void
+ * \return   \e unsigned long long int
+ */
+inline unsigned long long int Individual::get_identifier( void ) const
+{
+  return _identifier;
+}
+
+/**
+ * \brief    Get individual's generation
+ * \details  --
+ * \param    void
+ * \return   \e int
+ */
+inline int Individual::get_generation( void ) const
+{
+  return _generation;
+}
 
 /**
  * \brief    Get mu value at position i
@@ -316,6 +345,31 @@ inline double Individual::get_r_theta( void ) const
 /*----------------------------
  * SETTERS
  *----------------------------*/
+
+/*----------------------------------------------- VARIABLES */
+
+/**
+ * \brief    Set individual's identifier
+ * \details  --
+ * \param    unsigned long long int identifier
+ * \return   \e void
+ */
+inline void Individual::set_identifier( unsigned long long int identifier )
+{
+  _identifier = identifier;
+}
+
+/**
+ * \brief    Set individual's generation
+ * \details  --
+ * \param    int generation
+ * \return   \e void
+ */
+inline void Individual::set_generation( int generation )
+{
+  assert(generation >= 0);
+  _generation = generation;
+}
 
 
 #endif /* defined(__SigmaFGM__Individual__) */

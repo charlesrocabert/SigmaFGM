@@ -38,18 +38,21 @@
  * \details  --
  * \param    Parameters* parameters
  * \param    Environment* environment
+ * \param    Tree* tree
  * \return   \e void
  */
-Population::Population( Parameters* parameters, Environment* environment )
+Population::Population( Parameters* parameters, Environment* environment, Tree* tree )
 {
   assert(parameters != NULL);
   assert(environment != NULL);
   
   /*----------------------------------------------- PARAMETERS */
   
-  _prng        = parameters->get_prng();
-  _parameters  = parameters;
-  _environment = environment;
+  _prng               = parameters->get_prng();
+  _parameters         = parameters;
+  _environment        = environment;
+  _tree               = tree;
+  _current_identifier = 1;
   
   /*----------------------------------------------- POPULATION */
   
@@ -59,8 +62,11 @@ Population::Population( Parameters* parameters, Environment* environment )
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
     _pop[i] = new Individual(_prng, _parameters->get_number_of_dimensions(), _parameters->get_initial_mu(), _parameters->get_initial_sigma(), _parameters->get_initial_sigma(), _parameters->get_oneD_shift(), _parameters->get_noise_type(), _environment->get_z_opt());
+    _pop[i]->set_identifier(_current_identifier++);
+    _pop[i]->set_generation(0);
     _pop[i]->build_phenotype();
     _pop[i]->compute_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
+    _tree->add_root(_pop[i]);
     _w[i]   = _pop[i]->get_wp();
     _w_sum += _w[i];
   }
@@ -68,6 +74,7 @@ Population::Population( Parameters* parameters, Environment* environment )
   {
     _w[i] /= _w_sum;
   }
+  _tree->prune();
 }
 
 /*----------------------------
@@ -84,6 +91,7 @@ Population::~Population( void )
 {
   _prng        = NULL;
   _environment = NULL;
+  _tree        = NULL;
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
     delete _pop[i];
@@ -103,10 +111,10 @@ Population::~Population( void )
 /**
  * \brief    Compute the next generation
  * \details  --
- * \param    void
+ * \param    int next_generation
  * \return   \e void
  */
-void Population::compute_next_generation( void )
+void Population::compute_next_generation( int next_generation )
 {
   Individual**  new_pop   = new Individual*[_parameters->get_population_size()];
   unsigned int* draws     = new unsigned int[_parameters->get_population_size()];
@@ -118,8 +126,11 @@ void Population::compute_next_generation( void )
     {
       new_pop[new_index] = new Individual(*_pop[i]);
       new_pop[new_index]->mutate(_parameters->get_m_mu(), _parameters->get_m_sigma(), _parameters->get_m_theta(), _parameters->get_s_mu(), _parameters->get_s_sigma(), _parameters->get_s_theta());
+      new_pop[new_index]->set_identifier(_current_identifier++);
+      new_pop[new_index]->set_generation(next_generation);
       new_pop[new_index]->build_phenotype();
       _pop[i]->compute_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
+      _tree->add_reproduction_event(_pop[i], new_pop[new_index]);
       _w[new_index]  = _pop[i]->get_wp();
       _w_sum        += _w[new_index];
       new_index++;
@@ -135,6 +146,7 @@ void Population::compute_next_generation( void )
   {
     _w[i] /= _w_sum;
   }
+  _tree->prune();
 }
 
 /*----------------------------

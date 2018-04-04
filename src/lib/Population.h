@@ -39,7 +39,7 @@
 #include "Parameters.h"
 #include "Individual.h"
 #include "Environment.h"
-
+#include "Tree.h"
 
 class Population
 {
@@ -50,7 +50,7 @@ public:
    * CONSTRUCTORS
    *----------------------------*/
   Population( void ) = delete;
-  Population( Parameters* parameters, Environment* environment );
+  Population( Parameters* parameters, Environment* environment, Tree* tree );
   Population( const Population& population ) = delete;
   
   /*----------------------------
@@ -72,7 +72,7 @@ public:
   /*----------------------------
    * PUBLIC METHODS
    *----------------------------*/
-  void compute_next_generation( void );
+  void compute_next_generation( int next_generation );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES
@@ -90,9 +90,11 @@ protected:
   
   /*----------------------------------------------- PARAMETERS */
   
-  Prng*        _prng;        /*!< Pseudorandom numbers generator */
-  Parameters*  _parameters;  /*!< Parameters                     */
-  Environment* _environment; /*!< Environment (fitness optimum)  */
+  Prng*                  _prng;               /*!< Pseudorandom numbers generator */
+  Parameters*            _parameters;         /*!< Parameters                     */
+  Environment*           _environment;        /*!< Environment (fitness optimum)  */
+  Tree*                  _tree;               /*!< Lineage tree                   */
+  unsigned long long int _current_identifier; /*!< Current individual identifier  */
   
   /*----------------------------------------------- POPULATION */
   

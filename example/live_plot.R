@@ -13,7 +13,7 @@ plot_data <- function( t, m, v, title )
 	RGY = range(c(m-v, m+v))
 	plot(x=NULL, xlim=RGX, ylim=RGY, main=title)
 	lines(t, m, col="tomato")
-	polygon(c(t, rev(d$t)), c(m-v, rev(m+v)), border=F, col=adjustcolor("tomato", alpha.f=0.3))
+	polygon(c(t, rev(t)), c(m-v, rev(m+v)), border=F, col=adjustcolor("tomato", alpha.f=0.3))
 }
 
 phase_portrait <- function( mu, sigma )

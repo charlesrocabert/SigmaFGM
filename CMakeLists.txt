@@ -109,10 +109,14 @@ add_library(
   src/lib/Parameters.h
   src/lib/Individual.cpp
   src/lib/Individual.h
-  src/lib/Population.cpp
-  src/lib/Population.h
   src/lib/Environment.cpp
   src/lib/Environment.h
+  src/lib/Node.cpp
+  src/lib/Node.h
+  src/lib/Tree.cpp
+  src/lib/Tree.h
+  src/lib/Population.cpp
+  src/lib/Population.h
   src/lib/Statistics.cpp
   src/lib/Statistics.h
   src/lib/Simulation.cpp

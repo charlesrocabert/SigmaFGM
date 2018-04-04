@@ -36,8 +36,9 @@
 #include "Enums.h"
 #include "Prng.h"
 #include "Parameters.h"
-#include "Population.h"
 #include "Environment.h"
+#include "Tree.h"
+#include "Population.h"
 #include "Statistics.h"
 
 
@@ -95,9 +96,10 @@ protected:
   
   /*----------------------------------------------- SIMULATION */
   
-  Environment* _environment; /*!< Environment */
-  Population*  _population;  /*!< Population  */
-  Statistics*  _statistics;  /*!< Statistics  */
+  Environment* _environment; /*!< Environment  */
+  Tree*        _tree;        /*!< Lineage tree */
+  Population*  _population;  /*!< Population   */
+  Statistics*  _statistics;  /*!< Statistics   */
   
 };
 

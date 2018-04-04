@@ -57,6 +57,9 @@ Individual::Individual( Prng* prng, int n, double mu_init, double sigma_init, do
   
   /*----------------------------------------------- VARIABLES */
   
+  _identifier = 0;
+  _generation = 0;
+  
   /******************************/
   /* Initialize matrices        */
   /******************************/
@@ -142,6 +145,9 @@ Individual::Individual( const Individual& individual )
   _z_opt      = individual._z_opt;
   
   /*----------------------------------------------- VARIABLES */
+  
+  _identifier = individual._identifier;
+  _generation = individual._generation;
   
   /******************************/
   /* Initialize matrices        */

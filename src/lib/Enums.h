@@ -32,7 +32,7 @@
 
 /**
  * \brief   Type of phenotypic noise
- * \details --
+ * \details Defines the type of phenotypic noise
  */
 enum type_of_noise
 {
@@ -41,6 +41,31 @@ enum type_of_noise
   UNCORRELATED = 2, /*!< Anisotropic and uncorrelated noise       */
   FULL         = 3  /*!< Fully evolvable noise                    */
   //OPTIMAL      = 4  /*!< Optimally shaped noise (based on maths)  */
+};
+
+/******************************************************************************************/
+
+/**
+ * \brief   Node class
+ * \details Defines the class of a node in the tree (master root, root or normal).
+ */
+enum node_class
+{
+  MASTER_ROOT = 1, /*!< The node is the master root */
+  ROOT        = 2, /*!< The node is a root          */
+  NORMAL      = 3  /*!< The node is normal          */
+};
+
+/******************************************************************************************/
+
+/**
+ * \brief   Node state
+ * \details Defines the state of a node in the tree, depending on cell's status (dead or alive).
+ */
+enum node_state
+{
+  DEAD  = 1, /*!< The cell is dead  */
+  ALIVE = 2  /*!< The cell is alive */
 };
 
 

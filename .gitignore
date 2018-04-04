@@ -8,5 +8,5 @@ cmake/Makefile
 cmake/Config.h
 example/**
 !example/run.py
-!example/plot.R
-
+!example/live_plot.R
+!example/lineage_plot.R
