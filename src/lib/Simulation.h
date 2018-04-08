@@ -91,8 +91,8 @@ protected:
   
   /*----------------------------------------------- PARAMETERS */
   
-  Prng*        _prng;        /*!< Pseudorandom numbers generator */
-  Parameters*  _parameters;  /*!< Parameters                     */
+  Parameters*  _parameters; /*!< Parameters                     */
+  Prng*        _prng;       /*!< Pseudorandom numbers generator */
   
   /*----------------------------------------------- SIMULATION */
   

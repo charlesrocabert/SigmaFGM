@@ -48,8 +48,8 @@ Population::Population( Parameters* parameters, Environment* environment, Tree* 
   
   /*----------------------------------------------- PARAMETERS */
   
-  _prng               = parameters->get_prng();
   _parameters         = parameters;
+  _prng               = _parameters->get_prng();
   _environment        = environment;
   _tree               = tree;
   _current_identifier = 1;

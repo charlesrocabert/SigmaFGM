@@ -1,11 +1,11 @@
 
 /**
- * \file      run_solver.cpp
+ * \file      SigmaFGM_simulation.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
  * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Run the simulation
+ * \brief     Run a simulation
  */
 
 /***********************************************************************
@@ -39,7 +39,7 @@
 #include "./lib/Parameters.h"
 #include "./lib/Simulation.h"
 
-const std::string EXECUTABLE_NAME = "build/bin/run_solver";
+const std::string EXECUTABLE_NAME = "build/bin/SigmaFGM_simulation";
 
 void readArgs( int argc, char const** argv, Parameters* parameters );
 void printUsage( void );
@@ -482,8 +482,8 @@ void printUsage( void )
   std::cout << " certain conditions; See the GNU General Public License for details  \n";
   std::cout << "*********************************************************************\n";
   std::cout << "\n";
-  std::cout << "Usage: run_solver -h or --help\n";
-  std::cout << "   or: run_solver [options]\n";
+  std::cout << "Usage: SigmaFGM_simulation -h or --help\n";
+  std::cout << "   or: SigmaFGM_simulation [options]\n";
   std::cout << "Options are:\n";
   std::cout << "  -h, --help\n";
   std::cout << "        print this help, then exit\n";

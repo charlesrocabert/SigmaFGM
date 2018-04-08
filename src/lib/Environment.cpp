@@ -45,8 +45,8 @@ Environment::Environment( Parameters* parameters )
   
   /*----------------------------------------------- PARAMETERS */
   
-  _prng       = parameters->get_prng();
   _parameters = parameters;
+  _prng       = _parameters->get_prng();
   
   /*----------------------------------------------- ENVIRONMENT */
   
@@ -66,6 +66,8 @@ Environment::Environment( Parameters* parameters )
  */
 Environment::~Environment( void )
 {
+  _parameters = NULL;
+  _prng       = NULL;
   gsl_vector_free(_z_opt);
   _z_opt = NULL;
 }

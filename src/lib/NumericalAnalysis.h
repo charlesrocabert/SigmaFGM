@@ -1,11 +1,11 @@
 
 /**
- * \file      Environment.h
+ * \file      NumericalAnalysis.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
- * \date      04-04-2018
+ * \date      06-04-2018
  * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Environment class declaration
+ * \brief     NumericalAnalysis class declaration
  */
 
 /***********************************************************************
@@ -26,20 +26,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __SigmaFGM__Environment__
-#define __SigmaFGM__Environment__
+#ifndef __SigmaFGM__NumericalAnalysis__
+#define __SigmaFGM__NumericalAnalysis__
 
 #include <iostream>
+#include <cmath>
 #include <assert.h>
-#include <gsl/gsl_vector.h>
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_randist.h>
 
 #include "Macros.h"
 #include "Enums.h"
+#include "Structs.h"
 #include "Prng.h"
 #include "Parameters.h"
 
 
-class Environment
+class NumericalAnalysis
 {
   
 public:
@@ -47,35 +50,53 @@ public:
   /*----------------------------
    * CONSTRUCTORS
    *----------------------------*/
-  Environment( void ) = delete;
-  Environment( Parameters* parameters );
-  Environment( const Environment& environment ) = delete;
+  NumericalAnalysis( Parameters* parameters );
+  NumericalAnalysis( const NumericalAnalysis& numerical_analysis ) = delete;
   
   /*----------------------------
    * DESTRUCTORS
    *----------------------------*/
-  ~Environment( void );
+  ~NumericalAnalysis( void );
   
   /*----------------------------
    * GETTERS
    *----------------------------*/
-  inline gsl_vector* get_z_opt( void );
-  inline double      get_z_opt( int i );
   
   /*----------------------------
    * SETTERS
    *----------------------------*/
-  Environment& operator=(const Environment&) = delete;
+  NumericalAnalysis& operator=(const NumericalAnalysis&) = delete;
   
   /*----------------------------
    * PUBLIC METHODS
    *----------------------------*/
-  void stabilizing_environment( void );
-  void normal_environment( void );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES
    *----------------------------*/
+  
+  /* Whole function is:
+   * Wbar( X_bar, Ve_bar, Vgx, Vge )
+   * = int int int [ W(z).p(z|X,Ve).p(X|X_bar,Vgx).p(Ve|Ve_bar,Vge) dz dX dVe ]
+   * = int[ p(Ve|Ve_bar,Vge) . int[ p(X|X_bar,Vgx) . int[ W(z).p(z|X,Ve)dz ] dX ] dVe ]
+   * W1 = int[ W(z).p(z|X,Ve) dz ]
+   * W2 = int[ p(X|X_bar,Vgx).W1 dX ]
+   * W3 = int[ p(Ve|Ve_bar,Vge).W2 dVe ]
+   */
+  
+  static double gaussian_pdf( double x, double mu, double sigma );
+  static double gamma_pdf( double x, double k, double theta );
+  
+  static double W( double z, double alpha, double beta, double Q );
+  
+  static double W1_integrand( double z, void* params );
+  static double W1( double X, double Ve, double alpha, double beta, double Q );
+  
+  static double W2_integrand( double X, void* params );
+  static double W2( double X_bar, double Vgx, double Ve, double alpha, double beta, double Q );
+  
+  static double W3_integrand( double Ve, void* params );
+  static double W3( double Ve_bar, double Vge, double X_bar, double Vgx, double alpha, double beta, double Q );
   
 protected:
   
@@ -92,9 +113,7 @@ protected:
   Parameters* _parameters; /*!< Parameters                     */
   Prng*       _prng;       /*!< Pseudorandom numbers generator */
   
-  /*----------------------------------------------- ENVIRONMENT */
-  
-  gsl_vector* _z_opt; /*!< Fitness optimum */
+  /*----------------------------------------------- INTEGRATION VARIABLES */
   
 };
 
@@ -102,33 +121,9 @@ protected:
  * GETTERS
  *----------------------------*/
 
-/**
- * \brief    Get the fitness optimum vector
- * \details  --
- * \param    void
- * \return   \e double*
- */
-inline gsl_vector* Environment::get_z_opt( void )
-{
-  return _z_opt;
-}
-
-/**
- * \brief    Get the ith value of the fitness optimum vector
- * \details  --
- * \param    void
- * \return   \e double
- */
-inline double Environment::get_z_opt( int i )
-{
-  assert(i >= 0);
-  assert(i < _parameters->get_number_of_dimensions());
-  return gsl_vector_get(_z_opt, i);
-}
-
 /*----------------------------
  * SETTERS
  *----------------------------*/
 
 
-#endif /* defined(__SigmaFGM__Environment__) */
+#endif /* defined(__SigmaFGM__NumericalAnalysis__) */

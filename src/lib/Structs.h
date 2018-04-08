@@ -1,11 +1,11 @@
 
 /**
- * \file      Macros.h
+ * \file      Structs.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
- * \date      21-02-2017
+ * \date      06-04-2018
  * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Definition of macros
+ * \brief     Definition of structures
  */
 
 /***********************************************************************
@@ -26,14 +26,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***********************************************************************/
 
-#ifndef __SigmaFGM__Macros__
-#define __SigmaFGM__Macros__
+#ifndef __SigmaFGM__Structs__
+#define __SigmaFGM__Structs__
 
-#define EPSABS  0.0
-#define ESPREL  1e-12
-#define LIMIT   1000
+#include <iostream>
+#include <gsl/gsl_integration.h>
 
-#define MIN_SIGMA  1e-06
+#include "Macros.h"
+#include "Enums.h"
+
+/******************************************************************************************/
+
+/**
+ * \brief   Numerical analysis parameters
+ * \details --
+ */
+typedef struct
+{
+  
+} numerical_analysis_parameters;
+
+/******************************************************************************************/
 
 
-#endif /* defined(__SigmaFGM__Macros__) */
+#endif /* defined(__SigmaFGM__Structs__) */

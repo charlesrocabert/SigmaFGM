@@ -90,8 +90,8 @@ protected:
   
   /*----------------------------------------------- PARAMETERS */
   
-  Prng*                  _prng;               /*!< Pseudorandom numbers generator */
   Parameters*            _parameters;         /*!< Parameters                     */
+  Prng*                  _prng;               /*!< Pseudorandom numbers generator */
   Environment*           _environment;        /*!< Environment (fitness optimum)  */
   Tree*                  _tree;               /*!< Lineage tree                   */
   unsigned long long int _current_identifier; /*!< Current individual identifier  */

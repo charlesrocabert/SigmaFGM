@@ -45,8 +45,8 @@ Simulation::Simulation( Parameters* parameters )
   
   /*----------------------------------------------- PARAMETERS */
   
-  _prng       = parameters->get_prng();
   _parameters = parameters;
+  _prng       = _parameters->get_prng();
   
   /*----------------------------------------------- SIMULATION */
   
@@ -70,8 +70,8 @@ Simulation::~Simulation( void )
 {
   /*----------------------------------------------- PARAMETERS */
   
-  _prng       = NULL;
   _parameters = NULL;
+  _prng       = NULL;
   
   /*----------------------------------------------- SIMULATION */
   
