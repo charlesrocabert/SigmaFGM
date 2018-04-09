@@ -29,8 +29,6 @@
 #include "../cmake/Config.h"
 
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <cstring>
 #include <sys/stat.h>
 #include <assert.h>
@@ -43,7 +41,7 @@
 
 const std::string EXECUTABLE_NAME = "build/bin/SigmaFGM_numerical_analysis";
 
-void readArgs( int argc, char const** argv );
+void readArgs( int argc, char const** argv, Parameters* parameters );
 void printUsage( void );
 void printHeader( void );
 
@@ -57,22 +55,31 @@ void printHeader( void );
  */
 int main( int argc, char const** argv )
 {
-  Parameters* params = new Parameters();
-  
-  NumericalAnalysis* num = new NumericalAnalysis(params);
-  
-  std::ofstream file("output.txt", std::ios::out | std::ios::trunc);
-  
-  for (double X = 0.0; X < 10.0; X += 0.05)
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 1) Read parameters                 */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  std::cout << "> Read parameters ...\n";
+  Parameters* parameters = new Parameters();
+  readArgs(argc, argv, parameters);
+  if (parameters->get_seed() == 0)
   {
-    for (double Ve = 0.0; Ve < 10.0; Ve += 0.05)
-    {
-      double res = num->W1(X, Ve, 0.5, 0.0, 2.0);
-      file << X << " " << Ve << " " << res << "\n";
-    }
+    parameters->set_seed((unsigned long int)time(NULL));
   }
   
-  file.close();
+  NumericalAnalysis* num = new NumericalAnalysis(parameters);
+  
+  double X_min   = parameters->get_X_min();
+  double X_max   = parameters->get_X_max();
+  double X_step  = parameters->get_X_step();
+  double Ve_min  = parameters->get_Ve_min();
+  double Ve_max  = parameters->get_Ve_max();
+  double Ve_step = parameters->get_Ve_step();
+  double epsilon = parameters->get_epsilon();
+  double alpha   = parameters->get_alpha();
+  double beta    = parameters->get_beta();
+  double Q       = parameters->get_Q();
+  
+  num->explore_genotypic_space(X_min, X_max, X_step, Ve_min, Ve_max, Ve_step, alpha, beta, Q, epsilon);
   
   delete num;
   num = NULL;
@@ -84,11 +91,171 @@ int main( int argc, char const** argv )
  * \details  --
  * \param    int argc
  * \param    char const** argv
+ * \param    Parameters* parameters
  * \return   \e void
  */
-void readArgs( int argc, char const** argv )
+void readArgs( int argc, char const** argv, Parameters* parameters )
 {
-  /* TODO */
+  if (argc == 1)
+  {
+    printf("You must provide all the mandatory arguments (see -h or --help). Exit.\n");
+    exit(EXIT_SUCCESS);
+  }
+  int counter = 0;
+  for (int i = 0; i < argc; i++)
+  {
+    /* Not mandatory */
+    if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
+    {
+      printUsage();
+      exit(EXIT_SUCCESS);
+    }
+    /* Not mandatory */
+    else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--version") == 0)
+    {
+      std::cout << PACKAGE << " (" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << ")\n";
+      exit(EXIT_SUCCESS);
+    }
+    
+    /****************************************************************/
+    
+    /* Mandatory */
+    else if (strcmp(argv[i], "-Xmin") == 0 || strcmp(argv[i], "--Xmin") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_X_min(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-Xmax") == 0 || strcmp(argv[i], "--Xmax") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_X_max(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-Xstep") == 0 || strcmp(argv[i], "--Xstep") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_X_step(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-Vemin") == 0 || strcmp(argv[i], "--Vemin") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_Ve_min(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-Vemax") == 0 || strcmp(argv[i], "--Vemax") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_Ve_max(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-Vestep") == 0 || strcmp(argv[i], "--Vestep") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_Ve_step(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-alpha") == 0 || strcmp(argv[i], "--alpha") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_alpha(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-beta") == 0 || strcmp(argv[i], "--beta") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_beta(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-Q") == 0 || strcmp(argv[i], "--Q") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_Q(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    
+    /****************************************************************/
+    
+    /* Not mandatory */
+    
+  }
+  if (counter < 9)
+  {
+    printf("You must provide all the mandatory arguments (see -h or --help). Exit.\n");
+    exit(EXIT_SUCCESS);
+  }
 }
 
 /**
@@ -123,6 +290,24 @@ void printUsage( void )
   std::cout << "        print this help, then exit\n";
   std::cout << "  -v, --version\n";
   std::cout << "        print the current version, then exit\n";
+  std::cout << "  -Xmin, --Xmin\n";
+  std::cout << "        specify the minimal X value\n";
+  std::cout << "  -Xmax, --Xmax\n";
+  std::cout << "        specify the maximal X value\n";
+  std::cout << "  -Xstep, --Xstep\n";
+  std::cout << "        specify the X step\n";
+  std::cout << "  -Vemin, --Vemin\n";
+  std::cout << "        specify the minimal Ve value\n";
+  std::cout << "  -Vemax, --Vemax\n";
+  std::cout << "        specify the maximal Ve value\n";
+  std::cout << "  -Vestep, --Vestep\n";
+  std::cout << "        specify the Ve step\n";
+  std::cout << "  -alpha, --alpha\n";
+  std::cout << "        specify the alpha value\n";
+  std::cout << "  -beta, --beta\n";
+  std::cout << "        specify the beta value\n";
+  std::cout << "  -Q, --Q\n";
+  std::cout << "        specify the Q value\n";
   std::cout << "\n";
 }
 

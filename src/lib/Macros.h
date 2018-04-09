@@ -33,7 +33,7 @@
 #define ESPREL  1e-12
 #define LIMIT   1000
 
-#define MIN_SIGMA  1e-06
+#define MIN_SIGMA  1e-6
 
 
 #endif /* defined(__SigmaFGM__Macros__) */

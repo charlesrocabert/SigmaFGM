@@ -30,6 +30,8 @@
 #define __SigmaFGM__NumericalAnalysis__
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cmath>
 #include <assert.h>
 #include <gsl/gsl_integration.h>
@@ -75,7 +77,16 @@ public:
    * PUBLIC ATTRIBUTES
    *----------------------------*/
   
-  /* Whole function is:
+  void explore_genotypic_space( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon );
+  
+protected:
+  
+  /*----------------------------
+   * PROTECTED METHODS
+   *----------------------------*/
+  
+  /*
+   * Whole function is:
    * Wbar( X_bar, Ve_bar, Vgx, Vge )
    * = int int int [ W(z).p(z|X,Ve).p(X|X_bar,Vgx).p(Ve|Ve_bar,Vge) dz dX dVe ]
    * = int[ p(Ve|Ve_bar,Vge) . int[ p(X|X_bar,Vgx) . int[ W(z).p(z|X,Ve)dz ] dX ] dVe ]
@@ -98,11 +109,13 @@ public:
   static double W3_integrand( double Ve, void* params );
   static double W3( double Ve_bar, double Vge, double X_bar, double Vgx, double alpha, double beta, double Q );
   
-protected:
+  static double dW1_dX( double X, double Ve, double alpha, double beta, double Q, double epsilon );
+  static double dW1_dVe( double X, double Ve, double alpha, double beta, double Q, double epsilon );
+  static double d2W1_dXdVE( double X, double Ve, double alpha, double beta, double Q, double epsilon );
   
-  /*----------------------------
-   * PROTECTED METHODS
-   *----------------------------*/
+  static double dlnW1_dX( double X, double Ve, double alpha, double beta, double Q, double epsilon );
+  static double dlnW1_dVe( double X, double Ve, double alpha, double beta, double Q, double epsilon );
+  static double d2lnW1_dXdVE( double X, double Ve, double alpha, double beta, double Q, double epsilon );
   
   /*----------------------------
    * PROTECTED ATTRIBUTES

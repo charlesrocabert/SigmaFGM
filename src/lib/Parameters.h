@@ -101,6 +101,16 @@ public:
   
   inline type_of_noise get_noise_type( void ) const;
   
+  /*----------------------------------------------- NUMERICAL ANALYSIS */
+  
+  inline double get_X_min( void ) const;
+  inline double get_X_max( void ) const;
+  inline double get_X_step( void ) const;
+  inline double get_Ve_min( void ) const;
+  inline double get_Ve_max( void ) const;
+  inline double get_Ve_step( void ) const;
+  inline double get_epsilon( void ) const;
+  
   /*----------------------------
    * SETTERS
    *----------------------------*/
@@ -148,6 +158,16 @@ public:
   /*----------------------------------------------- NOISE PROPERTIES */
   
   inline void set_noise_type( type_of_noise noise_type );
+  
+  /*----------------------------------------------- NUMERICAL ANALYSIS */
+  
+  inline void set_X_min( double X_min );
+  inline void set_X_max( double X_max );
+  inline void set_X_step( double X_step );
+  inline void set_Ve_min( double Ve_min );
+  inline void set_Ve_max( double Ve_max );
+  inline void set_Ve_step( double Ve_step );
+  inline void set_epsilon( double epsilon );
   
   /*----------------------------
    * PUBLIC METHODS
@@ -211,6 +231,15 @@ protected:
   
   type_of_noise _noise_type; /*!< Type of phenotypic noise (none, isotropic, ...) */
   
+  /*----------------------------------------------- NUMERICAL ANALYSIS */
+  
+  double _X_min;   /*!< X minimal value     */
+  double _X_max;   /*!< X maximal value     */
+  double _X_step;  /*!< X exploration step  */
+  double _Ve_min;  /*!< Ve minimal value    */
+  double _Ve_max;  /*!< Ve maximal value    */
+  double _Ve_step; /*!< Ve exploration step */
+  double _epsilon; /*!< Derivative step     */
 };
 
 
@@ -475,18 +504,109 @@ inline type_of_noise Parameters::get_noise_type( void ) const
   return _noise_type;
 }
 
+/*----------------------------------------------- NUMERICAL ANALYSIS */
+
+/**
+ * \brief    Get X minimal value
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Parameters::get_X_min( void ) const
+{
+  return _X_min;
+}
+
+/**
+ * \brief    Get X maximal value
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Parameters::get_X_max( void ) const
+{
+  return _X_max;
+}
+
+/**
+ * \brief    Get X step value
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Parameters::get_X_step( void ) const
+{
+  return _X_step;
+}
+
+/**
+ * \brief    Get Ve minimal value
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Parameters::get_Ve_min( void ) const
+{
+  return _Ve_min;
+}
+
+/**
+ * \brief    Get Ve maximal value
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Parameters::get_Ve_max( void ) const
+{
+  return _Ve_max;
+}
+
+/**
+ * \brief    Get Ve step value
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Parameters::get_Ve_step( void ) const
+{
+  return _Ve_step;
+}
+
+/**
+ * \brief    Get epsilon value
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Parameters::get_epsilon( void ) const
+{
+  return _epsilon;
+}
+
 /*----------------------------
  * SETTERS
  *----------------------------*/
 
 /*----------------------------------------------- PSEUDORANDOM NUMBERS GENERATOR SEED */
 
+/**
+ * \brief    Set the prng
+ * \details  --
+ * \param    Prng* prng
+ * \return   \e void
+ */
 inline void Parameters::set_prng( Prng* prng )
 {
   delete _prng;
   _prng = new Prng(*prng);
 }
 
+/**
+ * \brief    Set the prng seed
+ * \details  --
+ * \param    unsigned long int seed
+ * \return   \e void
+ */
 inline void Parameters::set_seed( unsigned long int seed )
 {
   _prng->set_seed(seed);
@@ -742,6 +862,85 @@ inline void Parameters::set_s_theta( double s_theta )
 inline void Parameters::set_noise_type( type_of_noise noise_type )
 {
   _noise_type = noise_type;
+}
+
+/*----------------------------------------------- NUMERICAL ANALYSIS */
+
+/**
+ * \brief    Set X minimal value
+ * \details  --
+ * \param    double X_min
+ * \return   \e void
+ */
+inline void Parameters::set_X_min( double X_min )
+{
+  _X_min = X_min;
+}
+
+/**
+ * \brief    Set X maximal value
+ * \details  --
+ * \param    double X_max
+ * \return   \e void
+ */
+inline void Parameters::set_X_max( double X_max )
+{
+  _X_max = X_max;
+}
+
+/**
+ * \brief    Set X step value
+ * \details  --
+ * \param    double X_step
+ * \return   \e void
+ */
+inline void Parameters::set_X_step( double X_step )
+{
+  _X_step = X_step;
+}
+
+/**
+ * \brief    Set Ve minimal value
+ * \details  --
+ * \param    double Ve_min
+ * \return   \e void
+ */
+inline void Parameters::set_Ve_min( double Ve_min )
+{
+  _Ve_min = Ve_min;
+}
+
+/**
+ * \brief    Set Ve maximal value
+ * \details  --
+ * \param    double Ve_max
+ * \return   \e void
+ */
+inline void Parameters::set_Ve_max( double Ve_max )
+{
+  _Ve_max = Ve_max;
+}
+
+/**
+ * \brief    Set Ve step value
+ * \details  --
+ * \param    double Ve_step
+ * \return   \e void
+ */
+inline void Parameters::set_Ve_step( double Ve_step )
+{
+  _Ve_step = Ve_step;
+}
+
+/**
+ * \brief    Set epsilon value
+ * \details  --
+ * \param    double epsilon
+ * \return   \e void
+ */
+inline void Parameters::set_epsilon( double epsilon )
+{
+  _epsilon = epsilon;
 }
 
 

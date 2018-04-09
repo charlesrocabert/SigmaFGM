@@ -82,6 +82,16 @@ Parameters::Parameters( void )
   /*----------------------------------------------- NOISE PROPERTIES */
   
   _noise_type = NONE;
+  
+  /*----------------------------------------------- NUMERICAL ANALYSIS */
+  
+  _X_min   = 0.0;
+  _X_max   = 4.0;
+  _X_step  = 0.1;
+  _Ve_min  = 0.0;
+  _Ve_max  = 4.0;
+  _Ve_step = 0.1;
+  _epsilon = 1e-6;
 }
 
 /*----------------------------

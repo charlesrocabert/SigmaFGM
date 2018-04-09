@@ -72,6 +72,41 @@ NumericalAnalysis::~NumericalAnalysis( void )
  * PUBLIC METHODS
  *----------------------------*/
 
+/**
+ * \brief    Explore The genotypic space (X, Ve)
+ * \details  Data is saved in file "space_exploration.txt"
+ * \param    double X_min
+ * \param    double X_max
+ * \param    double X_step
+ * \param    double Ve_min
+ * \param    double Ve_max
+ * \param    double Ve_step
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e void
+ */
+void NumericalAnalysis::explore_genotypic_space( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon )
+{
+  std::ofstream file("space_exploration.txt", std::ios::out | std::ios::trunc);
+  file << "X Ve W1 dW1_dX dW1_dVe dlnW1_dX dlnW1_dVe d2lnW1_dXdVE\n";
+  for (double X = X_min; X < X_max; X += X_step)
+  {
+    for (double Ve = Ve_min; Ve < Ve_max; Ve += Ve_step)
+    {
+      double w1           = W1(X, Ve, alpha, beta, Q);
+      double dw1_dx       = dW1_dX(X, Ve, alpha, beta, Q, epsilon);
+      double dw1_dve      = dW1_dVe(X, Ve, alpha, beta, Q, epsilon);
+      double dlnw1_dx     = dlnW1_dX(X, Ve, alpha, beta, Q, epsilon);
+      double dlnw1_dve    = dlnW1_dVe(X, Ve, alpha, beta, Q, epsilon);
+      double d2lnw1_dxdve = d2lnW1_dXdVE(X, Ve, alpha, beta, Q, epsilon);
+      file << X << " " << Ve << " " << w1 << " " << dw1_dx << " " << dw1_dve << " " << dlnw1_dx << " " << dlnw1_dve << " " << d2lnw1_dxdve << "\n";
+    }
+  }
+  file.close();
+}
+
 /*----------------------------
  * PROTECTED METHODS
  *----------------------------*/
@@ -197,7 +232,10 @@ double NumericalAnalysis::W2_integrand( double X, void* params )
   double  alpha      = cast_param[3];
   double  beta       = cast_param[4];
   double  Q          = cast_param[5];
-  return gaussian_pdf(X, X_bar, Vgx)*W1(X, Ve, alpha, beta, Q);
+  
+  double val = gaussian_pdf(X, X_bar, Vgx)*W1(X, Ve, alpha, beta, Q);
+  //std::cout << X_bar << " | " << Ve << " | " << X << " | " << val << "\n";
+  return val;
 }
 
 /**
@@ -213,7 +251,12 @@ double NumericalAnalysis::W2_integrand( double X, void* params )
  */
 double NumericalAnalysis::W2( double X_bar, double Vgx, double Ve, double alpha, double beta, double Q )
 {
-  std::cout << Ve << "\n";
+  //std::cout << X_bar << " | " << Ve << " | " << Vgx << "\n";
+  if (Vgx < MIN_SIGMA)
+  {
+    return W1(X_bar, Ve, alpha, beta, Q);
+  }
+  
   /*-----------------------------*/
   /* 1) Declare GSL objects      */
   /*-----------------------------*/
@@ -237,7 +280,7 @@ double NumericalAnalysis::W2( double X_bar, double Vgx, double Ve, double alpha,
   F.function = &NumericalAnalysis::W2_integrand;
   F.params   = params;
   double result, error;
-  gsl_integration_qags(&F, -20.0, 20.0, EPSABS, ESPREL, LIMIT, workspace, &result, &error);
+  gsl_integration_qagi(&F, EPSABS, ESPREL, LIMIT, workspace, &result, &error);
   gsl_integration_workspace_free(workspace);
   workspace = NULL;
   delete[] params;
@@ -262,9 +305,7 @@ double NumericalAnalysis::W3_integrand( double Ve, void* params )
   double  alpha      = cast_param[4];
   double  beta       = cast_param[5];
   double  Q          = cast_param[6];
-  double  k          = Vge;
-  double  theta      = Ve_bar/Vge;
-  return gamma_pdf(Ve, k, theta)*W2(X_bar, Vgx, Ve, alpha, beta, Q);
+  return gaussian_pdf(Ve, Ve_bar, Vge)*W2(X_bar, Vgx, fabs(Ve), alpha, beta, Q);
 }
 
 /**
@@ -281,6 +322,12 @@ double NumericalAnalysis::W3_integrand( double Ve, void* params )
  */
 double NumericalAnalysis::W3( double Ve_bar, double Vge, double X_bar, double Vgx, double alpha, double beta, double Q )
 {
+  //std::cout << X_bar << " | " << Ve_bar << "\n";
+  if (Vge < MIN_SIGMA)
+  {
+    return W2(X_bar, Vgx, Ve_bar, alpha, beta, Q);
+  }
+  
   /*-----------------------------*/
   /* 1) Declare GSL objects      */
   /*-----------------------------*/
@@ -305,7 +352,7 @@ double NumericalAnalysis::W3( double Ve_bar, double Vge, double X_bar, double Vg
   F.function = &NumericalAnalysis::W3_integrand;
   F.params   = params;
   double result, error;
-  gsl_integration_qags(&F, 0.01, 20.0, EPSABS, ESPREL, LIMIT, workspace, &result, &error);
+  gsl_integration_qagi(&F, EPSABS, ESPREL, LIMIT, workspace, &result, &error);
   gsl_integration_workspace_free(workspace);
   workspace = NULL;
   delete[] params;
@@ -313,4 +360,115 @@ double NumericalAnalysis::W3( double Ve_bar, double Vge, double X_bar, double Vg
   return result;
 }
 
+/**
+ * \brief    Compute dW1/dX
+ * \details  --
+ * \param    double X
+ * \param    double Ve
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::dW1_dX( double X, double Ve, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = W1(X, Ve, alpha, beta, Q);
+  double v2 = W1(X+epsilon, Ve, alpha, beta, Q);
+  return (v2-v1)/epsilon;
+}
+
+/**
+ * \brief    Compute dW1/dVe
+ * \details  --
+ * \param    double X
+ * \param    double Ve
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::dW1_dVe( double X, double Ve, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = W1(X, Ve, alpha, beta, Q);
+  double v2 = W1(X, Ve+epsilon, alpha, beta, Q);
+  return (v2-v1)/epsilon;
+}
+
+/**
+ * \brief    Compute d2W1/dXdVe
+ * \details  --
+ * \param    double X
+ * \param    double Ve
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::d2W1_dXdVE( double X, double Ve, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = W1(X+epsilon, Ve+epsilon, alpha, beta, Q);
+  double v2 = W1(X, Ve+epsilon, alpha, beta, Q);
+  double v3 = W1(X+epsilon, Ve, alpha, beta, Q);
+  double v4 = W1(X, Ve, alpha, beta, Q);
+  return (v1-v2-v3+v4)/(epsilon*epsilon);
+}
+
+/**
+ * \brief    Compute dlnW1/dX
+ * \details  --
+ * \param    double X
+ * \param    double Ve
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::dlnW1_dX( double X, double Ve, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = log(W1(X, Ve, alpha, beta, Q));
+  double v2 = log(W1(X+epsilon, Ve, alpha, beta, Q));
+  return (v2-v1)/epsilon;
+}
+
+/**
+ * \brief    Compute dlnW1/dVe
+ * \details  --
+ * \param    double X
+ * \param    double Ve
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::dlnW1_dVe( double X, double Ve, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = log(W1(X, Ve, alpha, beta, Q));
+  double v2 = log(W1(X, Ve+epsilon, alpha, beta, Q));
+  return (v2-v1)/epsilon;
+}
+
+/**
+ * \brief    Compute d2lnW1/dXdVe
+ * \details  --
+ * \param    double X
+ * \param    double Ve
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::d2lnW1_dXdVE( double X, double Ve, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = log(W1(X+epsilon, Ve+epsilon, alpha, beta, Q));
+  double v2 = log(W1(X, Ve+epsilon, alpha, beta, Q));
+  double v3 = log(W1(X+epsilon, Ve, alpha, beta, Q));
+  double v4 = log(W1(X, Ve, alpha, beta, Q));
+  return (v1-v2-v3+v4)/(epsilon*epsilon);
+}
 
