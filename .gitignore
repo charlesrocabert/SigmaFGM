@@ -7,6 +7,7 @@ cmake/cmake_install.cmake
 cmake/Makefile
 cmake/Config.h
 example/**
-!example/run.py
+!example/simulation.py
+!example/numerical_analysis.py
 !example/live_plot.R
 !example/lineage_plot.R
