@@ -50,8 +50,8 @@ if __name__ == '__main__':
 	VE_MAX  = 5.0
 	VE_STEP = 0.05
 	ALPHA   = 0.5
-	BETA    = 0.1
-	Q       = 6.0
+	BETA    = 0.2
+	Q       = 4.0
 	EPSILON = 1e-3
 	run_numerical_analysis(X_MIN, X_MAX, X_STEP, VE_MIN, VE_MAX, VE_STEP, ALPHA, BETA, Q, EPSILON)
 

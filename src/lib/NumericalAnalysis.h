@@ -112,6 +112,9 @@ protected:
   static double W2( double X_bar, double Vgx, double Ve, double alpha, double beta, double Q );
   static double W3( double Ve_bar, double Vge, double X_bar, double Vgx, double alpha, double beta, double Q );
   
+  static double dW_dz( double z, double alpha, double beta, double Q, double epsilon );
+  static double dlnW_dz( double z, double alpha, double beta, double Q, double epsilon );
+  
   static double dW1_dX( double X, double Ve, double alpha, double beta, double Q, double epsilon );
   static double dW1_dVe( double X, double Ve, double alpha, double beta, double Q, double epsilon );
   static double d2W1_dXdVE( double X, double Ve, double alpha, double beta, double Q, double epsilon );

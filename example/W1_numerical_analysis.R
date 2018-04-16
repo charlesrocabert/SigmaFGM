@@ -1,77 +1,28 @@
-# X Ve W1 lnW1 dW1_dX dW1_dVe dlnW1_dX dlnW1_dVe d2lnW1_dXdVE
-# 1 2  3   4      5      6         7       8          9
-
-
-library("RColorBrewer")
-library("caTools")
-
 setwd("/Users/charlesrocabert/git/SigmaFGM/example/")
 
-plot_dW1_dX_isocline <- function( data )
-{
-	ld    = data[,c(1,2,3)]
-	sigma = unique(ld[,2])
-	sigma = sort(sigma)
-	mu    = c()
-	for (sigma_i in sigma)
-	{
-		ldlocal = ld[ld[,2]==sigma_i,]
-		index   = which(ldlocal[,3]==max(ldlocal[,3]))
-		if (length(index) > 1)
-		{
-			index = index[1]
-		}
-		mu = c(mu, ldlocal[index,1])
-	}
-	lines(mu, sigma, lwd=3, col="purple")
-}
+##################
+#      MAIN      #
+##################
 
-plot_dW1_dVe_isocline <- function( data )
-{
-	ld    = data[,c(1,2,3)]
-	mu    = unique(ld[,1])
-	mu    = sort(mu)
-	sigma = c()
-	for (mu_i in mu)
-	{
-		ldlocal = ld[ld[,1]==mu_i,]
-		index   = which(ldlocal[,3]==max(ldlocal[,3]))
-		if (length(index) > 1)
-		{
-			index = index[1]
-		}
-		sigma = c(sigma, ldlocal[index,2])
-	}
-	lines(mu, sigma, lwd=3, col="orange")
-}
+fitn = read.table("fitness.txt", h=T, sep=" ")
+iso1 = read.table("dW1_dVe_isocline.txt", h=T, sep=" ")
+iso2 = read.table("dlnW1_dXdVe_isocline.txt", h=T, sep=" ")
 
-plot_dlnW1_dXdVe_isocline <- function( data )
-{
-	ld    = data[,c(1,2,7)]
-	mu    = unique(ld[,1])
-	mu    = sort(mu)
-	sigma = c()
-	for (mu_i in mu)
-	{
-		ldlocal = ld[ld[,1]==mu_i,]
-		index   = which(ldlocal[,3]==min(ldlocal[,3]))
-		if (length(index) > 1)
-		{
-			index = index[1]
-		}
-		sigma = c(sigma, ldlocal[index,2])
-	}
-	lines(mu, sigma, lwd=3, col="green")
-}
+N = length(fitn[,1])
 
-d = read.table("W1.txt", h=T, sep=" ")
-names(d)
-RGX = range(d$X)
-RGY = range(d$Ve)
-plot(x=NULL, xlim=RGX, ylim=RGY)
+x    = fitn[,1]
+zero = rep(0.0, N)
+maxi = rep(5.0, N)
+RGX = range(iso1[,1])
+RGY = range(c(iso1[,2], iso2[,2]))
 
-plot_dW1_dX_isocline(d)
-plot_dW1_dVe_isocline(d)
-plot_dlnW1_dXdVe_isocline(d)
+plot(x=NULL, xlim=RGX, ylim=RGY, xlab="X", ylab="Ve")
+polygon(c(x,rev(x)), c(iso1[,2],zero), border=F, col=adjustcolor("darkolivegreen3", alpha.f=0.4))
+polygon(c(x,rev(x)), c(iso1[,2],maxi), border=F, col=adjustcolor("tomato", alpha.f=0.4))
+polygon(c(x,rev(x)), c(iso2[,2],zero), border=F, col=adjustcolor("darkolivegreen3", alpha.f=0.5))
+lines(x, iso1[,2], col="black", lwd=3)
+lines(x, iso2[,2], col="black", lty=4, lwd=3)
+
+legend("topleft", legend=c("dW1/dVe=0 isocline", "d2lnW1/dXdVe=0 isocline"), lty=c(1,4), lwd=c(3,3), bg="white")
 
 

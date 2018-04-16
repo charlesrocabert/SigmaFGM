@@ -89,10 +89,21 @@ NumericalAnalysis::~NumericalAnalysis( void )
  */
 void NumericalAnalysis::explore_W1( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon )
 {
-  std::ofstream file("W1.txt", std::ios::out | std::ios::trunc);
-  file << "X Ve W1 lnW1 dW1_dX dW1_dVe dlnW1_dX dlnW1_dVe d2lnW1_dXdVE\n";
+  std::ofstream file1("W1.txt", std::ios::out | std::ios::trunc);
+  std::ofstream file2("dW1_dVe_isocline.txt", std::ios::out | std::ios::trunc);
+  std::ofstream file3("dlnW1_dXdVe_isocline.txt", std::ios::out | std::ios::trunc);
+  std::ofstream file4("fitness.txt", std::ios::out | std::ios::trunc);
+  file1 << "X Ve W1 lnW1 dW1_dX dW1_dVe dlnW1_dX dlnW1_dVe d2lnW1_dXdVE\n";
+  file2 << "X Ve W1\n";
+  file3 << "X Ve lnW1_dX\n";
+  file4 << "z W lnW dW_dz dlnW_dz\n";
+  
   for (double X = X_min; X < X_max; X += X_step)
   {
+    double W1_best     = 0.0;
+    double Ve1_best    = 0.0;
+    double lnW1dX_best = 1e+10;
+    double Ve2_best    = 0.0;
     for (double Ve = Ve_min; Ve < Ve_max; Ve += Ve_step)
     {
       double w1           = W1(X, Ve, alpha, beta, Q);
@@ -101,11 +112,30 @@ void NumericalAnalysis::explore_W1( double X_min, double X_max, double X_step, d
       double dlnw1_dx     = dlnW1_dX(X, Ve, alpha, beta, Q, epsilon);
       double dlnw1_dve    = dlnW1_dVe(X, Ve, alpha, beta, Q, epsilon);
       double d2lnw1_dxdve = d2lnW1_dXdVE(X, Ve, alpha, beta, Q, epsilon);
-      file << X << " " << Ve << " " << w1 << " " << log(w1) << " " << dw1_dx << " " << dw1_dve << " " << dlnw1_dx << " " << dlnw1_dve << " " << d2lnw1_dxdve << "\n";
-      file.flush();
+      if (W1_best < w1)
+      {
+        W1_best  = w1;
+        Ve1_best = Ve;
+      }
+      if (lnW1dX_best > dlnw1_dx)
+      {
+        lnW1dX_best = dlnw1_dx;
+        Ve2_best    = Ve;
+      }
+      file1 << X << " " << Ve << " " << w1 << " " << log(w1) << " " << dw1_dx << " " << dw1_dve << " " << dlnw1_dx << " " << dlnw1_dve << " " << d2lnw1_dxdve << "\n";
+      file1.flush();
     }
+    file2 << X << " " << Ve1_best << " " << W1_best << "\n";
+    file3 << X << " " << Ve2_best << " " << lnW1dX_best << "\n";
+    file4 << X << " " << W(X, alpha, beta, Q) << " " << log(W(X, alpha, beta, Q)) << " " << dW_dz(X, alpha, beta, Q, epsilon) << " " << dlnW_dz(X, alpha, beta, Q, epsilon) << "\n";
+    file2.flush();
+    file3.flush();
+    file4.flush();
   }
-  file.close();
+  file1.close();
+  file2.close();
+  file3.close();
+  file4.close();
 }
 
 /**
@@ -425,6 +455,40 @@ double NumericalAnalysis::W3( double Ve_bar, double Vge, double X_bar, double Vg
   delete[] params;
   params = NULL;
   return result;
+}
+
+/**
+ * \brief    Compute dW/dz
+ * \details  --
+ * \param    double z
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::dW_dz( double z, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = W(z, alpha, beta, Q);
+  double v2 = W(z+epsilon, alpha, beta, Q);
+  return (v2-v1)/(epsilon);
+}
+
+/**
+ * \brief    Compute dlnW/dz
+ * \details  --
+ * \param    double z
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::dlnW_dz( double z, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = log(W(z, alpha, beta, Q));
+  double v2 = log(W(z+epsilon, alpha, beta, Q));
+  return (v2-v1)/(epsilon);
 }
 
 /**
