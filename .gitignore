@@ -8,6 +8,10 @@ cmake/Makefile
 cmake/Config.h
 example/**
 !example/simulation.py
-!example/numerical_analysis.py
+!example/W1_numerical_analysis.py
+!example/W3_numerical_analysis.py
 !example/live_plot.R
 !example/lineage_plot.R
+!example/W1_numerical_analysis.R
+!example/W3_numerical_analysis.R
+

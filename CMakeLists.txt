@@ -73,8 +73,11 @@ set(EXECUTABLE_OUTPUT_PATH ../build/bin)
 set(SIMULATION_EXECUTABLE SigmaFGM_simulation)
 add_executable(${SIMULATION_EXECUTABLE} src/SigmaFGM_simulation.cpp)
 
-set(ANALYSIS_EXECUTABLE SigmaFGM_numerical_analysis)
-add_executable(${ANALYSIS_EXECUTABLE} src/SigmaFGM_numerical_analysis.cpp)
+set(W1_ANALYSIS_EXECUTABLE SigmaFGM_W1_numerical_analysis)
+add_executable(${W1_ANALYSIS_EXECUTABLE} src/SigmaFGM_W1_numerical_analysis.cpp)
+
+set(W3_ANALYSIS_EXECUTABLE SigmaFGM_W3_numerical_analysis)
+add_executable(${W3_ANALYSIS_EXECUTABLE} src/SigmaFGM_W3_numerical_analysis.cpp)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -84,21 +87,24 @@ find_package(GSL REQUIRED)
 if(GSL_FOUND)
   include_directories(${GSL_INCLUDE_DIR})
   target_link_libraries(${SIMULATION_EXECUTABLE} ${GSL_LIBRARIES})
-  target_link_libraries(${ANALYSIS_EXECUTABLE} ${GSL_LIBRARIES})
+  target_link_libraries(${W1_ANALYSIS_EXECUTABLE} ${GSL_LIBRARIES})
+  target_link_libraries(${W3_ANALYSIS_EXECUTABLE} ${GSL_LIBRARIES})
 endif(GSL_FOUND)
 
 find_package(TBB REQUIRED)
 if(TBB_FOUND)
   include_directories(${TBB_INCLUDE_DIR})
   target_link_libraries(${SIMULATION_EXECUTABLE} ${TBB_LIBRARIES})
-  target_link_libraries(${ANALYSIS_EXECUTABLE} ${TBB_LIBRARIES})
+  target_link_libraries(${W1_ANALYSIS_EXECUTABLE} ${TBB_LIBRARIES})
+  target_link_libraries(${W3_ANALYSIS_EXECUTABLE} ${TBB_LIBRARIES})
 endif(TBB_FOUND)
 
 find_package(ZLIB REQUIRED)
 if(ZLIB_FOUND)
   include_directories(${ZLIB_INCLUDE_DIR})
   target_link_libraries(${RUN_SIMULATION_EXECUTABLE} ${ZLIB_LIBRARIES})
-  target_link_libraries(${ANALYSIS_EXECUTABLE} ${ZLIB_LIBRARIES})
+  target_link_libraries(${W1_ANALYSIS_EXECUTABLE} ${ZLIB_LIBRARIES})
+  target_link_libraries(${W3_ANALYSIS_EXECUTABLE} ${ZLIB_LIBRARIES})
 endif(ZLIB_FOUND)
 
 
@@ -134,7 +140,8 @@ add_library(
 target_link_libraries(SigmaFGM z tbb gsl gslcblas)
 
 target_link_libraries(${SIMULATION_EXECUTABLE} SigmaFGM)
-target_link_libraries(${ANALYSIS_EXECUTABLE} SigmaFGM)
+target_link_libraries(${W1_ANALYSIS_EXECUTABLE} SigmaFGM)
+target_link_libraries(${W3_ANALYSIS_EXECUTABLE} SigmaFGM)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

@@ -23,38 +23,41 @@ import os
 import sys
 import math
 
-### Run the numerical analysis from the parameters set ###
-def run_numerical_analysis( Xmin, Xmax, Xstep, Vemin, Vemax, Vestep, alpha, beta, Q, epsilon ):
-	cmdline = "../build/bin/SigmaFGM_numerical_analysis"
-	cmdline += " -xmin "+str(Xmin)
-	cmdline += " -xmax "+str(Xmax)
-	cmdline += " -xstep "+str(Xstep)
-	cmdline += " -vemin "+str(Vemin)
-	cmdline += " -vemax "+str(Vemax)
-	cmdline += " -vestep "+str(Vestep)
+### Run numerical function numerical analysis from the parameters set ###
+def run_numerical_analysis( Xbarmin, Xbarmax, Xbarstep, Vebarmin, Vebarmax, Vebarstep, Vgx, Vge, alpha, beta, Q, epsilon ):
+	cmdline = "../build/bin/SigmaFGM_W3_numerical_analysis"
+	cmdline += " -Xbarmin "+str(Xbarmin)
+	cmdline += " -Xbarmax "+str(Xbarmax)
+	cmdline += " -Xbarstep "+str(Xbarstep)
+	cmdline += " -Vebarmin "+str(Vebarmin)
+	cmdline += " -Vebarmax "+str(Vebarmax)
+	cmdline += " -Vebarstep "+str(Vebarstep)
+	cmdline += " -Vgx "+str(Vgx)
+	cmdline += " -Vge "+str(Vge)
 	cmdline += " -alpha "+str(alpha)
 	cmdline += " -beta "+str(beta)
 	cmdline += " -Q "+str(Q)
 	cmdline += " -epsilon "+str(epsilon)
 	os.system(cmdline)
-	#os.system("Rscript plot_data.R /Users/charlesrocabert/git/SigmaFGM/example/output.png")
-
 
 ############
 #   MAIN   #
 ############
 
 if __name__ == '__main__':
-	X_MIN   = 0.0
-	X_MAX   = 10.0
-	X_STEP  = 0.1
-	VE_MIN  = 0.0
-	VE_MAX  = 10.0
-	VE_STEP = 0.1
-	ALPHA   = 0.5
-	BETA    = 0.0
-	Q       = 2.0
-	EPSILON = 1e-6
+	XBAR_MIN   = 0.0
+	XBAR_MAX   = 5.0
+	XBAR_STEP  = 0.05
+	VEBAR_MIN  = 0.0
+	VEBAR_MAX  = 5.0
+	VEBAR_STEP = 0.05
+	VGX        = 0.1
+	VGE        = 0.1
+	ALPHA      = 0.5
+	BETA       = 0.0
+	Q          = 2.0
+	EPSILON    = 1e-3
+	run_numerical_analysis(XBAR_MIN, XBAR_MAX, XBAR_STEP, VEBAR_MIN, VEBAR_MAX, VEBAR_STEP, VGX, VGE, ALPHA, BETA, Q, EPSILON)
 
-	run_numerical_analysis(X_MIN, X_MAX, X_STEP, VE_MIN, VE_MAX, VE_STEP, ALPHA, BETA, Q, EPSILON)
+
 

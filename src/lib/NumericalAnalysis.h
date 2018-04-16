@@ -36,6 +36,8 @@
 #include <assert.h>
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_randist.h>
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_sf_pow_int.h>
 
 #include "Macros.h"
 #include "Enums.h"
@@ -77,7 +79,9 @@ public:
    * PUBLIC ATTRIBUTES
    *----------------------------*/
   
-  void explore_genotypic_space( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon );
+  void explore_W1( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon );
+  void explore_W3( double Xbar_min, double Xbar_max, double Xbar_step, double Vebar_min, double Vebar_max, double Vebar_step, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon );
+  void compute_trajectory( int t, double dt, double Xbar_init, double Vebar_init, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon );
   
 protected:
   
@@ -101,12 +105,11 @@ protected:
   static double W( double z, double alpha, double beta, double Q );
   
   static double W1_integrand( double z, void* params );
-  static double W1( double X, double Ve, double alpha, double beta, double Q );
-  
   static double W2_integrand( double X, void* params );
-  static double W2( double X_bar, double Vgx, double Ve, double alpha, double beta, double Q );
-  
   static double W3_integrand( double Ve, void* params );
+  
+  static double W1( double X, double Ve, double alpha, double beta, double Q );
+  static double W2( double X_bar, double Vgx, double Ve, double alpha, double beta, double Q );
   static double W3( double Ve_bar, double Vge, double X_bar, double Vgx, double alpha, double beta, double Q );
   
   static double dW1_dX( double X, double Ve, double alpha, double beta, double Q, double epsilon );
@@ -116,6 +119,9 @@ protected:
   static double dlnW1_dX( double X, double Ve, double alpha, double beta, double Q, double epsilon );
   static double dlnW1_dVe( double X, double Ve, double alpha, double beta, double Q, double epsilon );
   static double d2lnW1_dXdVE( double X, double Ve, double alpha, double beta, double Q, double epsilon );
+  
+  static double dlnW3_dX( double X_bar, double Ve_bar, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon );
+  static double dlnW3_dVe( double X_bar, double Ve_bar, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon );
   
   /*----------------------------
    * PROTECTED ATTRIBUTES

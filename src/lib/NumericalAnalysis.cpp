@@ -73,8 +73,8 @@ NumericalAnalysis::~NumericalAnalysis( void )
  *----------------------------*/
 
 /**
- * \brief    Explore The genotypic space (X, Ve)
- * \details  Data is saved in file "space_exploration.txt"
+ * \brief    Explore The fitness of genotypes W1(X, Ve)
+ * \details  Data is saved in file "W1.txt"
  * \param    double X_min
  * \param    double X_max
  * \param    double X_step
@@ -87,10 +87,10 @@ NumericalAnalysis::~NumericalAnalysis( void )
  * \param    double epsilon
  * \return   \e void
  */
-void NumericalAnalysis::explore_genotypic_space( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon )
+void NumericalAnalysis::explore_W1( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon )
 {
-  std::ofstream file("space_exploration.txt", std::ios::out | std::ios::trunc);
-  file << "X Ve W1 dW1_dX dW1_dVe dlnW1_dX dlnW1_dVe d2lnW1_dXdVE\n";
+  std::ofstream file("W1.txt", std::ios::out | std::ios::trunc);
+  file << "X Ve W1 lnW1 dW1_dX dW1_dVe dlnW1_dX dlnW1_dVe d2lnW1_dXdVE\n";
   for (double X = X_min; X < X_max; X += X_step)
   {
     for (double Ve = Ve_min; Ve < Ve_max; Ve += Ve_step)
@@ -101,8 +101,77 @@ void NumericalAnalysis::explore_genotypic_space( double X_min, double X_max, dou
       double dlnw1_dx     = dlnW1_dX(X, Ve, alpha, beta, Q, epsilon);
       double dlnw1_dve    = dlnW1_dVe(X, Ve, alpha, beta, Q, epsilon);
       double d2lnw1_dxdve = d2lnW1_dXdVE(X, Ve, alpha, beta, Q, epsilon);
-      file << X << " " << Ve << " " << w1 << " " << dw1_dx << " " << dw1_dve << " " << dlnw1_dx << " " << dlnw1_dve << " " << d2lnw1_dxdve << "\n";
+      file << X << " " << Ve << " " << w1 << " " << log(w1) << " " << dw1_dx << " " << dw1_dve << " " << dlnw1_dx << " " << dlnw1_dve << " " << d2lnw1_dxdve << "\n";
+      file.flush();
     }
+  }
+  file.close();
+}
+
+/**
+ * \brief    Explore The fitness of the population W3(X_bar, Ve_bar)
+ * \details  Data is saved in file "W3.txt"
+ * \param    double Xbar_min
+ * \param    double Xbar_max
+ * \param    double Xbar_step
+ * \param    double Vebar_min
+ * \param    double Vebar_max
+ * \param    double Vebar_step
+ * \param    double Vgx
+ * \param    double Vge
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e void
+ */
+void NumericalAnalysis::explore_W3( double Xbar_min, double Xbar_max, double Xbar_step, double Vebar_min, double Vebar_max, double Vebar_step, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon )
+{
+  std::ofstream file("W3.txt", std::ios::out | std::ios::trunc);
+  file << "X_bar Ve_bar W3\n";
+  for (double X_bar = Xbar_min; X_bar < Xbar_max; X_bar += Xbar_step)
+  {
+    for (double Ve_bar = Vebar_min; Ve_bar < Vebar_max; Ve_bar += Vebar_step)
+    {
+      std::cout << X_bar << " " << Ve_bar << "\n";
+      double w3 = W3(Ve_bar, Vge, X_bar, Vgx, alpha, beta, Q);
+      file << X_bar << " " << Ve_bar << " " << w3 << "\n";
+      file.flush();
+    }
+  }
+  file.close();
+}
+
+/**
+ * \brief    Compute mean population trajectory through time
+ * \details  --
+ * \param    int t
+ * \param    double dt
+ * \param    double Xbar_init
+ * \param    double Vebar_init
+ * \param    double Vgx
+ * \param    double Vge
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e void
+ */
+void NumericalAnalysis::compute_trajectory( int t, double dt, double Xbar_init, double Vebar_init, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon )
+{
+  std::ofstream file("trajectory.txt", std::ios::out | std::ios::trunc);
+  file << "t dt X_bar Ve_bar\n";
+  double X_bar  = Xbar_init;
+  double Ve_bar = Vebar_init;
+  double time   = 0.0;
+  file << time << " " << dt << " " << X_bar << " " << Ve_bar << "\n";
+  while (time <= t)
+  {
+    X_bar  += dlnW3_dX(X_bar, Ve_bar, Vgx, Vge, alpha, beta, Q, epsilon)*dt;
+    Ve_bar += dlnW3_dVe(X_bar, Ve_bar, Vgx, Vge, alpha, beta, Q, epsilon)*dt;
+    time   += dt;
+    file << time << " " << dt << " " << X_bar << " " << Ve_bar << "\n";
+    file.flush();
   }
   file.close();
 }
@@ -170,53 +239,6 @@ double NumericalAnalysis::W1_integrand( double z, void* params )
 }
 
 /**
- * \brief    Compute W1 = int[ W(z).p(z) dz ]
- * \details  --
- * \param    double X
- * \param    double Ve
- * \param    double alpha
- * \param    double beta
- * \param    double Q
- * \return   \e double
- */
-double NumericalAnalysis::W1( double X, double Ve, double alpha, double beta, double Q )
-{
-  if (Ve < MIN_SIGMA)
-  {
-    return W(X, alpha, beta, Q);
-  }
-  
-  /*-----------------------------*/
-  /* 1) Declare GSL objects      */
-  /*-----------------------------*/
-  gsl_integration_workspace* workspace = gsl_integration_workspace_alloc(LIMIT);
-  gsl_function F;
-  
-  /*-----------------------------*/
-  /* 2) Create parameters vector */
-  /*-----------------------------*/
-  double* params = new double[5];
-  params[0]      = X;
-  params[1]      = Ve;
-  params[2]      = alpha;
-  params[3]      = beta;
-  params[4]      = Q;
-  
-  /*-----------------------------*/
-  /* 3) Compute the integral     */
-  /*-----------------------------*/
-  F.function = &NumericalAnalysis::W1_integrand;
-  F.params   = params;
-  double result, error;
-  gsl_integration_qagi(&F, EPSABS, ESPREL, LIMIT, workspace, &result, &error);
-  gsl_integration_workspace_free(workspace);
-  workspace = NULL;
-  delete[] params;
-  params = NULL;
-  return result;
-}
-
-/**
  * \brief    Integrand used to compute the mean fitness among the distribution of genotypes
  * \details  p(X|X_bar,Vgx).W1
  * \param    double X
@@ -232,60 +254,7 @@ double NumericalAnalysis::W2_integrand( double X, void* params )
   double  alpha      = cast_param[3];
   double  beta       = cast_param[4];
   double  Q          = cast_param[5];
-  
-  double val = gaussian_pdf(X, X_bar, Vgx)*W1(X, Ve, alpha, beta, Q);
-  //std::cout << X_bar << " | " << Ve << " | " << X << " | " << val << "\n";
-  return val;
-}
-
-/**
- * \brief    Compute W2 = int[ p(X|X_bar,Vgx).W1 dX ]
- * \details  --
- * \param    double X_bar
- * \param    double Vgx
- * \param    double Ve
- * \param    double alpha
- * \param    double beta
- * \param    double Q
- * \return   \e double
- */
-double NumericalAnalysis::W2( double X_bar, double Vgx, double Ve, double alpha, double beta, double Q )
-{
-  //std::cout << X_bar << " | " << Ve << " | " << Vgx << "\n";
-  if (Vgx < MIN_SIGMA)
-  {
-    return W1(X_bar, Ve, alpha, beta, Q);
-  }
-  
-  /*-----------------------------*/
-  /* 1) Declare GSL objects      */
-  /*-----------------------------*/
-  gsl_integration_workspace* workspace = gsl_integration_workspace_alloc(LIMIT);
-  gsl_function F;
-  
-  /*-----------------------------*/
-  /* 2) Create parameters vector */
-  /*-----------------------------*/
-  double* params = new double[6];
-  params[0]      = X_bar;
-  params[1]      = Vgx;
-  params[2]      = Ve;
-  params[3]      = alpha;
-  params[4]      = beta;
-  params[5]      = Q;
-  
-  /*-----------------------------*/
-  /* 3) Compute the integral     */
-  /*-----------------------------*/
-  F.function = &NumericalAnalysis::W2_integrand;
-  F.params   = params;
-  double result, error;
-  gsl_integration_qagi(&F, EPSABS, ESPREL, LIMIT, workspace, &result, &error);
-  gsl_integration_workspace_free(workspace);
-  workspace = NULL;
-  delete[] params;
-  params = NULL;
-  return result;
+  return gaussian_pdf(X, X_bar, Vgx)*W1(X, Ve, alpha, beta, Q);
 }
 
 /**
@@ -309,6 +278,104 @@ double NumericalAnalysis::W3_integrand( double Ve, void* params )
 }
 
 /**
+ * \brief    Compute W1 = int[ p(z|X,Ve).W(z) dz ]
+ * \details  --
+ * \param    double X
+ * \param    double Ve
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \return   \e double
+ */
+double NumericalAnalysis::W1( double X, double Ve, double alpha, double beta, double Q )
+{
+  if (Ve < MIN_SIGMA)
+  {
+    return W(X, alpha, beta, Q);
+  }
+  
+  /*-----------------------------*/
+  /* 1) Declare GSL objects      */
+  /*-----------------------------*/
+  gsl_integration_cquad_workspace* workspace = gsl_integration_cquad_workspace_alloc(LIMIT);
+  gsl_function F;
+  
+  /*-----------------------------*/
+  /* 2) Create parameters vector */
+  /*-----------------------------*/
+  double* params = new double[5];
+  params[0]      = X;
+  params[1]      = Ve;
+  params[2]      = alpha;
+  params[3]      = beta;
+  params[4]      = Q;
+  
+  /*-----------------------------*/
+  /* 3) Compute the integral     */
+  /*-----------------------------*/
+  F.function = &NumericalAnalysis::W1_integrand;
+  F.params   = params;
+  double result, error;
+  size_t nevals;
+  gsl_integration_cquad(&F, X-BOUNDARY, X+BOUNDARY, EPSABS, ESPREL, workspace, &result, &error, &nevals);
+  gsl_integration_cquad_workspace_free(workspace);
+  workspace = NULL;
+  delete[] params;
+  params = NULL;
+  return result;
+}
+
+/**
+ * \brief    Compute W2 = int[ p(X|X_bar,Vgx).W1 dX ]
+ * \details  --
+ * \param    double X_bar
+ * \param    double Vgx
+ * \param    double Ve
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \return   \e double
+ */
+double NumericalAnalysis::W2( double X_bar, double Vgx, double Ve, double alpha, double beta, double Q )
+{
+  if (Vgx < MIN_SIGMA)
+  {
+    return W1(X_bar, Ve, alpha, beta, Q);
+  }
+  
+  /*-----------------------------*/
+  /* 1) Declare GSL objects      */
+  /*-----------------------------*/
+  gsl_integration_cquad_workspace* workspace = gsl_integration_cquad_workspace_alloc(LIMIT);
+  gsl_function F;
+  
+  /*-----------------------------*/
+  /* 2) Create parameters vector */
+  /*-----------------------------*/
+  double* params = new double[6];
+  params[0]      = X_bar;
+  params[1]      = Vgx;
+  params[2]      = Ve;
+  params[3]      = alpha;
+  params[4]      = beta;
+  params[5]      = Q;
+  
+  /*-----------------------------*/
+  /* 3) Compute the integral     */
+  /*-----------------------------*/
+  F.function = &NumericalAnalysis::W2_integrand;
+  F.params   = params;
+  double result, error;
+  size_t nevals;
+  gsl_integration_cquad(&F, X_bar-BOUNDARY, X_bar+BOUNDARY, EPSABS, ESPREL, workspace, &result, &error, &nevals);
+  gsl_integration_cquad_workspace_free(workspace);
+  workspace = NULL;
+  delete[] params;
+  params = NULL;
+  return result;
+}
+
+/**
  * \brief    Compute W3 = int[ p(Ve|Ve_bar,Vge).W2 dVe ]
  * \details  --
  * \param    double Ve_bar
@@ -322,7 +389,6 @@ double NumericalAnalysis::W3_integrand( double Ve, void* params )
  */
 double NumericalAnalysis::W3( double Ve_bar, double Vge, double X_bar, double Vgx, double alpha, double beta, double Q )
 {
-  //std::cout << X_bar << " | " << Ve_bar << "\n";
   if (Vge < MIN_SIGMA)
   {
     return W2(X_bar, Vgx, Ve_bar, alpha, beta, Q);
@@ -331,7 +397,7 @@ double NumericalAnalysis::W3( double Ve_bar, double Vge, double X_bar, double Vg
   /*-----------------------------*/
   /* 1) Declare GSL objects      */
   /*-----------------------------*/
-  gsl_integration_workspace* workspace = gsl_integration_workspace_alloc(LIMIT);
+  gsl_integration_cquad_workspace* workspace = gsl_integration_cquad_workspace_alloc(LIMIT);
   gsl_function F;
   
   /*-----------------------------*/
@@ -352,8 +418,9 @@ double NumericalAnalysis::W3( double Ve_bar, double Vge, double X_bar, double Vg
   F.function = &NumericalAnalysis::W3_integrand;
   F.params   = params;
   double result, error;
-  gsl_integration_qagi(&F, EPSABS, ESPREL, LIMIT, workspace, &result, &error);
-  gsl_integration_workspace_free(workspace);
+  size_t nevals;
+  gsl_integration_cquad(&F, Ve_bar-BOUNDARY, Ve_bar+BOUNDARY, EPSABS, ESPREL, workspace, &result, &error, &nevals);
+  gsl_integration_cquad_workspace_free(workspace);
   workspace = NULL;
   delete[] params;
   params = NULL;
@@ -375,7 +442,7 @@ double NumericalAnalysis::dW1_dX( double X, double Ve, double alpha, double beta
 {
   double v1 = W1(X, Ve, alpha, beta, Q);
   double v2 = W1(X+epsilon, Ve, alpha, beta, Q);
-  return (v2-v1)/epsilon;
+  return (v2-v1)/(epsilon);
 }
 
 /**
@@ -393,7 +460,7 @@ double NumericalAnalysis::dW1_dVe( double X, double Ve, double alpha, double bet
 {
   double v1 = W1(X, Ve, alpha, beta, Q);
   double v2 = W1(X, Ve+epsilon, alpha, beta, Q);
-  return (v2-v1)/epsilon;
+  return (v2-v1)/(epsilon);
 }
 
 /**
@@ -410,10 +477,10 @@ double NumericalAnalysis::dW1_dVe( double X, double Ve, double alpha, double bet
 double NumericalAnalysis::d2W1_dXdVE( double X, double Ve, double alpha, double beta, double Q, double epsilon )
 {
   double v1 = W1(X+epsilon, Ve+epsilon, alpha, beta, Q);
-  double v2 = W1(X, Ve+epsilon, alpha, beta, Q);
+  double v2 = W1(X, Ve, alpha, beta, Q);
   double v3 = W1(X+epsilon, Ve, alpha, beta, Q);
-  double v4 = W1(X, Ve, alpha, beta, Q);
-  return (v1-v2-v3+v4)/(epsilon*epsilon);
+  double v4 = W1(X, Ve+epsilon, alpha, beta, Q);
+  return (v1+v2-v3-v4)/(epsilon*epsilon);
 }
 
 /**
@@ -429,9 +496,9 @@ double NumericalAnalysis::d2W1_dXdVE( double X, double Ve, double alpha, double 
  */
 double NumericalAnalysis::dlnW1_dX( double X, double Ve, double alpha, double beta, double Q, double epsilon )
 {
-  double v1 = log(W1(X, Ve, alpha, beta, Q));
-  double v2 = log(W1(X+epsilon, Ve, alpha, beta, Q));
-  return (v2-v1)/epsilon;
+  double v1 = W1(X, Ve, alpha, beta, Q);
+  double v2 = W1(X+epsilon, Ve, alpha, beta, Q);
+  return (v2-v1)/(epsilon*v1);
 }
 
 /**
@@ -447,9 +514,9 @@ double NumericalAnalysis::dlnW1_dX( double X, double Ve, double alpha, double be
  */
 double NumericalAnalysis::dlnW1_dVe( double X, double Ve, double alpha, double beta, double Q, double epsilon )
 {
-  double v1 = log(W1(X, Ve, alpha, beta, Q));
-  double v2 = log(W1(X, Ve+epsilon, alpha, beta, Q));
-  return (v2-v1)/epsilon;
+  double v1 = W1(X, Ve, alpha, beta, Q);
+  double v2 = W1(X, Ve+epsilon, alpha, beta, Q);
+  return (v2-v1)/(epsilon*v1);
 }
 
 /**
@@ -465,10 +532,50 @@ double NumericalAnalysis::dlnW1_dVe( double X, double Ve, double alpha, double b
  */
 double NumericalAnalysis::d2lnW1_dXdVE( double X, double Ve, double alpha, double beta, double Q, double epsilon )
 {
-  double v1 = log(W1(X+epsilon, Ve+epsilon, alpha, beta, Q));
-  double v2 = log(W1(X, Ve+epsilon, alpha, beta, Q));
-  double v3 = log(W1(X+epsilon, Ve, alpha, beta, Q));
-  double v4 = log(W1(X, Ve, alpha, beta, Q));
-  return (v1-v2-v3+v4)/(epsilon*epsilon);
+  double v1 = W1(X+epsilon, Ve+epsilon, alpha, beta, Q);
+  double v2 = W1(X, Ve, alpha, beta, Q);
+  double v3 = W1(X+epsilon, Ve, alpha, beta, Q);
+  double v4 = W1(X, Ve+epsilon, alpha, beta, Q);
+  return (v1+v2-v3-v4)/(epsilon*epsilon*v2);
+}
+
+/**
+ * \brief    Compute dlnW3/dX
+ * \details  --
+ * \param    double X_bar
+ * \param    double Ve_bar
+ * \param    double Vgx
+ * \param    double Vge
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::dlnW3_dX( double X_bar, double Ve_bar, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = W3(Ve_bar, Vge, X_bar, Vgx, alpha, beta, Q);
+  double v2 = W3(Ve_bar, Vge, X_bar+epsilon, Vgx, alpha, beta, Q);
+  return (v2-v1)/(epsilon*v1);
+}
+
+/**
+ * \brief    Compute dlnW3/dVe
+ * \details  --
+ * \param    double X_bar
+ * \param    double Ve_bar
+ * \param    double Vgx
+ * \param    double Vge
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e double
+ */
+double NumericalAnalysis::dlnW3_dVe( double X_bar, double Ve_bar, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon )
+{
+  double v1 = W3(Ve_bar, Vge, X_bar, Vgx, alpha, beta, Q);
+  double v2 = W3(Ve_bar+epsilon, Vge, X_bar, Vgx, alpha, beta, Q);
+  return (v2-v1)/(epsilon*v1);
 }
 

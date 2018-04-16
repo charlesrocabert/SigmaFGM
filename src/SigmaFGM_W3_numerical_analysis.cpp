@@ -1,11 +1,11 @@
 
 /**
- * \file      SigmaFGM_simulation.cpp
+ * \file      SigmaFGM_W3_numerical_analysis.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
- * \date      06-04-2018
+ * \date      13-04-2018
  * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
- * \brief     Make numerical analysis
+ * \brief     Compute W3 numerical analysis
  */
 
 /***********************************************************************
@@ -39,7 +39,7 @@
 #include "./lib/Parameters.h"
 #include "./lib/NumericalAnalysis.h"
 
-const std::string EXECUTABLE_NAME = "build/bin/SigmaFGM_numerical_analysis";
+const std::string EXECUTABLE_NAME = "build/bin/SigmaFGM_W3_numerical_analysis";
 
 void readArgs( int argc, char const** argv, Parameters* parameters );
 void printUsage( void );
@@ -55,9 +55,9 @@ void printHeader( void );
  */
 int main( int argc, char const** argv )
 {
-  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  /* 1) Read parameters                 */
-  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 1) Read parameters        */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   std::cout << "> Read parameters ...\n";
   Parameters* parameters = new Parameters();
   readArgs(argc, argv, parameters);
@@ -66,23 +66,35 @@ int main( int argc, char const** argv )
     parameters->set_seed((unsigned long int)time(NULL));
   }
   
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 2) Run numerical analysis */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  std::cout << "> Run W3 numerical analysis ...\n";
   NumericalAnalysis* num = new NumericalAnalysis(parameters);
   
-  double X_min   = parameters->get_X_min();
-  double X_max   = parameters->get_X_max();
-  double X_step  = parameters->get_X_step();
-  double Ve_min  = parameters->get_Ve_min();
-  double Ve_max  = parameters->get_Ve_max();
-  double Ve_step = parameters->get_Ve_step();
-  double epsilon = parameters->get_epsilon();
-  double alpha   = parameters->get_alpha();
-  double beta    = parameters->get_beta();
-  double Q       = parameters->get_Q();
+  double Xbar_min   = parameters->get_Xbar_min();
+  double Xbar_max   = parameters->get_Xbar_max();
+  double Xbar_step  = parameters->get_Xbar_step();
+  double Vebar_min  = parameters->get_Vebar_min();
+  double Vebar_max  = parameters->get_Vebar_max();
+  double Vebar_step = parameters->get_Vebar_step();
+  double Vgx        = parameters->get_Vgx();
+  double Vge        = parameters->get_Vge();
+  double alpha      = parameters->get_alpha();
+  double beta       = parameters->get_beta();
+  double Q          = parameters->get_Q();
+  double epsilon    = parameters->get_epsilon();
   
-  num->explore_genotypic_space(X_min, X_max, X_step, Ve_min, Ve_max, Ve_step, alpha, beta, Q, epsilon);
+  num->compute_trajectory(1000, 1.0, Xbar_max, Vebar_min, Vgx, Vge, alpha, beta, Q, epsilon);
+  
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 3) Free memory            */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   
   delete num;
   num = NULL;
+  delete parameters;
+  parameters = NULL;
   return EXIT_SUCCESS;
 }
 
@@ -120,7 +132,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
     /****************************************************************/
     
     /* Mandatory */
-    else if (strcmp(argv[i], "-Xmin") == 0 || strcmp(argv[i], "--Xmin") == 0)
+    else if (strcmp(argv[i], "-Xbarmin") == 0 || strcmp(argv[i], "--Xbarmin") == 0)
     {
       if (i+1 == argc)
       {
@@ -129,12 +141,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_X_min(atof(argv[i+1]));
+        parameters->set_Xbar_min(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-Xmax") == 0 || strcmp(argv[i], "--Xmax") == 0)
+    else if (strcmp(argv[i], "-Xbarmax") == 0 || strcmp(argv[i], "--Xbarmax") == 0)
     {
       if (i+1 == argc)
       {
@@ -143,12 +155,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_X_max(atof(argv[i+1]));
+        parameters->set_Xbar_max(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-Xstep") == 0 || strcmp(argv[i], "--Xstep") == 0)
+    else if (strcmp(argv[i], "-Xbarstep") == 0 || strcmp(argv[i], "--Xbarstep") == 0)
     {
       if (i+1 == argc)
       {
@@ -157,12 +169,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_X_step(atof(argv[i+1]));
+        parameters->set_Xbar_step(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-Vemin") == 0 || strcmp(argv[i], "--Vemin") == 0)
+    else if (strcmp(argv[i], "-Vebarmin") == 0 || strcmp(argv[i], "--Vebarmin") == 0)
     {
       if (i+1 == argc)
       {
@@ -171,12 +183,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_Ve_min(atof(argv[i+1]));
+        parameters->set_Vebar_min(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-Vemax") == 0 || strcmp(argv[i], "--Vemax") == 0)
+    else if (strcmp(argv[i], "-Vebarmax") == 0 || strcmp(argv[i], "--Vebarmax") == 0)
     {
       if (i+1 == argc)
       {
@@ -185,12 +197,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_Ve_max(atof(argv[i+1]));
+        parameters->set_Vebar_max(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-Vestep") == 0 || strcmp(argv[i], "--Vestep") == 0)
+    else if (strcmp(argv[i], "-Vebarstep") == 0 || strcmp(argv[i], "--Vebarstep") == 0)
     {
       if (i+1 == argc)
       {
@@ -199,7 +211,35 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_Ve_step(atof(argv[i+1]));
+        parameters->set_Vebar_step(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-Vgx") == 0 || strcmp(argv[i], "--Vgx") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_Vgx(atof(argv[i+1]));
+        counter++;
+      }
+    }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-Vge") == 0 || strcmp(argv[i], "--Vge") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_Vge(atof(argv[i+1]));
         counter++;
       }
     }
@@ -245,13 +285,27 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
+    /* Mandatory */
+    else if (strcmp(argv[i], "-epsilon") == 0 || strcmp(argv[i], "--epsilon") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_epsilon(atof(argv[i+1]));
+        counter++;
+      }
+    }
     
     /****************************************************************/
     
     /* Not mandatory */
     
   }
-  if (counter < 9)
+  if (counter < 12)
   {
     printf("You must provide all the mandatory arguments (see -h or --help). Exit.\n");
     exit(EXIT_SUCCESS);
@@ -283,25 +337,29 @@ void printUsage( void )
   std::cout << " certain conditions; See the GNU General Public License for details  \n";
   std::cout << "*********************************************************************\n";
   std::cout << "\n";
-  std::cout << "Usage: SigmaFGM_numerical_analysis -h or --help\n";
-  std::cout << "   or: SigmaFGM_numerical_analysis [options]\n";
+  std::cout << "Usage: SigmaFGM_W3_numerical_analysis -h or --help\n";
+  std::cout << "   or: SigmaFGM_W3_numerical_analysis [options]\n";
   std::cout << "Options are:\n";
   std::cout << "  -h, --help\n";
   std::cout << "        print this help, then exit\n";
   std::cout << "  -v, --version\n";
   std::cout << "        print the current version, then exit\n";
-  std::cout << "  -Xmin, --Xmin\n";
-  std::cout << "        specify the minimal X value\n";
-  std::cout << "  -Xmax, --Xmax\n";
-  std::cout << "        specify the maximal X value\n";
-  std::cout << "  -Xstep, --Xstep\n";
-  std::cout << "        specify the X step\n";
-  std::cout << "  -Vemin, --Vemin\n";
-  std::cout << "        specify the minimal Ve value\n";
-  std::cout << "  -Vemax, --Vemax\n";
-  std::cout << "        specify the maximal Ve value\n";
-  std::cout << "  -Vestep, --Vestep\n";
-  std::cout << "        specify the Ve step\n";
+  std::cout << "  -Xbarmin, --Xbarmin\n";
+  std::cout << "        specify the minimal X_bar value\n";
+  std::cout << "  -Xbarmax, --Xbarmax\n";
+  std::cout << "        specify the maximal X_bar value\n";
+  std::cout << "  -Xbarstep, --Xbarstep\n";
+  std::cout << "        specify the X_bar step\n";
+  std::cout << "  -Vebarmin, --Vebarmin\n";
+  std::cout << "        specify the minimal Ve_bar value\n";
+  std::cout << "  -Vebarmax, --Vebarmax\n";
+  std::cout << "        specify the maximal Ve_bar value\n";
+  std::cout << "  -Vebarstep, --Vebarstep\n";
+  std::cout << "        specify the Ve_bar step\n";
+  std::cout << "  -Vgx, --Vgx\n";
+  std::cout << "        specify the Vgx value\n";
+  std::cout << "  -Vge, --Vge\n";
+  std::cout << "        specify the Vge value\n";
   std::cout << "  -alpha, --alpha\n";
   std::cout << "        specify the alpha value\n";
   std::cout << "  -beta, --beta\n";

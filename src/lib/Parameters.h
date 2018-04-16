@@ -101,7 +101,7 @@ public:
   
   inline type_of_noise get_noise_type( void ) const;
   
-  /*----------------------------------------------- NUMERICAL ANALYSIS */
+  /*----------------------------------------------- W1 NUMERICAL ANALYSIS */
   
   inline double get_X_min( void ) const;
   inline double get_X_max( void ) const;
@@ -109,6 +109,21 @@ public:
   inline double get_Ve_min( void ) const;
   inline double get_Ve_max( void ) const;
   inline double get_Ve_step( void ) const;
+  
+  
+  /*----------------------------------------------- W3 NUMERICAL ANALYSIS */
+  
+  inline double get_Xbar_min( void ) const;
+  inline double get_Xbar_max( void ) const;
+  inline double get_Xbar_step( void ) const;
+  inline double get_Vebar_min( void ) const;
+  inline double get_Vebar_max( void ) const;
+  inline double get_Vebar_step( void ) const;
+  inline double get_Vgx( void ) const;
+  inline double get_Vge( void ) const;
+  
+  /*----------------------------------------------- DISCRETE DERIVATIVE STEP */
+  
   inline double get_epsilon( void ) const;
   
   /*----------------------------
@@ -159,7 +174,7 @@ public:
   
   inline void set_noise_type( type_of_noise noise_type );
   
-  /*----------------------------------------------- NUMERICAL ANALYSIS */
+  /*----------------------------------------------- W1 NUMERICAL ANALYSIS */
   
   inline void set_X_min( double X_min );
   inline void set_X_max( double X_max );
@@ -167,6 +182,20 @@ public:
   inline void set_Ve_min( double Ve_min );
   inline void set_Ve_max( double Ve_max );
   inline void set_Ve_step( double Ve_step );
+  
+  /*----------------------------------------------- W3 NUMERICAL ANALYSIS */
+  
+  inline void set_Xbar_min( double Xbar_min );
+  inline void set_Xbar_max( double Xbar_max );
+  inline void set_Xbar_step( double Xbar_step );
+  inline void set_Vebar_min( double Vebar_min );
+  inline void set_Vebar_max( double Vebar_max );
+  inline void set_Vebar_step( double Vebar_step );
+  inline void set_Vgx( double Vgx );
+  inline void set_Vge( double Vge );
+  
+  /*----------------------------------------------- DISCRETE DERIVATIVE STEP */
+  
   inline void set_epsilon( double epsilon );
   
   /*----------------------------
@@ -239,7 +268,21 @@ protected:
   double _Ve_min;  /*!< Ve minimal value    */
   double _Ve_max;  /*!< Ve maximal value    */
   double _Ve_step; /*!< Ve exploration step */
-  double _epsilon; /*!< Derivative step     */
+  
+  /*----------------------------------------------- W3 NUMERICAL ANALYSIS */
+  
+  double _Xbar_min;   /*!< X_bar minimal value     */
+  double _Xbar_max;   /*!< X_bar maximal value     */
+  double _Xbar_step;  /*!< X_bar exploration step  */
+  double _Vebar_min;  /*!< Ve_bar minimal value    */
+  double _Vebar_max;  /*!< Ve_bar maximal value    */
+  double _Vebar_step; /*!< Ve_bar exploration step */
+  double _Vgx;        /*!< Vgx value               */
+  double _Vge;        /*!< Vge value               */
+  
+  /*----------------------------------------------- DISCRETE DERIVATIVE STEP */
+  
+  double _epsilon; /*!< Derivative step */
 };
 
 
@@ -504,7 +547,7 @@ inline type_of_noise Parameters::get_noise_type( void ) const
   return _noise_type;
 }
 
-/*----------------------------------------------- NUMERICAL ANALYSIS */
+/*----------------------------------------------- W1 NUMERICAL ANALYSIS */
 
 /**
  * \brief    Get X minimal value
@@ -571,6 +614,50 @@ inline double Parameters::get_Ve_step( void ) const
 {
   return _Ve_step;
 }
+
+/*----------------------------------------------- W3 NUMERICAL ANALYSIS */
+
+inline double Parameters::get_Xbar_min( void ) const
+{
+  return _Xbar_min;
+}
+
+inline double Parameters::get_Xbar_max( void ) const
+{
+  return _Xbar_max;
+}
+
+inline double Parameters::get_Xbar_step( void ) const
+{
+  return _Xbar_step;
+}
+
+inline double Parameters::get_Vebar_min( void ) const
+{
+  return _Vebar_min;
+}
+
+inline double Parameters::get_Vebar_max( void ) const
+{
+  return _Vebar_max;
+}
+
+inline double Parameters::get_Vebar_step( void ) const
+{
+  return _Vebar_step;
+}
+
+inline double Parameters::get_Vgx( void ) const
+{
+  return _Vgx;
+}
+
+inline double Parameters::get_Vge( void ) const
+{
+  return _Vge;
+}
+
+/*----------------------------------------------- DISCRETE DERIVATIVE STEP */
 
 /**
  * \brief    Get epsilon value
@@ -864,7 +951,7 @@ inline void Parameters::set_noise_type( type_of_noise noise_type )
   _noise_type = noise_type;
 }
 
-/*----------------------------------------------- NUMERICAL ANALYSIS */
+/*----------------------------------------------- W1 NUMERICAL ANALYSIS */
 
 /**
  * \brief    Set X minimal value
@@ -931,6 +1018,50 @@ inline void Parameters::set_Ve_step( double Ve_step )
 {
   _Ve_step = Ve_step;
 }
+
+/*----------------------------------------------- W3 NUMERICAL ANALYSIS */
+
+inline void Parameters::set_Xbar_min( double Xbar_min )
+{
+  _Xbar_min = Xbar_min;
+}
+
+inline void Parameters::set_Xbar_max( double Xbar_max )
+{
+  _Xbar_max = Xbar_max;
+}
+
+inline void Parameters::set_Xbar_step( double Xbar_step )
+{
+  _Xbar_step = Xbar_step;
+}
+
+inline void Parameters::set_Vebar_min( double Vebar_min )
+{
+  _Vebar_min = Vebar_min;
+}
+
+inline void Parameters::set_Vebar_max( double Vebar_max )
+{
+  _Vebar_max = Vebar_max;
+}
+
+inline void Parameters::set_Vebar_step( double Vebar_step )
+{
+  _Vebar_step = Vebar_step;
+}
+
+inline void Parameters::set_Vgx( double Vgx )
+{
+  _Vgx = Vgx;
+}
+
+inline void Parameters::set_Vge( double Vge )
+{
+  _Vge = Vge;
+}
+
+/*----------------------------------------------- DISCRETE DERIVATIVE STEP */
 
 /**
  * \brief    Set epsilon value

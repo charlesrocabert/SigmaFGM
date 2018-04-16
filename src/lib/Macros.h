@@ -33,6 +33,7 @@
 #define ESPREL  1e-12
 #define LIMIT   1000
 
+#define BOUNDARY   20.0
 #define MIN_SIGMA  1e-6
 
 

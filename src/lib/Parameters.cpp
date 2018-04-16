@@ -83,15 +83,30 @@ Parameters::Parameters( void )
   
   _noise_type = NONE;
   
-  /*----------------------------------------------- NUMERICAL ANALYSIS */
+  /*----------------------------------------------- W1 NUMERICAL ANALYSIS */
   
   _X_min   = 0.0;
-  _X_max   = 4.0;
+  _X_max   = 5.0;
   _X_step  = 0.1;
   _Ve_min  = 0.0;
-  _Ve_max  = 4.0;
+  _Ve_max  = 5.0;
   _Ve_step = 0.1;
+  
+  /*----------------------------------------------- W3 NUMERICAL ANALYSIS */
+  
+  _Xbar_min   = 0.0;
+  _Xbar_max   = 5.0;
+  _Xbar_step  = 0.1;
+  _Vebar_min  = 0.0;
+  _Vebar_max  = 5.0;
+  _Vebar_step = 0.1;
+  _Vgx        = 0.01;
+  _Vge        = 0.01;
+  
+  /*----------------------------------------------- DISCRETE DERIVATIVE STEP */
+  
   _epsilon = 1e-6;
+  
 }
 
 /*----------------------------
