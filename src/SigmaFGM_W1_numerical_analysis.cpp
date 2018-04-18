@@ -83,7 +83,7 @@ int main( int argc, char const** argv )
   double Q       = parameters->get_Q();
   double epsilon = parameters->get_epsilon();
   
-  num->explore_W1(X_min, X_max, X_step, Ve_min, Ve_max, Ve_step, alpha, beta, Q, epsilon);
+  num->compute_isoclines(X_min, X_max, X_step, Ve_min, Ve_max, Ve_step, alpha, beta, Q, epsilon);
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 3) Free memory            */

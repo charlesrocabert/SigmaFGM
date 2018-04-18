@@ -173,6 +173,55 @@ void NumericalAnalysis::explore_W3( double Xbar_min, double Xbar_max, double Xba
 }
 
 /**
+ * \brief    Compute dW1/dVe and d2lnW1/dXdVe isoclines
+ * \details  Data is saved in file "<alpha>_<beta>_<Q>.txt"
+ * \param    double X_min
+ * \param    double X_max
+ * \param    double X_step
+ * \param    double Ve_min
+ * \param    double Ve_max
+ * \param    double Ve_step
+ * \param    double alpha
+ * \param    double beta
+ * \param    double Q
+ * \param    double epsilon
+ * \return   \e void
+ */
+void NumericalAnalysis::compute_isoclines( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon )
+{
+  std::stringstream filename;
+  filename << alpha << "_" << beta << "_" << Q << ".txt";
+  std::ofstream file(filename.str(), std::ios::out | std::ios::trunc);
+  file << "X Ve1 Ve2\n";
+  
+  for (double X = X_min; X < X_max; X += X_step)
+  {
+    double W1_best     = 0.0;
+    double Ve1_best    = 0.0;
+    double lnW1dX_best = 1e+10;
+    double Ve2_best    = 0.0;
+    for (double Ve = Ve_min; Ve < Ve_max; Ve += Ve_step)
+    {
+      double w1       = W1(X, Ve, alpha, beta, Q);
+      double dlnw1_dx = dlnW1_dX(X, Ve, alpha, beta, Q, epsilon);
+      if (W1_best < w1)
+      {
+        W1_best  = w1;
+        Ve1_best = Ve;
+      }
+      if (lnW1dX_best > dlnw1_dx)
+      {
+        lnW1dX_best = dlnw1_dx;
+        Ve2_best    = Ve;
+      }
+    }
+    file << X << " " << Ve1_best << " " << Ve2_best << "\n";
+    file.flush();
+  }
+  file.close();
+}
+
+/**
  * \brief    Compute mean population trajectory through time
  * \details  --
  * \param    int t

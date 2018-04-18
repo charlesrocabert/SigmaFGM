@@ -81,6 +81,7 @@ public:
   
   void explore_W1( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon );
   void explore_W3( double Xbar_min, double Xbar_max, double Xbar_step, double Vebar_min, double Vebar_max, double Vebar_step, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon );
+  void compute_isoclines( double X_min, double X_max, double X_step, double Ve_min, double Ve_max, double Ve_step, double alpha, double beta, double Q, double epsilon );
   void compute_trajectory( int t, double dt, double Xbar_init, double Vebar_init, double Vgx, double Vge, double alpha, double beta, double Q, double epsilon );
   
 protected:
