@@ -55,10 +55,6 @@ This mode should only be used for test or development phases.
 #### Executable files emplacement
 Binary executable files are in <code>build/bin</code> folder.
 
-## Typical usage
-
-Coming soon ...
-
 ## References
 * Fisher, R. A. (1930). <em>The genetical theory of natural selection: a complete variorum edition</em>. Oxford University Press, Oxford (UK).
 
