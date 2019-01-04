@@ -3,13 +3,13 @@
  * \file      Environment.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      04-04-2018
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Environment class definition
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -87,11 +87,11 @@ void Environment::stabilizing_environment( void )
   if (_parameters->get_oneD_shift())
   {
     gsl_vector_set_zero(_z_opt);
-    gsl_vector_set(_z_opt, 0, _parameters->get_initial_mu());
+    gsl_vector_set(_z_opt, 0, _parameters->get_initial_X());
   }
   else
   {
-    gsl_vector_set_all(_z_opt, _parameters->get_initial_mu());
+    gsl_vector_set_all(_z_opt, _parameters->get_initial_X());
   }
 }
 

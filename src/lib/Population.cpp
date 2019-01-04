@@ -3,13 +3,13 @@
  * \file      Population.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      28-03-2018
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Population class definition
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,13 +61,13 @@ Population::Population( Parameters* parameters, Environment* environment, Tree* 
   _w_sum = 0.0;
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
-    _pop[i] = new Individual(_prng, _parameters->get_number_of_dimensions(), _parameters->get_initial_mu(), _parameters->get_initial_sigma(), _parameters->get_initial_sigma(), _parameters->get_oneD_shift(), _parameters->get_noise_type(), _environment->get_z_opt());
+    _pop[i] = new Individual(_prng, _parameters->get_number_of_dimensions(), _parameters->get_initial_X(), _parameters->get_initial_Ve(), _parameters->get_initial_Theta(), _parameters->get_oneD_shift(), _parameters->get_noise_type(), _environment->get_z_opt());
     _pop[i]->set_identifier(_current_identifier++);
     _pop[i]->set_generation(0);
     _pop[i]->build_phenotype();
     _pop[i]->compute_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
     _tree->add_root(_pop[i]);
-    _w[i]   = _pop[i]->get_wp();
+    _w[i]   = _pop[i]->get_Wz();
     _w_sum += _w[i];
   }
   for (int i = 0; i < _parameters->get_population_size(); i++)
@@ -125,13 +125,13 @@ void Population::compute_next_generation( int next_generation )
     for (unsigned int j = 0; j < draws[i]; j++)
     {
       new_pop[new_index] = new Individual(*_pop[i]);
-      new_pop[new_index]->mutate(_parameters->get_m_mu(), _parameters->get_m_sigma(), _parameters->get_m_theta(), _parameters->get_s_mu(), _parameters->get_s_sigma(), _parameters->get_s_theta());
+      new_pop[new_index]->mutate(_parameters->get_m_X(), _parameters->get_m_Ve(), _parameters->get_m_Theta(), _parameters->get_s_X(), _parameters->get_s_Ve(), _parameters->get_s_Theta());
       new_pop[new_index]->set_identifier(_current_identifier++);
       new_pop[new_index]->set_generation(next_generation);
       new_pop[new_index]->build_phenotype();
       _pop[i]->compute_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
       _tree->add_reproduction_event(_pop[i], new_pop[new_index]);
-      _w[new_index]  = _pop[i]->get_wp();
+      _w[new_index]  = _pop[i]->get_Wz();
       _w_sum        += _w[new_index];
       new_index++;
     }

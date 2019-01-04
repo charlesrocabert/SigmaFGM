@@ -3,13 +3,13 @@
  * \file      Simulation.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      04-04-2018
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Simulation class definition
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -147,16 +147,16 @@ void Simulation::run_with_shutoff( double shutoff_distance, int shutoff_time )
     _statistics->flush();
     _population->compute_next_generation(t);
     t++;
-    if (_statistics->get_dg_mean() <= shutoff_distance && !reached)
+    if (_statistics->get_dX_mean() <= shutoff_distance && !reached)
     {
       reached = true;
       counter = 1;
     }
-    else if (_statistics->get_dg_mean() <= shutoff_distance && reached)
+    else if (_statistics->get_dX_mean() <= shutoff_distance && reached)
     {
       counter += 1;
     }
-    else if (_statistics->get_dg_mean() > shutoff_distance && reached)
+    else if (_statistics->get_dX_mean() > shutoff_distance && reached)
     {
       reached = false;
       counter = 0;

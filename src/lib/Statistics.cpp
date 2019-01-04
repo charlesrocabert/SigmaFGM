@@ -3,13 +3,13 @@
  * \file      Statistics.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Statistics class definition
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,29 +44,29 @@ Statistics::Statistics( void )
   
   /*----------------------------------------------- MEAN VALUES */
   
-  _dg_mean              = 0.0;
-  _dp_mean              = 0.0;
-  _wg_mean              = 0.0;
-  _wp_mean              = 0.0;
+  _dX_mean              = 0.0;
+  _dz_mean              = 0.0;
+  _WX_mean              = 0.0;
+  _Wz_mean              = 0.0;
   _EV_mean              = 0.0;
   _EV_contribution_mean = 0.0;
   _EV_dot_product_mean  = 0.0;
-  _r_mu_mean            = 0.0;
-  _r_sigma_mean         = 0.0;
-  _r_theta_mean         = 0.0;
+  _r_X_mean             = 0.0;
+  _r_Ve_mean            = 0.0;
+  _r_Theta_mean         = 0.0;
   
   /*----------------------------------------------- STANDARD DEVIATION VALUES */
   
-  _dg_sd              = 0.0;
-  _dp_sd              = 0.0;
-  _wg_sd              = 0.0;
-  _wp_sd              = 0.0;
+  _dX_sd              = 0.0;
+  _dz_sd              = 0.0;
+  _WX_sd              = 0.0;
+  _Wz_sd              = 0.0;
   _EV_sd              = 0.0;
   _EV_contribution_sd = 0.0;
   _EV_dot_product_sd  = 0.0;
-  _r_mu_sd            = 0.0;
-  _r_sigma_sd         = 0.0;
-  _r_theta_sd         = 0.0;
+  _r_X_sd             = 0.0;
+  _r_Ve_sd            = 0.0;
+  _r_Theta_sd         = 0.0;
   
   /*----------------------------------------------- STATISTIC FILES */
   
@@ -105,30 +105,30 @@ void Statistics::write_headers( void )
   /*----------------------------------------------- MEAN VALUES */
   
   _mean_file << "t" << " ";
-  _mean_file << "dg" << " ";
-  _mean_file << "dp" << " ";
-  _mean_file << "wg" << " ";
-  _mean_file << "wp" << " ";
+  _mean_file << "dX" << " ";
+  _mean_file << "dz" << " ";
+  _mean_file << "WX" << " ";
+  _mean_file << "Wz" << " ";
   _mean_file << "EV" << " ";
   _mean_file << "EV_contrib" << " ";
   _mean_file << "EV_dot_product" << " ";
-  _mean_file << "r_mu" << " ";
-  _mean_file << "r_sigma" << " ";
-  _mean_file << "r_theta" << "\n";
+  _mean_file << "r_X" << " ";
+  _mean_file << "r_Ve" << " ";
+  _mean_file << "r_Theta" << "\n";
   
   /*----------------------------------------------- STANDARD DEVIATION VALUES */
   
   _sd_file << "t" << " ";
-  _sd_file << "dg" << " ";
-  _sd_file << "dp" << " ";
-  _sd_file << "wg" << " ";
-  _sd_file << "wp" << " ";
+  _sd_file << "dX" << " ";
+  _sd_file << "dz" << " ";
+  _sd_file << "WX" << " ";
+  _sd_file << "Wz" << " ";
   _sd_file << "EV" << " ";
   _sd_file << "EV_contrib" << " ";
   _sd_file << "EV_dot_product" << " ";
-  _sd_file << "r_mu" << " ";
-  _sd_file << "r_sigma" << " ";
-  _sd_file << "r_theta" << "\n";
+  _sd_file << "r_X" << " ";
+  _sd_file << "r_Ve" << " ";
+  _sd_file << "r_Theta" << "\n";
 }
 
 /**
@@ -145,99 +145,99 @@ void Statistics::compute_statistics( Population* population )
     
     /*----------------------------------------------- MEAN VALUES */
     
-    _dg_mean              += ind->get_dg();
-    _dp_mean              += ind->get_dp();
-    _wg_mean              += ind->get_wg();
-    _wp_mean              += ind->get_wp();
+    _dX_mean              += ind->get_dX();
+    _dz_mean              += ind->get_dz();
+    _WX_mean              += ind->get_WX();
+    _Wz_mean              += ind->get_Wz();
     _EV_mean              += ind->get_max_Sigma_eigenvalue();
     _EV_contribution_mean += ind->get_max_Sigma_contribution();
     _EV_dot_product_mean  += ind->get_max_dot_product();
-    _r_mu_mean            += ind->get_r_mu();
-    _r_sigma_mean         += ind->get_r_sigma();
-    _r_theta_mean         += ind->get_r_theta();
+    _r_X_mean             += ind->get_r_X();
+    _r_Ve_mean            += ind->get_r_Ve();
+    _r_Theta_mean         += ind->get_r_Theta();
     
     /*----------------------------------------------- STANDARD DEVIATION VALUES */
     
-    _dg_sd              += ind->get_dg()*ind->get_dg();
-    _dp_sd              += ind->get_dp()*ind->get_dp();
-    _wg_sd              += ind->get_wg()*ind->get_wg();
-    _wp_sd              += ind->get_wp()*ind->get_wp();
+    _dX_sd              += ind->get_dX()*ind->get_dX();
+    _dz_sd              += ind->get_dz()*ind->get_dz();
+    _WX_sd              += ind->get_WX()*ind->get_WX();
+    _Wz_sd              += ind->get_Wz()*ind->get_Wz();
     _EV_sd              += ind->get_max_Sigma_eigenvalue()*ind->get_max_Sigma_eigenvalue();
     _EV_contribution_sd += ind->get_max_Sigma_contribution()*ind->get_max_Sigma_contribution();
     _EV_dot_product_sd  += ind->get_max_dot_product()*ind->get_max_dot_product();
-    _r_mu_sd            += ind->get_r_mu()*ind->get_r_mu();
-    _r_sigma_sd         += ind->get_r_sigma()*ind->get_r_sigma();
-    _r_theta_sd         += ind->get_r_theta()*ind->get_r_theta();
+    _r_X_sd             += ind->get_r_X()*ind->get_r_X();
+    _r_Ve_sd            += ind->get_r_Ve()*ind->get_r_Ve();
+    _r_Theta_sd         += ind->get_r_Theta()*ind->get_r_Theta();
   }
   
   double N = (double)population->get_population_size();
   
   /*----------------------------------------------- MEAN VALUES */
   
-  _dg_mean              /= N;
-  _dp_mean              /= N;
-  _wg_mean              /= N;
-  _wp_mean              /= N;
+  _dX_mean              /= N;
+  _dz_mean              /= N;
+  _WX_mean              /= N;
+  _Wz_mean              /= N;
   _EV_mean              /= N;
   _EV_contribution_mean /= N;
   _EV_dot_product_mean  /= N;
-  _r_mu_mean            /= N;
-  _r_sigma_mean         /= N;
-  _r_theta_mean         /= N;
+  _r_X_mean             /= N;
+  _r_Ve_mean            /= N;
+  _r_Theta_mean         /= N;
   
   /*----------------------------------------------- STANDARD DEVIATION VALUES */
   
-  _dg_sd              /= N;
-  _dp_sd              /= N;
-  _wg_sd              /= N;
-  _wp_sd              /= N;
+  _dX_sd              /= N;
+  _dz_sd              /= N;
+  _WX_sd              /= N;
+  _Wz_sd              /= N;
   _EV_sd              /= N;
   _EV_contribution_sd /= N;
   _EV_dot_product_sd  /= N;
-  _r_mu_sd            /= N;
-  _r_sigma_sd         /= N;
-  _r_theta_sd         -= N;
-  _dg_sd              -= _dg_mean*_dg_mean;
-  _dp_sd              -= _dp_mean*_dp_mean;
-  _wg_sd              -= _wg_mean*_wg_mean;
-  _wp_sd              -= _wp_mean*_wp_mean;
+  _r_X_sd             /= N;
+  _r_Ve_sd            /= N;
+  _r_Theta_sd         -= N;
+  _dX_sd              -= _dX_mean*_dX_mean;
+  _dz_sd              -= _dz_mean*_dz_mean;
+  _WX_sd              -= _WX_mean*_WX_mean;
+  _Wz_sd              -= _Wz_mean*_Wz_mean;
   _EV_sd              -= _EV_mean*_EV_mean;
   _EV_contribution_sd -= _EV_contribution_mean*_EV_contribution_mean;
   _EV_dot_product_sd  -= _EV_dot_product_mean*_EV_dot_product_mean;
-  _r_mu_sd            -= _r_mu_mean*_r_mu_mean;
-  _r_sigma_sd         -= _r_sigma_mean*_r_sigma_mean;
-  _r_theta_sd         -= _r_theta_mean*_r_theta_mean;
-  if (_dg_sd < 1e-15)
+  _r_X_sd             -= _r_X_mean*_r_X_mean;
+  _r_Ve_sd            -= _r_Ve_mean*_r_Ve_mean;
+  _r_Theta_sd         -= _r_Theta_mean*_r_Theta_mean;
+  if (_dX_sd < 1e-15)
   {
-    _dg_sd = 0.0;
+    _dX_sd = 0.0;
   }
   else
   {
-    _dg_sd = sqrt(_dg_sd);
+    _dX_sd = sqrt(_dX_sd);
   }
-  if (_dp_sd < 1e-15)
+  if (_dz_sd < 1e-15)
   {
-    _dp_sd = 0.0;
-  }
-  else
-  {
-    _dp_sd = sqrt(_dp_sd);
-  }
-  if (_wp_sd < 1e-15)
-  {
-    _wp_sd = 0.0;
+    _dz_sd = 0.0;
   }
   else
   {
-    _wp_sd = sqrt(_wp_sd);
+    _dz_sd = sqrt(_dz_sd);
   }
-  if (_wp_sd < 1e-15)
+  if (_WX_sd < 1e-15)
   {
-    _wp_sd = 0.0;
+    _WX_sd = 0.0;
   }
   else
   {
-    _wp_sd = sqrt(_wp_sd);
+    _WX_sd = sqrt(_WX_sd);
+  }
+  if (_Wz_sd < 1e-15)
+  {
+    _Wz_sd = 0.0;
+  }
+  else
+  {
+    _Wz_sd = sqrt(_Wz_sd);
   }
   if (_EV_sd < 1e-15)
   {
@@ -263,29 +263,29 @@ void Statistics::compute_statistics( Population* population )
   {
     _EV_dot_product_sd = sqrt(_EV_dot_product_sd);
   }
-  if (_r_mu_sd < 1e-15)
+  if (_r_X_sd < 1e-15)
   {
-    _r_mu_sd = 0.0;
+    _r_X_sd = 0.0;
   }
   else
   {
-    _r_mu_sd = sqrt(_r_mu_sd);
+    _r_X_sd = sqrt(_r_X_sd);
   }
-  if (_r_sigma_sd < 1e-15)
+  if (_r_Ve_sd < 1e-15)
   {
-    _r_sigma_sd = 0.0;
-  }
-  else
-  {
-    _r_sigma_sd = sqrt(_r_sigma_sd);
-  }
-  if (_r_theta_sd < 1e-15)
-  {
-    _r_theta_sd = 0.0;
+    _r_Ve_sd = 0.0;
   }
   else
   {
-    _r_theta_sd = sqrt(_r_theta_sd);
+    _r_Ve_sd = sqrt(_r_Ve_sd);
+  }
+  if (_r_Theta_sd < 1e-15)
+  {
+    _r_Theta_sd = 0.0;
+  }
+  else
+  {
+    _r_Theta_sd = sqrt(_r_Theta_sd);
   }
 }
 
@@ -300,30 +300,30 @@ void Statistics::write_statistics( int simulation_time )
   /*----------------------------------------------- MEAN VALUES */
   
   _mean_file << simulation_time << " ";
-  _mean_file << _dg_mean << " ";
-  _mean_file << _dp_mean << " ";
-  _mean_file << _wg_mean << " ";
-  _mean_file << _wp_mean << " ";
+  _mean_file << _dX_mean << " ";
+  _mean_file << _dz_mean << " ";
+  _mean_file << _WX_mean << " ";
+  _mean_file << _Wz_mean << " ";
   _mean_file << _EV_mean << " ";
   _mean_file << _EV_contribution_mean << " ";
   _mean_file << _EV_dot_product_mean << " ";
-  _mean_file << _r_mu_mean << " ";
-  _mean_file << _r_sigma_mean << " ";
-  _mean_file << _r_theta_mean << "\n";
+  _mean_file << _r_X_mean << " ";
+  _mean_file << _r_Ve_mean << " ";
+  _mean_file << _r_Theta_mean << "\n";
   
   /*----------------------------------------------- STANDARD DEVIATION VALUES */
   
   _sd_file << simulation_time << " ";
-  _sd_file << _dg_sd << " ";
-  _sd_file << _dp_sd << " ";
-  _sd_file << _wg_sd << " ";
-  _sd_file << _wp_sd << " ";
+  _sd_file << _dX_sd << " ";
+  _sd_file << _dz_sd << " ";
+  _sd_file << _WX_sd << " ";
+  _sd_file << _Wz_sd << " ";
   _sd_file << _EV_sd << " ";
   _sd_file << _EV_contribution_sd << " ";
   _sd_file << _EV_dot_product_sd << " ";
-  _sd_file << _r_mu_sd << " ";
-  _sd_file << _r_sigma_sd << " ";
-  _sd_file << _r_theta_sd << "\n";
+  _sd_file << _r_X_sd << " ";
+  _sd_file << _r_Ve_sd << " ";
+  _sd_file << _r_Theta_sd << "\n";
 }
 
 /**
@@ -336,29 +336,29 @@ void Statistics::reset( void )
 {
   /*----------------------------------------------- MEAN VALUES */
   
-  _dg_mean              = 0.0;
-  _dp_mean              = 0.0;
-  _wg_mean              = 0.0;
-  _wp_mean              = 0.0;
+  _dX_mean              = 0.0;
+  _dz_mean              = 0.0;
+  _WX_mean              = 0.0;
+  _Wz_mean              = 0.0;
   _EV_mean              = 0.0;
   _EV_contribution_mean = 0.0;
   _EV_dot_product_mean  = 0.0;
-  _r_mu_mean            = 0.0;
-  _r_sigma_mean         = 0.0;
-  _r_theta_mean         = 0.0;
+  _r_X_mean             = 0.0;
+  _r_Ve_mean            = 0.0;
+  _r_Theta_mean         = 0.0;
   
   /*----------------------------------------------- STANDARD DEVIATION VALUES */
   
-  _dg_sd              = 0.0;
-  _dp_sd              = 0.0;
-  _wg_sd              = 0.0;
-  _wp_sd              = 0.0;
+  _dX_sd              = 0.0;
+  _dz_sd              = 0.0;
+  _WX_sd              = 0.0;
+  _Wz_sd              = 0.0;
   _EV_sd              = 0.0;
   _EV_contribution_sd = 0.0;
   _EV_dot_product_sd  = 0.0;
-  _r_mu_sd            = 0.0;
-  _r_sigma_sd         = 0.0;
-  _r_theta_sd         = 0.0;
+  _r_X_sd             = 0.0;
+  _r_Ve_sd            = 0.0;
+  _r_Theta_sd         = 0.0;
 }
 
 /**

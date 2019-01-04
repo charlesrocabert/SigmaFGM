@@ -3,13 +3,13 @@
  * \file      Node.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      04-04-2018
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Node class definition
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify

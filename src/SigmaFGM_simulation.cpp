@@ -3,13 +3,13 @@
  * \file      SigmaFGM_simulation.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Run a simulation
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -244,7 +244,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-initmu") == 0 || strcmp(argv[i], "--initial-mu") == 0)
+    else if (strcmp(argv[i], "-initx") == 0 || strcmp(argv[i], "--initial-x") == 0)
     {
       if (i+1 == argc)
       {
@@ -253,12 +253,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_initial_mu(atof(argv[i+1]));
+        parameters->set_initial_X(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-initsigma") == 0 || strcmp(argv[i], "--initial-sigma") == 0)
+    else if (strcmp(argv[i], "-initve") == 0 || strcmp(argv[i], "--initial-ve") == 0)
     {
       if (i+1 == argc)
       {
@@ -267,7 +267,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_initial_sigma(atof(argv[i+1]));
+        parameters->set_initial_Ve(atof(argv[i+1]));
         counter++;
       }
     }
@@ -281,12 +281,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_initial_theta(atof(argv[i+1]));
+        parameters->set_initial_Theta(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-mmu") == 0 || strcmp(argv[i], "--m-mu") == 0)
+    else if (strcmp(argv[i], "-mx") == 0 || strcmp(argv[i], "--m-x") == 0)
     {
       if (i+1 == argc)
       {
@@ -295,12 +295,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_m_mu(atof(argv[i+1]));
+        parameters->set_m_X(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-msigma") == 0 || strcmp(argv[i], "--m-sigma") == 0)
+    else if (strcmp(argv[i], "-mve") == 0 || strcmp(argv[i], "--m-ve") == 0)
     {
       if (i+1 == argc)
       {
@@ -309,7 +309,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_m_sigma(atof(argv[i+1]));
+        parameters->set_m_Ve(atof(argv[i+1]));
         counter++;
       }
     }
@@ -323,12 +323,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_m_theta(atof(argv[i+1]));
+        parameters->set_m_Theta(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-smu") == 0 || strcmp(argv[i], "--s-mu") == 0)
+    else if (strcmp(argv[i], "-sx") == 0 || strcmp(argv[i], "--s-x") == 0)
     {
       if (i+1 == argc)
       {
@@ -337,12 +337,12 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_s_mu(atof(argv[i+1]));
+        parameters->set_s_X(atof(argv[i+1]));
         counter++;
       }
     }
     /* Mandatory */
-    else if (strcmp(argv[i], "-ssigma") == 0 || strcmp(argv[i], "--s-sigma") == 0)
+    else if (strcmp(argv[i], "-sve") == 0 || strcmp(argv[i], "--s-ve") == 0)
     {
       if (i+1 == argc)
       {
@@ -351,7 +351,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_s_sigma(atof(argv[i+1]));
+        parameters->set_s_Ve(atof(argv[i+1]));
         counter++;
       }
     }
@@ -365,7 +365,7 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_s_theta(atof(argv[i+1]));
+        parameters->set_s_Theta(atof(argv[i+1]));
         counter++;
       }
     }
@@ -474,7 +474,7 @@ void printUsage( void )
   std::cout << " " << PACKAGE << " " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << " ( release )\n";
 #endif
   std::cout << "                                                                     \n";
-  std::cout << " Copyright (C) 2016-2018                                             \n";
+  std::cout << " Copyright (C) 2016-2019                                             \n";
   std::cout << " Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon   \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";
@@ -509,26 +509,26 @@ void printUsage( void )
   std::cout << "        specify the Q parameter of the fitness function (0.0 <= mandatory)\n";
   std::cout << "  -popsize, --population-size\n";
   std::cout << "        specify the population size (mandatory)\n";
-  std::cout << "  -initmu, --initial-mu\n";
-  std::cout << "        specify the initial mu value (mandatory)\n";
-  std::cout << "  -initsigma, --initial-sigma\n";
-  std::cout << "        specify initial sigma value (mandatory)\n";
+  std::cout << "  -initx, --initial-x\n";
+  std::cout << "        specify the initial X value (mandatory)\n";
+  std::cout << "  -initve, --initial-ve\n";
+  std::cout << "        specify initial Ve value (mandatory)\n";
   std::cout << "  -inittheta, --initial-theta\n";
-  std::cout << "        specify initial theta value (mandatory)\n";
+  std::cout << "        specify initial Theta value (mandatory)\n";
   std::cout << "  -oneDshift, --oneD-shift\n";
   std::cout << "        Indicates if the initial population is shifted in a single dimension\n";
-  std::cout << "  -mmu, --m-mu\n";
-  std::cout << "        specify the mu mutation rate (mandatory)\n";
-  std::cout << "  -msigma, --m-sigma\n";
-  std::cout << "        specify the sigma mutation rate (mandatory)\n";
+  std::cout << "  -mx, --m-x\n";
+  std::cout << "        specify the X mutation rate (mandatory)\n";
+  std::cout << "  -mve, --m-ve\n";
+  std::cout << "        specify the Ve mutation rate (mandatory)\n";
   std::cout << "  -mtheta, --m-theta\n";
-  std::cout << "        specify the theta mutation rate (mandatory)\n";
-  std::cout << "  -smu, --s-mu\n";
-  std::cout << "        specify the mu mutation size (mandatory)\n";
-  std::cout << "  -ssigma, --s-sigma\n";
-  std::cout << "        specify the sigma mutation size (mandatory)\n";
+  std::cout << "        specify the Theta mutation rate (mandatory)\n";
+  std::cout << "  -sx, --s-x\n";
+  std::cout << "        specify the X mutation size (mandatory)\n";
+  std::cout << "  -sve, --s-ve\n";
+  std::cout << "        specify the Ve mutation size (mandatory)\n";
   std::cout << "  -stheta, --stheta\n";
-  std::cout << "        specify the theta mutation size (mandatory)\n";
+  std::cout << "        specify the Theta mutation size (mandatory)\n";
   std::cout << "  -noise, --noise-type\n";
   std::cout << "        Specify the type of noise (mandatory, NONE/ISOTROPIC/UNCORRELATED/FULL)\n";
   std::cout << "\n";
@@ -551,7 +551,7 @@ void printHeader( void )
   std::cout << " " << PACKAGE << " " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << " ( release )\n";
 #endif
   std::cout << "                                                                     \n";
-  std::cout << " Copyright (C) 2016-2018                                             \n";
+  std::cout << " Copyright (C) 2016-2019                                             \n";
   std::cout << " Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon   \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";

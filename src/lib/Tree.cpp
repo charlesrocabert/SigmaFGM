@@ -3,13 +3,13 @@
  * \file      Tree.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      04-04-2018
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Tree class definition
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -236,30 +236,30 @@ void Tree::write_best_lineage_statistics( void )
   std::ofstream file("best_lineage.txt", std::ios::out | std::ios::trunc);
   file << "id" << " ";
   file << "t" << " ";
-  file << "dg" << " ";
-  file << "dp" << " ";
-  file << "wg" << " ";
-  file << "wp" << " ";
+  file << "dX" << " ";
+  file << "dz" << " ";
+  file << "WX" << " ";
+  file << "Wz" << " ";
   file << "EV" << " ";
   file << "EV_contrib" << " ";
   file << "EV_dot_product" << " ";
-  file << "r_mu" << " ";
-  file << "r_sigma" << " ";
-  file << "r_theta" << "\n";
+  file << "r_X" << " ";
+  file << "r_Ve" << " ";
+  file << "r_Theta" << "\n";
   while (!node->isMasterRoot())
   {
     file << node->get_identifier() << " ";
     file << node->get_generation() << " ";
-    file << node->get_individual()->get_dg() << " ";
-    file << node->get_individual()->get_dp() << " ";
-    file << node->get_individual()->get_wg() << " ";
-    file << node->get_individual()->get_wp() << " ";
+    file << node->get_individual()->get_dX() << " ";
+    file << node->get_individual()->get_dz() << " ";
+    file << node->get_individual()->get_WX() << " ";
+    file << node->get_individual()->get_Wz() << " ";
     file << node->get_individual()->get_max_Sigma_eigenvalue() << " ";
     file << node->get_individual()->get_max_Sigma_contribution() << " ";
     file << node->get_individual()->get_max_dot_product() << " ";
-    file << node->get_individual()->get_r_mu() << " ";
-    file << node->get_individual()->get_r_sigma() << " ";
-    file << node->get_individual()->get_r_theta() << "\n";
+    file << node->get_individual()->get_r_X() << " ";
+    file << node->get_individual()->get_r_Ve() << " ";
+    file << node->get_individual()->get_r_Theta() << "\n";
     node = node->get_parent();
   }
   file.close();

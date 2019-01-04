@@ -3,13 +3,13 @@
  * \file      Parameters.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Parameters class declaration
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -83,48 +83,23 @@ public:
   /*----------------------------------------------- POPULATION */
   
   inline int    get_population_size( void ) const;
-  inline double get_initial_mu( void ) const;
-  inline double get_initial_sigma( void ) const;
-  inline double get_initial_theta( void ) const;
+  inline double get_initial_X( void ) const;
+  inline double get_initial_Ve( void ) const;
+  inline double get_initial_Theta( void ) const;
   inline bool   get_oneD_shift( void ) const;
   
   /*----------------------------------------------- MUTATIONS */
   
-  inline double get_m_mu( void ) const;
-  inline double get_m_sigma( void ) const;
-  inline double get_m_theta( void ) const;
-  inline double get_s_mu( void ) const;
-  inline double get_s_sigma( void ) const;
-  inline double get_s_theta( void ) const;
+  inline double get_m_X( void ) const;
+  inline double get_m_Ve( void ) const;
+  inline double get_m_Theta( void ) const;
+  inline double get_s_X( void ) const;
+  inline double get_s_Ve( void ) const;
+  inline double get_s_Theta( void ) const;
   
   /*----------------------------------------------- NOISE PROPERTIES */
   
   inline type_of_noise get_noise_type( void ) const;
-  
-  /*----------------------------------------------- W1 NUMERICAL ANALYSIS */
-  
-  inline double get_X_min( void ) const;
-  inline double get_X_max( void ) const;
-  inline double get_X_step( void ) const;
-  inline double get_Ve_min( void ) const;
-  inline double get_Ve_max( void ) const;
-  inline double get_Ve_step( void ) const;
-  
-  
-  /*----------------------------------------------- W3 NUMERICAL ANALYSIS */
-  
-  inline double get_Xbar_min( void ) const;
-  inline double get_Xbar_max( void ) const;
-  inline double get_Xbar_step( void ) const;
-  inline double get_Vebar_min( void ) const;
-  inline double get_Vebar_max( void ) const;
-  inline double get_Vebar_step( void ) const;
-  inline double get_Vgx( void ) const;
-  inline double get_Vge( void ) const;
-  
-  /*----------------------------------------------- DISCRETE DERIVATIVE STEP */
-  
-  inline double get_epsilon( void ) const;
   
   /*----------------------------
    * SETTERS
@@ -156,47 +131,23 @@ public:
   /*----------------------------------------------- POPULATION */
   
   inline void set_population_size( int population_size );
-  inline void set_initial_mu( double initial_mu );
-  inline void set_initial_sigma( double initial_sigma );
-  inline void set_initial_theta( double initial_theta );
+  inline void set_initial_X( double initial_X );
+  inline void set_initial_Ve( double initial_Ve );
+  inline void set_initial_Theta( double initial_Theta );
   inline void set_oneD_shift( bool oneD_shift );
   
   /*----------------------------------------------- MUTATIONS */
   
-  inline void set_m_mu( double m_mu );
-  inline void set_m_sigma( double m_sigma );
-  inline void set_m_theta( double m_theta );
-  inline void set_s_mu( double s_mu );
-  inline void set_s_sigma( double s_sigma );
-  inline void set_s_theta( double s_theta );
+  inline void set_m_X( double m_X );
+  inline void set_m_Ve( double m_Ve );
+  inline void set_m_Theta( double m_Theta );
+  inline void set_s_X( double s_X );
+  inline void set_s_Ve( double s_Ve );
+  inline void set_s_Theta( double s_Theta );
   
   /*----------------------------------------------- NOISE PROPERTIES */
   
   inline void set_noise_type( type_of_noise noise_type );
-  
-  /*----------------------------------------------- W1 NUMERICAL ANALYSIS */
-  
-  inline void set_X_min( double X_min );
-  inline void set_X_max( double X_max );
-  inline void set_X_step( double X_step );
-  inline void set_Ve_min( double Ve_min );
-  inline void set_Ve_max( double Ve_max );
-  inline void set_Ve_step( double Ve_step );
-  
-  /*----------------------------------------------- W3 NUMERICAL ANALYSIS */
-  
-  inline void set_Xbar_min( double Xbar_min );
-  inline void set_Xbar_max( double Xbar_max );
-  inline void set_Xbar_step( double Xbar_step );
-  inline void set_Vebar_min( double Vebar_min );
-  inline void set_Vebar_max( double Vebar_max );
-  inline void set_Vebar_step( double Vebar_step );
-  inline void set_Vgx( double Vgx );
-  inline void set_Vge( double Vge );
-  
-  /*----------------------------------------------- DISCRETE DERIVATIVE STEP */
-  
-  inline void set_epsilon( double epsilon );
   
   /*----------------------------
    * PUBLIC METHODS
@@ -242,47 +193,24 @@ protected:
   /*----------------------------------------------- POPULATION */
   
   int    _population_size; /*!< Number of particles                        */
-  double _initial_mu;      /*!< Initial mu value                           */
-  double _initial_sigma;   /*!< Initial sigma value                        */
-  double _initial_theta;   /*!< Initial theta value                        */
+  double _initial_X;       /*!< Initial X value                            */
+  double _initial_Ve;      /*!< Initial Ve value                           */
+  double _initial_Theta;   /*!< Initial Theta value                        */
   bool   _oneD_shift;      /*!< The population is shifted in one dimension */
   
   /*----------------------------------------------- MUTATIONS */
   
-  double _m_mu;        /*!< Mu mutation rate    */
-  double _m_sigma;     /*!< Sigma mutation rate */
-  double _m_theta;     /*!< Mu mutation rate    */
-  double _s_mu;        /*!< Mu mutation size    */
-  double _s_sigma;     /*!< Sigma mutation size */
-  double _s_theta;     /*!< Mu mutation size    */
+  double _m_X;     /*!< X mutation rate     */
+  double _m_Ve;    /*!< Ve mutation rate    */
+  double _m_Theta; /*!< Theta mutation rate */
+  double _s_X;     /*!< X mutation size     */
+  double _s_Ve;    /*!< Ve mutation size    */
+  double _s_Theta; /*!< Theta mutation size */
   
   /*----------------------------------------------- NOISE PROPERTIES */
   
   type_of_noise _noise_type; /*!< Type of phenotypic noise (none, isotropic, ...) */
   
-  /*----------------------------------------------- NUMERICAL ANALYSIS */
-  
-  double _X_min;   /*!< X minimal value     */
-  double _X_max;   /*!< X maximal value     */
-  double _X_step;  /*!< X exploration step  */
-  double _Ve_min;  /*!< Ve minimal value    */
-  double _Ve_max;  /*!< Ve maximal value    */
-  double _Ve_step; /*!< Ve exploration step */
-  
-  /*----------------------------------------------- W3 NUMERICAL ANALYSIS */
-  
-  double _Xbar_min;   /*!< X_bar minimal value     */
-  double _Xbar_max;   /*!< X_bar maximal value     */
-  double _Xbar_step;  /*!< X_bar exploration step  */
-  double _Vebar_min;  /*!< Ve_bar minimal value    */
-  double _Vebar_max;  /*!< Ve_bar maximal value    */
-  double _Vebar_step; /*!< Ve_bar exploration step */
-  double _Vgx;        /*!< Vgx value               */
-  double _Vge;        /*!< Vge value               */
-  
-  /*----------------------------------------------- DISCRETE DERIVATIVE STEP */
-  
-  double _epsilon; /*!< Derivative step */
 };
 
 
@@ -423,36 +351,36 @@ inline int Parameters::get_population_size( void ) const
 }
 
 /**
- * \brief    Get the initial mu value
+ * \brief    Get the initial X value
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_initial_mu( void ) const
+inline double Parameters::get_initial_X( void ) const
 {
-  return _initial_mu;
+  return _initial_X;
 }
 
 /**
- * \brief    Get the initial sigma value
+ * \brief    Get the initial Ve value
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_initial_sigma( void ) const
+inline double Parameters::get_initial_Ve( void ) const
 {
-  return _initial_sigma;
+  return _initial_Ve;
 }
 
 /**
- * \brief    Get the initial theta value
+ * \brief    Get the initial Theta value
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_initial_theta( void ) const
+inline double Parameters::get_initial_Theta( void ) const
 {
-  return _initial_theta;
+  return _initial_Theta;
 }
 
 /**
@@ -469,69 +397,69 @@ inline bool Parameters::get_oneD_shift( void ) const
 /*----------------------------------------------- MUTATIONS */
 
 /**
- * \brief    Get mu mutation rate
+ * \brief    Get X mutation rate
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_m_mu( void ) const
+inline double Parameters::get_m_X( void ) const
 {
-  return _m_mu;
+  return _m_X;
 }
 
 /**
- * \brief    Get sigma mutation rate
+ * \brief    Get Ve mutation rate
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_m_sigma( void ) const
+inline double Parameters::get_m_Ve( void ) const
 {
-  return _m_sigma;
+  return _m_Ve;
 }
 
 /**
- * \brief    Get theta mutation rate
+ * \brief    Get Theta mutation rate
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_m_theta( void ) const
+inline double Parameters::get_m_Theta( void ) const
 {
-  return _m_theta;
+  return _m_Theta;
 }
 
 /**
- * \brief    Get mu mutation size
+ * \brief    Get X mutation size
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_s_mu( void ) const
+inline double Parameters::get_s_X( void ) const
 {
-  return _s_mu;
+  return _s_X;
 }
 
 /**
- * \brief    Get sigma mutation size
+ * \brief    Get Ve mutation size
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_s_sigma( void ) const
+inline double Parameters::get_s_Ve( void ) const
 {
-  return _s_sigma;
+  return _s_Ve;
 }
 
 /**
- * \brief    Get theta mutation size
+ * \brief    Get Theta mutation size
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_s_theta( void ) const
+inline double Parameters::get_s_Theta( void ) const
 {
-  return _s_theta;
+  return _s_Theta;
 }
 
 /*----------------------------------------------- NOISE PROPERTIES */
@@ -545,129 +473,6 @@ inline double Parameters::get_s_theta( void ) const
 inline type_of_noise Parameters::get_noise_type( void ) const
 {
   return _noise_type;
-}
-
-/*----------------------------------------------- W1 NUMERICAL ANALYSIS */
-
-/**
- * \brief    Get X minimal value
- * \details  --
- * \param    void
- * \return   \e double
- */
-inline double Parameters::get_X_min( void ) const
-{
-  return _X_min;
-}
-
-/**
- * \brief    Get X maximal value
- * \details  --
- * \param    void
- * \return   \e double
- */
-inline double Parameters::get_X_max( void ) const
-{
-  return _X_max;
-}
-
-/**
- * \brief    Get X step value
- * \details  --
- * \param    void
- * \return   \e double
- */
-inline double Parameters::get_X_step( void ) const
-{
-  return _X_step;
-}
-
-/**
- * \brief    Get Ve minimal value
- * \details  --
- * \param    void
- * \return   \e double
- */
-inline double Parameters::get_Ve_min( void ) const
-{
-  return _Ve_min;
-}
-
-/**
- * \brief    Get Ve maximal value
- * \details  --
- * \param    void
- * \return   \e double
- */
-inline double Parameters::get_Ve_max( void ) const
-{
-  return _Ve_max;
-}
-
-/**
- * \brief    Get Ve step value
- * \details  --
- * \param    void
- * \return   \e double
- */
-inline double Parameters::get_Ve_step( void ) const
-{
-  return _Ve_step;
-}
-
-/*----------------------------------------------- W3 NUMERICAL ANALYSIS */
-
-inline double Parameters::get_Xbar_min( void ) const
-{
-  return _Xbar_min;
-}
-
-inline double Parameters::get_Xbar_max( void ) const
-{
-  return _Xbar_max;
-}
-
-inline double Parameters::get_Xbar_step( void ) const
-{
-  return _Xbar_step;
-}
-
-inline double Parameters::get_Vebar_min( void ) const
-{
-  return _Vebar_min;
-}
-
-inline double Parameters::get_Vebar_max( void ) const
-{
-  return _Vebar_max;
-}
-
-inline double Parameters::get_Vebar_step( void ) const
-{
-  return _Vebar_step;
-}
-
-inline double Parameters::get_Vgx( void ) const
-{
-  return _Vgx;
-}
-
-inline double Parameters::get_Vge( void ) const
-{
-  return _Vge;
-}
-
-/*----------------------------------------------- DISCRETE DERIVATIVE STEP */
-
-/**
- * \brief    Get epsilon value
- * \details  --
- * \param    void
- * \return   \e double
- */
-inline double Parameters::get_epsilon( void ) const
-{
-  return _epsilon;
 }
 
 /*----------------------------
@@ -798,7 +603,8 @@ inline void Parameters::set_beta( double beta )
  */
 inline void Parameters::set_Q( double Q )
 {
-  assert(Q >= 0);
+  assert(Q >= 0.0);
+  assert((int)Q%2==0);
   _Q = Q;
 }
 
@@ -817,37 +623,37 @@ inline void Parameters::set_population_size( int population_size )
 }
 
 /**
- * \brief    Set the initial mu value
+ * \brief    Set the initial X value
  * \details  --
- * \param    double initial_mu
+ * \param    double initial_X
  * \return   \e void
  */
-inline void Parameters::set_initial_mu( double initial_mu )
+inline void Parameters::set_initial_X( double initial_X )
 {
-  _initial_mu = initial_mu;
+  _initial_X = initial_X;
 }
 
 /**
- * \brief    Set the initial sigma value
+ * \brief    Set the initial Ve value
  * \details  --
- * \param    double initial_sigma
+ * \param    double initial_Ve
  * \return   \e void
  */
-inline void Parameters::set_initial_sigma( double initial_sigma )
+inline void Parameters::set_initial_Ve( double initial_Ve )
 {
-  assert(initial_sigma >= 0.0);
-  _initial_sigma = initial_sigma;
+  assert(initial_Ve >= 0.0);
+  _initial_Ve = initial_Ve;
 }
 
 /**
- * \brief    Set the initial theta value
+ * \brief    Set the initial Theta value
  * \details  --
- * \param    double initial_theta
+ * \param    double initial_Theta
  * \return   \e void
  */
-inline void Parameters::set_initial_theta( double initial_theta )
+inline void Parameters::set_initial_Theta( double initial_Theta )
 {
-  _initial_theta = initial_theta;
+  _initial_Theta = initial_Theta;
 }
 
 /**
@@ -864,78 +670,78 @@ inline void Parameters::set_oneD_shift( bool oneD_shift )
 /*----------------------------------------------- MUTATIONS */
 
 /**
- * \brief    Set the mu mutation rate
+ * \brief    Set the X mutation rate
  * \details  --
- * \param    double m_mu
+ * \param    double m_X
  * \return   \e void
  */
-inline void Parameters::set_m_mu( double m_mu )
+inline void Parameters::set_m_X( double m_X )
 {
-  assert(m_mu >= 0.0);
-  assert(m_mu <= 1.0);
-  _m_mu = m_mu;
+  assert(m_X >= 0.0);
+  assert(m_X <= 1.0);
+  _m_X = m_X;
 }
 
 /**
- * \brief    Set the sigma mutation rate
+ * \brief    Set the Ve mutation rate
  * \details  --
- * \param    double m_sigma
+ * \param    double m_Ve
  * \return   \e void
  */
-inline void Parameters::set_m_sigma( double m_sigma )
+inline void Parameters::set_m_Ve( double m_Ve )
 {
-  assert(m_sigma >= 0.0);
-  assert(m_sigma <= 1.0);
-  _m_sigma = m_sigma;
+  assert(m_Ve >= 0.0);
+  assert(m_Ve <= 1.0);
+  _m_Ve = m_Ve;
 }
 
 /**
- * \brief    Set the theta mutation rate
+ * \brief    Set the Theta mutation rate
  * \details  --
- * \param    double m_theta
+ * \param    double m_Theta
  * \return   \e void
  */
-inline void Parameters::set_m_theta( double m_theta )
+inline void Parameters::set_m_Theta( double m_Theta )
 {
-  assert(m_theta >= 0.0);
-  assert(m_theta <= 1.0);
-  _m_theta = m_theta;
+  assert(m_Theta >= 0.0);
+  assert(m_Theta <= 1.0);
+  _m_Theta = m_Theta;
 }
 
 /**
- * \brief    Set the mu mutation size
+ * \brief    Set the X mutation size
  * \details  --
- * \param    double s_mu
+ * \param    double s_X
  * \return   \e void
  */
-inline void Parameters::set_s_mu( double s_mu )
+inline void Parameters::set_s_X( double s_X )
 {
-  assert(s_mu >= 0.0);
-  _s_mu = s_mu;
+  assert(s_X >= 0.0);
+  _s_X = s_X;
 }
 
 /**
- * \brief    Set the sigma mutation size
+ * \brief    Set the Ve mutation size
  * \details  --
- * \param    double s_sigma
+ * \param    double s_Ve
  * \return   \e void
  */
-inline void Parameters::set_s_sigma( double s_sigma )
+inline void Parameters::set_s_Ve( double s_Ve )
 {
-  assert(s_sigma >= 0.0);
-  _s_sigma = s_sigma;
+  assert(s_Ve >= 0.0);
+  _s_Ve = s_Ve;
 }
 
 /**
- * \brief    Set the theta mutation size
+ * \brief    Set the Theta mutation size
  * \details  --
- * \param    double s_theta
+ * \param    double s_Theta
  * \return   \e void
  */
-inline void Parameters::set_s_theta( double s_theta )
+inline void Parameters::set_s_Theta( double s_Theta )
 {
-  assert(s_theta >= 0.0);
-  _s_theta = s_theta;
+  assert(s_Theta >= 0.0);
+  _s_Theta = s_Theta;
 }
 
 /*----------------------------------------------- NOISE PROPERTIES */
@@ -949,129 +755,6 @@ inline void Parameters::set_s_theta( double s_theta )
 inline void Parameters::set_noise_type( type_of_noise noise_type )
 {
   _noise_type = noise_type;
-}
-
-/*----------------------------------------------- W1 NUMERICAL ANALYSIS */
-
-/**
- * \brief    Set X minimal value
- * \details  --
- * \param    double X_min
- * \return   \e void
- */
-inline void Parameters::set_X_min( double X_min )
-{
-  _X_min = X_min;
-}
-
-/**
- * \brief    Set X maximal value
- * \details  --
- * \param    double X_max
- * \return   \e void
- */
-inline void Parameters::set_X_max( double X_max )
-{
-  _X_max = X_max;
-}
-
-/**
- * \brief    Set X step value
- * \details  --
- * \param    double X_step
- * \return   \e void
- */
-inline void Parameters::set_X_step( double X_step )
-{
-  _X_step = X_step;
-}
-
-/**
- * \brief    Set Ve minimal value
- * \details  --
- * \param    double Ve_min
- * \return   \e void
- */
-inline void Parameters::set_Ve_min( double Ve_min )
-{
-  _Ve_min = Ve_min;
-}
-
-/**
- * \brief    Set Ve maximal value
- * \details  --
- * \param    double Ve_max
- * \return   \e void
- */
-inline void Parameters::set_Ve_max( double Ve_max )
-{
-  _Ve_max = Ve_max;
-}
-
-/**
- * \brief    Set Ve step value
- * \details  --
- * \param    double Ve_step
- * \return   \e void
- */
-inline void Parameters::set_Ve_step( double Ve_step )
-{
-  _Ve_step = Ve_step;
-}
-
-/*----------------------------------------------- W3 NUMERICAL ANALYSIS */
-
-inline void Parameters::set_Xbar_min( double Xbar_min )
-{
-  _Xbar_min = Xbar_min;
-}
-
-inline void Parameters::set_Xbar_max( double Xbar_max )
-{
-  _Xbar_max = Xbar_max;
-}
-
-inline void Parameters::set_Xbar_step( double Xbar_step )
-{
-  _Xbar_step = Xbar_step;
-}
-
-inline void Parameters::set_Vebar_min( double Vebar_min )
-{
-  _Vebar_min = Vebar_min;
-}
-
-inline void Parameters::set_Vebar_max( double Vebar_max )
-{
-  _Vebar_max = Vebar_max;
-}
-
-inline void Parameters::set_Vebar_step( double Vebar_step )
-{
-  _Vebar_step = Vebar_step;
-}
-
-inline void Parameters::set_Vgx( double Vgx )
-{
-  _Vgx = Vgx;
-}
-
-inline void Parameters::set_Vge( double Vge )
-{
-  _Vge = Vge;
-}
-
-/*----------------------------------------------- DISCRETE DERIVATIVE STEP */
-
-/**
- * \brief    Set epsilon value
- * \details  --
- * \param    double epsilon
- * \return   \e void
- */
-inline void Parameters::set_epsilon( double epsilon )
-{
-  _epsilon = epsilon;
 }
 
 

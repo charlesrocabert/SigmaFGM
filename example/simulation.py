@@ -2,7 +2,7 @@
 # coding: utf-8
 
 #***********************************************************************
-# Copyright (C) 2016-2018
+# Copyright (C) 2016-2019
 # Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
 #
 # This program is free software: you can redistribute it and/or modify
@@ -26,10 +26,10 @@ import math
 ### Run a simulation from the parameters set ###
 def run_simulation( seed, stabt, simt, shutoffdistance, shutofftime, nbdim,
 	alpha, beta, Q,
-	popsize, initmu, initsigma, inittheta,
-	mmu, msigma, mtheta, smu, ssigma, stheta, noise,
+	popsize, initX, initVe, initTheta,
+	mX, mVe, mTheta, sX, sVe, sTheta, noise,
 	oneDshift ):
-	cmdline = "../build/bin/SigmaFGM_run"
+	cmdline = "../build/bin/SigmaFGM_simulation"
 	cmdline += " -seed "+str(seed)
 	cmdline += " -stabt "+str(stabt)
 	cmdline += " -simt "+str(simt)
@@ -40,15 +40,15 @@ def run_simulation( seed, stabt, simt, shutoffdistance, shutofftime, nbdim,
 	cmdline += " -beta "+str(beta)
 	cmdline += " -Q "+str(Q)
 	cmdline += " -popsize "+str(popsize)
-	cmdline += " -initmu "+str(initmu)
-	cmdline += " -initsigma "+str(initsigma)
-	cmdline += " -inittheta "+str(inittheta)
-	cmdline += " -mmu "+str(mmu)
-	cmdline += " -msigma "+str(msigma)
-	cmdline += " -mtheta "+str(mtheta)
-	cmdline += " -smu "+str(smu)
-	cmdline += " -ssigma "+str(ssigma)
-	cmdline += " -stheta "+str(stheta)
+	cmdline += " -initx "+str(initX)
+	cmdline += " -initve "+str(initVe)
+	cmdline += " -inittheta "+str(initTheta)
+	cmdline += " -mx "+str(mX)
+	cmdline += " -mve "+str(mVe)
+	cmdline += " -mtheta "+str(mTheta)
+	cmdline += " -sx "+str(sX)
+	cmdline += " -sve "+str(sVe)
+	cmdline += " -stheta "+str(sTheta)
 	cmdline += " -noise "+str(noise)
 	if oneDshift:
 		cmdline += " -oneDshift"
@@ -63,29 +63,28 @@ def run_simulation( seed, stabt, simt, shutoffdistance, shutofftime, nbdim,
 if __name__ == '__main__':
 	SEED             = 0
 	STABILIZING_TIME = 0
-	SIMULATION_TIME  = 300
+	SIMULATION_TIME  = 200
 	SHUTOFF_DISTANCE = 0
 	SHUTOFF_TIME     = 0
 	NB_DIMENSIONS    = 1
 	ALPHA            = 0.5
 	BETA             = 0.0
 	Q                = 2.0
-	POPULATION_SIZE  = 500
-	INITIAL_MU       = 2.0/math.sqrt(float(NB_DIMENSIONS))
-	INITIAL_SIGMA    = 1e-15
+	POPULATION_SIZE  = 1000
+	INITIAL_X        = 2.0/math.sqrt(float(NB_DIMENSIONS))
+	INITIAL_VE       = 1e-15
 	INITIAL_THETA    = 0.0
-	M_MU             = 1e-0
-	M_SIGMA          = 1e-0
+	M_X              = 1e-0
+	M_VE             = 1e-0
 	M_THETA          = 1e-0
-	S_MU             = 0.01/math.sqrt(float(NB_DIMENSIONS))
-	S_SIGMA          = 0.01
-	S_THETA          = 0.01
+	S_X              = 0.1/math.sqrt(float(NB_DIMENSIONS))
+	S_VE             = 0.1
+	S_THETA          = 0.1
 	NOISE            = "FULL"
 	ONED_SHIFT       = False
 
 	run_simulation(SEED, STABILIZING_TIME, SIMULATION_TIME, SHUTOFF_DISTANCE, SHUTOFF_TIME, NB_DIMENSIONS,
 		ALPHA, BETA, Q,
-		POPULATION_SIZE, INITIAL_MU, INITIAL_SIGMA, INITIAL_THETA,
-		M_MU, M_SIGMA, M_THETA, S_MU, S_SIGMA, S_THETA, NOISE,
+		POPULATION_SIZE, INITIAL_X, INITIAL_VE, INITIAL_THETA,
+		M_X, M_VE, M_THETA, S_X, S_VE, S_THETA, NOISE,
 		ONED_SHIFT )
-

@@ -3,13 +3,13 @@
  * \file      Structs.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      06-04-2018
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Definition of structures
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,21 +30,13 @@
 #define __SigmaFGM__Structs__
 
 #include <iostream>
-#include <gsl/gsl_integration.h>
 
 #include "Macros.h"
 #include "Enums.h"
 
+
 /******************************************************************************************/
 
-/**
- * \brief   Numerical analysis parameters
- * \details --
- */
-typedef struct
-{
-  
-} numerical_analysis_parameters;
 
 /******************************************************************************************/
 

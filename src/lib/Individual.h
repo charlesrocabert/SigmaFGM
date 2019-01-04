@@ -3,13 +3,13 @@
  * \file      Individual.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      28-03-2018
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Individual class declaration
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,6 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_linalg.h>
-#include <gsl/gsl_integration.h>
 #include <gsl/gsl_randist.h>
 #include <assert.h>
 
@@ -54,7 +53,7 @@ public:
    * CONSTRUCTORS
    *----------------------------*/
   Individual( void ) = delete;
-  Individual( Prng* prng, int n, double mu_init, double sigma_init, double theta_init, bool oneD_shift, type_of_noise noise_type, gsl_vector* z_opt );
+  Individual( Prng* prng, int n, double X_init, double Ve_init, double Theta_init, bool oneD_shift, type_of_noise noise_type, gsl_vector* z_opt );
   Individual( const Individual& individual );
   
   /*----------------------------
@@ -70,13 +69,13 @@ public:
   
   inline unsigned long long int get_identifier( void ) const;
   inline int                    get_generation( void ) const;
-  inline double                 get_mu( int i ) const;
-  inline double                 get_sigma( int i ) const;
-  inline double                 get_theta( int i ) const;
-  inline double                 get_dg( void ) const;
-  inline double                 get_dp( void ) const;
-  inline double                 get_wg( void ) const;
-  inline double                 get_wp( void ) const;
+  inline double                 get_X( int i ) const;
+  inline double                 get_Ve( int i ) const;
+  inline double                 get_Theta( int i ) const;
+  inline double                 get_dX( void ) const;
+  inline double                 get_dz( void ) const;
+  inline double                 get_WX( void ) const;
+  inline double                 get_Wz( void ) const;
   
   /*----------------------------------------------- MAPPING PROPERTIES */
   
@@ -86,9 +85,9 @@ public:
   
   /*----------------------------------------------- MUTATIONS */
   
-  inline double get_r_mu( void ) const;
-  inline double get_r_sigma( void ) const;
-  inline double get_r_theta( void ) const;
+  inline double get_r_X( void ) const;
+  inline double get_r_Ve( void ) const;
+  inline double get_r_Theta( void ) const;
   
   /*----------------------------
    * SETTERS
@@ -101,7 +100,7 @@ public:
   /*----------------------------
    * PUBLIC METHODS
    *----------------------------*/
-  void mutate( double m_mu, double m_sigma, double m_theta, double s_mu, double s_sigma, double s_theta );
+  void mutate( double m_X, double m_Ve, double m_Theta, double s_X, double s_Ve, double s_Theta );
   void build_phenotype( void );
   void compute_fitness( double alpha, double beta, double Q );
   void delete_vectors_and_matrices( void );
@@ -137,16 +136,16 @@ protected:
   
   unsigned long long int _identifier; /*!< Individual's identifier       */
   int                    _generation; /*!< Individual's generation       */
-  gsl_vector*            _mu;         /*!< Mu vector                     */
-  gsl_vector*            _sigma;      /*!< Sigma vector                  */
-  gsl_vector*            _theta;      /*!< Theta vector                  */
+  gsl_vector*            _X;          /*!< X vector                      */
+  gsl_vector*            _Ve;         /*!< Ve vector                     */
+  gsl_vector*            _Theta;      /*!< Theta vector                  */
   gsl_matrix*            _Sigma;      /*!< Co-variance matrix            */
   gsl_matrix*            _Cholesky;   /*!< Cholesky decomposition matrix */
   gsl_vector*            _z;          /*!< Instantaneous phenotype       */
-  double                 _dg;         /*!< Euclidean distance d(mu)      */
-  double                 _dp;         /*!< Euclidean distance d(z)       */
-  double                 _wg;         /*!< Fitness w(mu)                 */
-  double                 _wp;         /*!< Fitness w(z)                  */
+  double                 _dX;         /*!< Euclidean distance d(X)       */
+  double                 _dz;         /*!< Euclidean distance d(z)       */
+  double                 _WX;         /*!< Fitness W(X)                  */
+  double                 _Wz;         /*!< Fitness W(z)                  */
   
   /*----------------------------------------------- MAPPING PROPERTIES */
   
@@ -158,9 +157,9 @@ protected:
   
   /*----------------------------------------------- MUTATIONS */
   
-  double _r_mu;    /*!< Euclidean size of Mu mutation    */
-  double _r_sigma; /*!< Euclidean size of Sigma mutation */
-  double _r_theta; /*!< Euclidean size of Theta mutation */
+  double _r_X;     /*!< Euclidean size of X mutation     */
+  double _r_Ve;    /*!< Euclidean size of Ve mutation    */
+  double _r_Theta; /*!< Euclidean size of Theta mutation */
   
 };
 
@@ -194,50 +193,50 @@ inline int Individual::get_generation( void ) const
 }
 
 /**
- * \brief    Get mu value at position i
+ * \brief    Get X value at position i
  * \details  --
  * \param    int i
  * \return   \e double
  */
-inline double Individual::get_mu( int i ) const
+inline double Individual::get_X( int i ) const
 {
   assert(i < _n);
-  return gsl_vector_get(_mu, i);
+  return gsl_vector_get(_X, i);
 }
 
 /**
- * \brief    Get sigma value at position i
+ * \brief    Get Ve value at position i
  * \details  --
  * \param    int i
  * \return   \e double
  */
-inline double Individual::get_sigma( int i ) const
+inline double Individual::get_Ve( int i ) const
 {
   assert(i < _n);
-  return gsl_vector_get(_sigma, i);
+  return gsl_vector_get(_Ve, i);
 }
 
 /**
- * \brief    Get theta value at position i
+ * \brief    Get Theta value at position i
  * \details  --
  * \param    int i
  * \return   \e double
  */
-inline double Individual::get_theta( int i ) const
+inline double Individual::get_Theta( int i ) const
 {
   assert(i < _n*(_n-1)/2);
-  return gsl_vector_get(_theta, i);
+  return gsl_vector_get(_Theta, i);
 }
 
 /**
- * \brief    Get the euclidean distance d(mu)
+ * \brief    Get the euclidean distance d(X)
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Individual::get_dg( void ) const
+inline double Individual::get_dX( void ) const
 {
-  return _dg;
+  return _dX;
 }
 
 /**
@@ -246,31 +245,31 @@ inline double Individual::get_dg( void ) const
  * \param    void
  * \return   \e double
  */
-inline double Individual::get_dp( void ) const
+inline double Individual::get_dz( void ) const
 {
-  return _dp;
+  return _dz;
 }
 
 /**
- * \brief    Get the fitness w(mu)
+ * \brief    Get the fitness W(X)
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Individual::get_wg( void ) const
+inline double Individual::get_WX( void ) const
 {
-  return _wg;
+  return _WX;
 }
 
 /**
- * \brief    Get the fitness w(z)
+ * \brief    Get the fitness W(z)
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Individual::get_wp( void ) const
+inline double Individual::get_Wz( void ) const
 {
-  return _wp;
+  return _Wz;
 }
 
 /*----------------------------------------------- MAPPING PROPERTIES */
@@ -311,25 +310,25 @@ inline double Individual::get_max_dot_product( void ) const
 /*----------------------------------------------- MUTATIONS */
 
 /**
- * \brief    Get the euclidean size of Mu mutation
+ * \brief    Get the euclidean size of X mutation
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Individual::get_r_mu( void ) const
+inline double Individual::get_r_X( void ) const
 {
-  return _r_mu;
+  return _r_X;
 }
 
 /**
- * \brief    Get the euclidean size of Sigma mutation
+ * \brief    Get the euclidean size of Ve mutation
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Individual::get_r_sigma( void ) const
+inline double Individual::get_r_Ve( void ) const
 {
-  return _r_sigma;
+  return _r_Ve;
 }
 
 /**
@@ -338,9 +337,9 @@ inline double Individual::get_r_sigma( void ) const
  * \param    void
  * \return   \e double
  */
-inline double Individual::get_r_theta( void ) const
+inline double Individual::get_r_Theta( void ) const
 {
-  return _r_theta;
+  return _r_Theta;
 }
 
 /*----------------------------

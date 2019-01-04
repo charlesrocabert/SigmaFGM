@@ -3,13 +3,13 @@
  * \file      Statistics.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Statistics class declaration
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,8 +55,8 @@ public:
   /*----------------------------
    * GETTERS
    *----------------------------*/
-  inline double get_dg_mean( void ) const;
-  inline double get_wg_mean( void ) const;
+  inline double get_dX_mean( void ) const;
+  inline double get_WX_mean( void ) const;
   
   /*----------------------------
    * SETTERS
@@ -89,29 +89,29 @@ protected:
   
   /*----------------------------------------------- MEAN VALUES */
   
-  double _dg_mean;              /*!< Genetic distance                 */
-  double _dp_mean;              /*!< Phenotypic distance              */
-  double _wg_mean;              /*!< Genetic fitness                  */
-  double _wp_mean;              /*!< Phenotypic fitness               */
+  double _dX_mean;              /*!< Genetic distance                 */
+  double _dz_mean;              /*!< Phenotypic distance              */
+  double _WX_mean;              /*!< Genetic fitness                  */
+  double _Wz_mean;              /*!< Phenotypic fitness               */
   double _EV_mean;              /*!< Best eigen value                 */
   double _EV_contribution_mean; /*!< Best eigen value contribution    */
   double _EV_dot_product_mean;  /*!< Best dot product                 */
-  double _r_mu_mean;            /*!< Euclidean size of Mu mutation    */
-  double _r_sigma_mean;         /*!< Euclidean size of Sigma mutation */
-  double _r_theta_mean;         /*!< Euclidean size of Theta mutation */
+  double _r_X_mean;             /*!< Euclidean size of X mutation     */
+  double _r_Ve_mean;            /*!< Euclidean size of Ve mutation    */
+  double _r_Theta_mean;         /*!< Euclidean size of Theta mutation */
   
   /*----------------------------------------------- STANDARD DEVIATION VALUES */
   
-  double _dg_sd;              /*!< Genetic distance                 */
-  double _dp_sd;              /*!< Phenotypic distance              */
-  double _wg_sd;              /*!< Genetic fitness                  */
-  double _wp_sd;              /*!< Phenotypic fitness               */
+  double _dX_sd;              /*!< Genetic distance                 */
+  double _dz_sd;              /*!< Phenotypic distance              */
+  double _WX_sd;              /*!< Genetic fitness                  */
+  double _Wz_sd;              /*!< Phenotypic fitness               */
   double _EV_sd;              /*!< Best eigen value                 */
   double _EV_contribution_sd; /*!< Best eigen value contribution    */
   double _EV_dot_product_sd;  /*!< Best dot product                 */
-  double _r_mu_sd;            /*!< Euclidean size of Mu mutation    */
-  double _r_sigma_sd;         /*!< Euclidean size of Sigma mutation */
-  double _r_theta_sd;         /*!< Euclidean size of Theta mutation */
+  double _r_X_sd;             /*!< Euclidean size of X mutation     */
+  double _r_Ve_sd;            /*!< Euclidean size of Ve mutation    */
+  double _r_Theta_sd;         /*!< Euclidean size of Theta mutation */
   
   /*----------------------------------------------- STATISTIC FILES */
   
@@ -130,9 +130,9 @@ protected:
  * \param    void
  * \return   \e double
  */
-inline double Statistics::get_dg_mean( void ) const
+inline double Statistics::get_dX_mean( void ) const
 {
-  return _dg_mean;
+  return _dX_mean;
 }
 
 /**
@@ -141,9 +141,9 @@ inline double Statistics::get_dg_mean( void ) const
  * \param    void
  * \return   \e double
  */
-inline double Statistics::get_wg_mean( void ) const
+inline double Statistics::get_WX_mean( void ) const
 {
-  return _wg_mean;
+  return _WX_mean;
 }
 
 /*----------------------------

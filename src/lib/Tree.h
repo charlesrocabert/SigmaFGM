@@ -3,13 +3,13 @@
  * \file      Tree.h
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      04-04-2018
- * \copyright Copyright (C) 2016-2018 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Tree class declaration
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2018
+ * Copyright (C) 2016-2019
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -179,9 +179,9 @@ inline Node* Tree::get_best_alive_node( void )
   {
     if (_iterator->second->isAlive())
     {
-      if (best_w < _iterator->second->get_individual()->get_wp())
+      if (best_w < _iterator->second->get_individual()->get_Wz())
       {
-        best_w    = _iterator->second->get_individual()->get_wp();
+        best_w    = _iterator->second->get_individual()->get_Wz();
         best_node = _iterator->second;
       }
     }
