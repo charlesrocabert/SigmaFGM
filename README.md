@@ -7,10 +7,14 @@
 
 <p align="justify">
 &sigma;FGM is a numerical solver for Fisher's geometric model (FGM, Fisher 1930), with evolvable phenotypic noise.
+</p>
 
+<p align="justify">
 Experimental studies demonstrate the existence of phenotypic diversity despite constant genotype and environment, and suggest that the intensity of this "phenotypic noise" could be evolvable. Theoretical models based on a single phenotypic character predict that during an adaptation event, phenotypic noise should be positively selected under directional selection, and then be reduced when the selection becomes stabilizing. Depending on the shape of the fitness landscape, phenotypic noise can also facilite the fixation of beneficial mutations.
 However, it is unclear whether the (temporary) selective advantage of phenotypic noise would hold for more realistic, multidimensional phenotypes. Indeed, Fisher's geometric model of adaptation predicts a cost of complexity, where beneficial mutations become increasingly harder to fix as the number of phenotypic characters increases.
+</p>
 
+<p align="justify">
 &sigma;FGM extends the Fisher's geometric model with an evolvable phenotypic noise and with a generalized form of the fitness function. 
 </p>
 
