@@ -4,16 +4,11 @@
 <br/>
 <em>Numerical solver for Fisher's geometric model (FGM, Fisher 1930), with evolvable phenotypic noise</em>
 <br/><br/>
-<a href="https://github.com/charlesrocabert/SigmaFGM/releases/latest"><img src="https://img.shields.io/badge/version-RC 0.3.0-orange.svg" /></a>&nbsp;<a href="https://github.com/charlesrocabert/SigmaFGM/releases/latest"><img src="https://img.shields.io/badge/build-passing-green.svg" /></a>&nbsp;<a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/license-GPL v3-blue.svg" /></a>&nbsp;
+<a href="https://github.com/charlesrocabert/SigmaFGM/releases/latest"><img src="https://img.shields.io/badge/version-RC 0.3.0-orange.svg" /></a>&nbsp;</a>&nbsp;<a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/license-GPL v3-blue.svg" /></a>&nbsp;
 </p>
 
 <p align="justify">
-Experimental studies demonstrate the existence of phenotypic diversity despite constant genotype and environment, and suggest that the intensity of this "phenotypic noise" could be evolvable. Theoretical models based on a single phenotypic character predict that during an adaptation event, phenotypic noise should be positively selected under directional selection, and then be reduced when the selection becomes stabilizing. Depending on the shape of the fitness landscape, phenotypic noise can also facilite the fixation of beneficial mutations.
-However, it is unclear whether the (temporary) selective advantage of phenotypic noise would hold for more realistic, multidimensional phenotypes. Indeed, Fisher's geometric model of adaptation predicts a cost of complexity, where beneficial mutations become increasingly harder to fix as the number of phenotypic characters increases.
-</p>
-
-<p align="justify">
-&sigma;FGM extends the Fisher's geometric model with an evolvable phenotypic noise and with a generalized form of the fitness function. 
+&sigma;FGM extends Fisher's geometric model with an evolvable phenotypic noise and an extended form of the fitness function. 
 </p>
 
 ## License
@@ -66,4 +61,3 @@ Binary executable files are in <code>build/bin</code> folder.
 
 ## References
 * Fisher, R. A. (1930). <em>The genetical theory of natural selection: a complete variorum edition</em>. Oxford University Press, Oxford (UK).
-
