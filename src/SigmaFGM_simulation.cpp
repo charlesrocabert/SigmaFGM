@@ -39,8 +39,6 @@
 #include "./lib/Parameters.h"
 #include "./lib/Simulation.h"
 
-const std::string EXECUTABLE_NAME = "build/bin/SigmaFGM_simulation";
-
 void readArgs( int argc, char const** argv, Parameters* parameters );
 void printUsage( void );
 void printHeader( void );
@@ -58,37 +56,32 @@ int main( int argc, char const** argv )
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 1) Read parameters                 */
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  std::cout << "> Read parameters ...\n";
   Parameters* parameters = new Parameters();
   readArgs(argc, argv, parameters);
   if (parameters->get_seed() == 0)
   {
     parameters->set_seed((unsigned long int)time(NULL));
   }
-  parameters->print_parameters();
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 2) Create the simulation           */
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  std::cout << "> Create simulation ...\n";
-  Simulation* sim = new Simulation(parameters);
+  Simulation* simulation = new Simulation(parameters);
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 3) Stabilize the population        */
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  if (parameters->get_stabilizing_time() > 0)
+  if (parameters->get_number_of_stabilizing_generations() > 0)
   {
-    std::cout << "> Stabilize population ...\n";
-    sim->stabilize(parameters->get_stabilizing_time());
+    simulation->stabilize(parameters->get_number_of_stabilizing_generations());
   }
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  /* 4) Run the simulation normally     */
+  /* 4) Run the simulation              */
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   if (parameters->get_shutoff_distance() == 0)
   {
-    std::cout << "> Run simulation normally ...\n";
-    sim->run(parameters->get_simulation_time());
+    simulation->run(parameters->get_number_of_generations());
   }
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -96,16 +89,14 @@ int main( int argc, char const** argv )
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   if (parameters->get_shutoff_distance() > 0.0)
   {
-    std::cout << "> Run simulation with shutoff ...\n";
-    sim->run_with_shutoff(parameters->get_shutoff_distance(), parameters->get_shutoff_time());
+    simulation->run_with_shutoff(parameters->get_shutoff_distance(), parameters->get_shutoff_generation());
   }
   
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 6) Free memory                     */
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  std::cout << "> Clear memory.\n";
-  delete sim;
-  sim = NULL;
+  delete simulation;
+  simulation = NULL;
   delete parameters;
   parameters = NULL;
   
@@ -130,22 +121,21 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
   int counter = 0;
   for (int i = 0; i < argc; i++)
   {
-    /* Not mandatory */
+    /****************************************************************/
+    
     if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
     {
       printUsage();
       exit(EXIT_SUCCESS);
     }
-    /* Not mandatory */
     else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--version") == 0)
     {
       std::cout << PACKAGE << " (" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << ")\n";
       exit(EXIT_SUCCESS);
     }
     
-    /****************************************************************/
+    /*----------------------------------------------- PSEUDORANDOM NUMBERS GENERATOR SEED */
     
-    /* Mandatory */
     else if (strcmp(argv[i], "-seed") == 0 || strcmp(argv[i], "--seed") == 0)
     {
       if (i+1 == argc)
@@ -159,8 +149,10 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
-    else if (strcmp(argv[i], "-simt") == 0 || strcmp(argv[i], "--simulation-time") == 0)
+    
+    /*----------------------------------------------- SIMULATION TIME */
+    
+    else if (strcmp(argv[i], "-stabg") == 0 || strcmp(argv[i], "--stabilizing-generations") == 0)
     {
       if (i+1 == argc)
       {
@@ -169,11 +161,49 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
       }
       else
       {
-        parameters->set_simulation_time(atoi(argv[i+1]));
+        parameters->set_number_of_stabilizing_generations(atoi(argv[i+1]));
+      }
+    }
+    else if (strcmp(argv[i], "-g") == 0 || strcmp(argv[i], "--generations") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_number_of_generations(atoi(argv[i+1]));
         counter++;
       }
     }
-    /* Mandatory */
+    else if (strcmp(argv[i], "-shutoffd") == 0 || strcmp(argv[i], "--shutoff-distance") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_shutoff_distance(atof(argv[i+1]));
+      }
+    }
+    else if (strcmp(argv[i], "-shutoffg") == 0 || strcmp(argv[i], "--shutoff-generation") == 0)
+    {
+      if (i+1 == argc)
+      {
+        std::cout << "Error: command line parameter value is missing.\n";
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        parameters->set_shutoff_generation(atoi(argv[i+1]));
+      }
+    }
+    
+    /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
+    
     else if (strcmp(argv[i], "-nbdim") == 0 || strcmp(argv[i], "--nb-dimensions") == 0)
     {
       if (i+1 == argc)
@@ -187,7 +217,9 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
+    
+    /*----------------------------------------------- FITNESS FUNCTION */
+    
     else if (strcmp(argv[i], "-alpha") == 0 || strcmp(argv[i], "--alpha") == 0)
     {
       if (i+1 == argc)
@@ -201,7 +233,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-beta") == 0 || strcmp(argv[i], "--beta") == 0)
     {
       if (i+1 == argc)
@@ -215,7 +246,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-Q") == 0 || strcmp(argv[i], "--Q") == 0)
     {
       if (i+1 == argc)
@@ -229,7 +259,9 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
+    
+    /*----------------------------------------------- POPULATION */
+    
     else if (strcmp(argv[i], "-popsize") == 0 || strcmp(argv[i], "--population-size") == 0)
     {
       if (i+1 == argc)
@@ -243,7 +275,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-initx") == 0 || strcmp(argv[i], "--initial-x") == 0)
     {
       if (i+1 == argc)
@@ -257,7 +288,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-initve") == 0 || strcmp(argv[i], "--initial-ve") == 0)
     {
       if (i+1 == argc)
@@ -271,7 +301,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-inittheta") == 0 || strcmp(argv[i], "--initial-theta") == 0)
     {
       if (i+1 == argc)
@@ -285,7 +314,13 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
+    else if (strcmp(argv[i], "-oneDshift") == 0 || strcmp(argv[i], "--oneD-shift") == 0)
+    {
+      parameters->set_oneD_shift(true);
+    }
+    
+    /*----------------------------------------------- MUTATIONS */
+    
     else if (strcmp(argv[i], "-mx") == 0 || strcmp(argv[i], "--m-x") == 0)
     {
       if (i+1 == argc)
@@ -299,7 +334,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-mve") == 0 || strcmp(argv[i], "--m-ve") == 0)
     {
       if (i+1 == argc)
@@ -313,7 +347,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-mtheta") == 0 || strcmp(argv[i], "--m-theta") == 0)
     {
       if (i+1 == argc)
@@ -327,7 +360,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-sx") == 0 || strcmp(argv[i], "--s-x") == 0)
     {
       if (i+1 == argc)
@@ -341,7 +373,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-sve") == 0 || strcmp(argv[i], "--s-ve") == 0)
     {
       if (i+1 == argc)
@@ -355,7 +386,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
     else if (strcmp(argv[i], "-stheta") == 0 || strcmp(argv[i], "--s-theta") == 0)
     {
       if (i+1 == argc)
@@ -369,7 +399,9 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
         counter++;
       }
     }
-    /* Mandatory */
+    
+    /*----------------------------------------------- NOISE PROPERTIES */
+    
     else if (strcmp(argv[i], "-noise") == 0 || strcmp(argv[i], "--noise-type") == 0)
     {
       if (i+1 == argc)
@@ -405,50 +437,6 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
     }
     
     /****************************************************************/
-    
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-stabt") == 0 || strcmp(argv[i], "--stabilizing-time") == 0)
-    {
-      if (i+1 == argc)
-      {
-        std::cout << "Error: command line parameter value is missing.\n";
-        exit(EXIT_FAILURE);
-      }
-      else
-      {
-        parameters->set_stabilizing_time(atoi(argv[i+1]));
-      }
-    }
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-shutoffdistance") == 0 || strcmp(argv[i], "--shutoff-distance") == 0)
-    {
-      if (i+1 == argc)
-      {
-        std::cout << "Error: command line parameter value is missing.\n";
-        exit(EXIT_FAILURE);
-      }
-      else
-      {
-        parameters->set_shutoff_distance(atof(argv[i+1]));
-      }
-    }
-    /* Not mandatory */
-    else if (strcmp(argv[i], "-shutofftime") == 0 || strcmp(argv[i], "--shutoff-time") == 0)
-    {
-      if (i+1 == argc)
-      {
-        std::cout << "Error: command line parameter value is missing.\n";
-        exit(EXIT_FAILURE);
-      }
-      else
-      {
-        parameters->set_shutoff_time(atoi(argv[i+1]));
-      }
-    }
-    else if (strcmp(argv[i], "-oneDshift") == 0 || strcmp(argv[i], "--oneD-shift") == 0)
-    {
-      parameters->set_oneD_shift(true);
-    }
   }
   if (counter < 17)
   {
@@ -491,14 +479,14 @@ void printUsage( void )
   std::cout << "        print the current version, then exit\n";
   std::cout << "  -seed, --seed\n";
   std::cout << "        specify the prng seed (mandatory, random if 0)\n";
-  std::cout << "  -stabt, --stabilizing-time\n";
-  std::cout << "        specify the stabilizing time\n";
-  std::cout << "  -simt, --simulation-time\n";
-  std::cout << "        specify the simulation time (mandatory)\n";
-  std::cout << "  -shutoffdistance, --shutoff-distance\n";
+  std::cout << "  -stabg, --stabilizing-generations\n";
+  std::cout << "        specify the number of stabilizing generations\n";
+  std::cout << "  -g, --generations\n";
+  std::cout << "        specify the number of generations (mandatory)\n";
+  std::cout << "  -shutoffd, --shutoff-distance\n";
   std::cout << "        specify the shutoff distance\n";
-  std::cout << "  -shutofftime, --shutoff-time\n";
-  std::cout << "        specify the shutoff time\n";
+  std::cout << "  -shutoffg, --shutoff-generation\n";
+  std::cout << "        specify the shutoff generation\n";
   std::cout << "  -nbdim, --nb-dimensions\n";
   std::cout << "        specify the number of dimensions (mandatory)\n";
   std::cout << "  -alpha, --alpha\n";

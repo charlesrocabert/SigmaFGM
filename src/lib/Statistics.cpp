@@ -292,14 +292,14 @@ void Statistics::compute_statistics( Population* population )
 /**
  * \brief    Write statistics
  * \details  --
- * \param    int simulation_time
+ * \param    int generation
  * \return   \e void
  */
-void Statistics::write_statistics( int simulation_time )
+void Statistics::write_statistics( int generation )
 {
   /*----------------------------------------------- MEAN VALUES */
   
-  _mean_file << simulation_time << " ";
+  _mean_file << generation << " ";
   _mean_file << _dX_mean << " ";
   _mean_file << _dz_mean << " ";
   _mean_file << _WX_mean << " ";
@@ -313,7 +313,7 @@ void Statistics::write_statistics( int simulation_time )
   
   /*----------------------------------------------- STANDARD DEVIATION VALUES */
   
-  _sd_file << simulation_time << " ";
+  _sd_file << generation << " ";
   _sd_file << _dX_sd << " ";
   _sd_file << _dz_sd << " ";
   _sd_file << _WX_sd << " ";

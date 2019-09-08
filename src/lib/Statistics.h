@@ -68,7 +68,7 @@ public:
    *----------------------------*/
   void write_headers( void );
   void compute_statistics( Population* population );
-  void write_statistics( int simulation_time );
+  void write_statistics( int generation );
   void reset( void );
   void flush( void );
   void close( void );

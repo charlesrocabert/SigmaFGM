@@ -71,9 +71,9 @@ public:
   /*----------------------------
    * PUBLIC METHODS
    *----------------------------*/
-  void stabilize( int time );
-  void run( int time );
-  void run_with_shutoff( double shutoff_distance, int shutoff_time );
+  void stabilize( int generations );
+  void run( int generations );
+  void run_with_shutoff( double shutoff_distance, int shutoff_generation );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES

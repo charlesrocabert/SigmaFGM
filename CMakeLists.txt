@@ -84,18 +84,6 @@ if(GSL_FOUND)
   target_link_libraries(${SIMULATION_EXECUTABLE} ${GSL_LIBRARIES})
 endif(GSL_FOUND)
 
-find_package(TBB REQUIRED)
-if(TBB_FOUND)
-  include_directories(${TBB_INCLUDE_DIR})
-  target_link_libraries(${SIMULATION_EXECUTABLE} ${TBB_LIBRARIES})
-endif(TBB_FOUND)
-
-find_package(ZLIB REQUIRED)
-if(ZLIB_FOUND)
-  include_directories(${ZLIB_INCLUDE_DIR})
-  target_link_libraries(${RUN_SIMULATION_EXECUTABLE} ${ZLIB_LIBRARIES})
-endif(ZLIB_FOUND)
-
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Create and link NoisyFGM library                                                 #
@@ -124,7 +112,7 @@ add_library(
   src/lib/Simulation.h
 )
 
-target_link_libraries(SigmaFGM z tbb gsl gslcblas)
+target_link_libraries(SigmaFGM gsl gslcblas)
 
 target_link_libraries(${SIMULATION_EXECUTABLE} SigmaFGM)
 

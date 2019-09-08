@@ -92,15 +92,15 @@ Simulation::~Simulation( void )
 /**
  * \brief    Stabilize the population
  * \details  --
- * \param    int time
+ * \param    int generations
  * \return   \e void
  */
-void Simulation::stabilize( int time )
+void Simulation::stabilize( int generations )
 {
   _environment->stabilizing_environment();
-  for (int t = 1; t <= time; t++)
+  for (int g = 1; g <= generations; g++)
   {
-    _population->compute_next_generation(t);
+    _population->compute_next_generation(g);
   }
 }
 
@@ -110,60 +110,53 @@ void Simulation::stabilize( int time )
  * \param    int time
  * \return   \e void
  */
-void Simulation::run( int time )
+void Simulation::run( int generations )
 {
   _environment->normal_environment();
   _statistics->write_headers();
-  for (int t = 1; t <= time; t++)
+  for (int g = 1; g <= generations; g++)
   {
+    _population->compute_next_generation(g);
     _statistics->reset();
     _statistics->compute_statistics(_population);
-    _statistics->write_statistics(t);
+    _statistics->write_statistics(g);
     _statistics->flush();
-    _population->compute_next_generation(t);
   }
   _statistics->close();
-  _tree->write_best_lineage_statistics();
+  //_tree->write_best_lineage_statistics();
 }
 
 /**
  * \brief    Run the simulation with shutoff
  * \details  --
  * \param    double shutoff_distance
- * \param    int shutoff_time
+ * \param    int shutoff_generation
  * \return   \e void
  */
-void Simulation::run_with_shutoff( double shutoff_distance, int shutoff_time )
+void Simulation::run_with_shutoff( double shutoff_distance, int shutoff_generation )
 {
   _statistics->write_headers();
-  bool reached = false;
-  int  counter = 0;
-  int  t       = 1;
-  while (counter < shutoff_time)
+  int  g       = 0;
+  bool shutoff = false;
+  while (!shutoff)
   {
+    g++;
+    _population->compute_next_generation(g);
     _statistics->reset();
     _statistics->compute_statistics(_population);
-    _statistics->write_statistics(t);
+    _statistics->write_statistics(g);
     _statistics->flush();
-    _population->compute_next_generation(t);
-    t++;
-    if (_statistics->get_dX_mean() <= shutoff_distance && !reached)
+    if (fabs(_statistics->get_dX_mean()) <= fabs(shutoff_distance))
     {
-      reached = true;
-      counter = 1;
+      shutoff = true;
     }
-    else if (_statistics->get_dX_mean() <= shutoff_distance && reached)
+    if (g == shutoff_generation)
     {
-      counter += 1;
-    }
-    else if (_statistics->get_dX_mean() > shutoff_distance && reached)
-    {
-      reached = false;
-      counter = 0;
+      shutoff = true;
     }
   }
   _statistics->close();
-  _tree->write_best_lineage_statistics();
+  //_tree->write_best_lineage_statistics();
 }
 
 /*----------------------------

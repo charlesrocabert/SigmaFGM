@@ -59,12 +59,12 @@ enum node_class
 
 /**
  * \brief   Node state
- * \details Defines the state of a node in the tree, depending on cell's status (dead or alive).
+ * \details Defines the state of a node in the tree, depending on individual status (dead or alive).
  */
 enum node_state
 {
-  DEAD  = 1, /*!< The cell is dead  */
-  ALIVE = 2  /*!< The cell is alive */
+  DEAD  = 1, /*!< The individual is dead  */
+  ALIVE = 2  /*!< The individual is alive */
 };
 
 

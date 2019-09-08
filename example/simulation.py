@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 #***********************************************************************
@@ -24,17 +24,16 @@ import sys
 import math
 
 ### Run a simulation from the parameters set ###
-def run_simulation( seed, stabt, simt, shutoffdistance, shutofftime, nbdim,
+def run_simulation( seed, stabg, g, shutoffd, shutoffg, nbdim,
 	alpha, beta, Q,
-	popsize, initX, initVe, initTheta,
-	mX, mVe, mTheta, sX, sVe, sTheta, noise,
-	oneDshift ):
+	popsize, initX, initVe, initTheta, oneDshift,
+	mX, mVe, mTheta, sX, sVe, sTheta, noise ):
 	cmdline = "../build/bin/SigmaFGM_simulation"
 	cmdline += " -seed "+str(seed)
-	cmdline += " -stabt "+str(stabt)
-	cmdline += " -simt "+str(simt)
-	cmdline += " -shutoffdistance "+str(shutoffdistance)
-	cmdline += " -shutofftime "+str(shutofftime)
+	cmdline += " -stabg "+str(stabg)
+	cmdline += " -g "+str(g)
+	cmdline += " -shutoffd "+str(shutoffd)
+	cmdline += " -shutoffg "+str(shutoffg)
 	cmdline += " -nbdim "+str(nbdim)
 	cmdline += " -alpha "+str(alpha)
 	cmdline += " -beta "+str(beta)
@@ -61,30 +60,31 @@ def run_simulation( seed, stabt, simt, shutoffdistance, shutofftime, nbdim,
 ############
 
 if __name__ == '__main__':
-	SEED             = 0
-	STABILIZING_TIME = 0
-	SIMULATION_TIME  = 200
-	SHUTOFF_DISTANCE = 0
-	SHUTOFF_TIME     = 0
-	NB_DIMENSIONS    = 1
-	ALPHA            = 0.5
-	BETA             = 0.0
-	Q                = 2.0
-	POPULATION_SIZE  = 1000
-	INITIAL_X        = 2.0/math.sqrt(float(NB_DIMENSIONS))
-	INITIAL_VE       = 1e-15
-	INITIAL_THETA    = 0.0
-	M_X              = 1e-0
-	M_VE             = 1e-0
-	M_THETA          = 1e-0
-	S_X              = 0.1/math.sqrt(float(NB_DIMENSIONS))
-	S_VE             = 0.1
-	S_THETA          = 0.1
-	NOISE            = "FULL"
-	ONED_SHIFT       = False
+	SEED                    = 0
+	STABILIZING_GENERATIONS = 0
+	GENERATIONS             = 10000
+	SHUTOFF_DISTANCE        = 0.4
+	SHUTOFF_GENERATION      = 10000
+	NB_DIMENSIONS           = 1
+	ALPHA                   = 3.125
+	BETA                    = 0.1
+	Q                       = 2.0
+	POPULATION_SIZE         = 1000
+	INITIAL_X               = 2.0/math.sqrt(float(NB_DIMENSIONS))
+	INITIAL_VE              = 0.6
+	INITIAL_THETA           = 0.0
+	ONED_SHIFT              = False
+	M_X                     = 1e-4
+	M_VE                    = 0.0
+	M_THETA                 = 0.0
+	S_X                     = 0.1/math.sqrt(float(NB_DIMENSIONS))
+	S_VE                    = 0.0
+	S_THETA                 = 0.0
+	NOISE                   = "ISOTROPIC"
+	
 
-	run_simulation(SEED, STABILIZING_TIME, SIMULATION_TIME, SHUTOFF_DISTANCE, SHUTOFF_TIME, NB_DIMENSIONS,
+	run_simulation(SEED, STABILIZING_GENERATIONS, GENERATIONS, SHUTOFF_DISTANCE, SHUTOFF_GENERATION,
+		NB_DIMENSIONS,
 		ALPHA, BETA, Q,
-		POPULATION_SIZE, INITIAL_X, INITIAL_VE, INITIAL_THETA,
-		M_X, M_VE, M_THETA, S_X, S_VE, S_THETA, NOISE,
-		ONED_SHIFT )
+		POPULATION_SIZE, INITIAL_X, INITIAL_VE, INITIAL_THETA, ONED_SHIFT,
+		M_X, M_VE, M_THETA, S_X, S_VE, S_THETA, NOISE )

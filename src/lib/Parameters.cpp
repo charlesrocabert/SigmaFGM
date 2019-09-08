@@ -48,10 +48,10 @@ Parameters::Parameters( void )
   
   /*----------------------------------------------- SIMULATION TIME */
   
-  _stabilizing_time = 0;
-  _simulation_time  = 0;
-  _shutoff_distance = 0.0;
-  _shutoff_time     = 0;
+  _stabilizing_generations = 0;
+  _generations             = 0;
+  _shutoff_distance        = 0.0;
+  _shutoff_generation      = 0;
   
   /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
   
@@ -113,28 +113,29 @@ Parameters::~Parameters( void )
 void Parameters::print_parameters( void )
 {
   std::cout << "### Parameters ########################\n";
-  std::cout << "seed              " << _seed << "\n";
-  std::cout << "stabilizing time  " << _stabilizing_time << "\n";
-  std::cout << "simulation time   " << _simulation_time << "\n";
-  std::cout << "shutoff distance  " << _shutoff_distance << "\n";
-  std::cout << "shutoff time      " << _shutoff_time << "\n";
-  std::cout << "dimensions        " << _number_of_dimensions << "\n";
-  std::cout << "alpha             " << _alpha << "\n";
-  std::cout << "beta              " << _beta << "\n";
-  std::cout << "Q                 " << _Q << "\n";
-  std::cout << "population size   " << _population_size << "\n";
-  std::cout << "initial X         " << _initial_X << "\n";
-  std::cout << "initial Ve        " << _initial_Ve << "\n";
-  std::cout << "initial Theta     " << _initial_Theta << "\n";
-  std::cout << "X mut rate        " << _m_X << "\n";
-  std::cout << "Ve mut rate       " << _m_Ve << "\n";
-  std::cout << "Theta mut rate    " << _m_Theta << "\n";
-  std::cout << "X mut size        " << _s_X << "\n";
-  std::cout << "Ve mut size       " << _s_Ve << "\n";
-  std::cout << "Theta mut size    " << _s_Theta << "\n";
-  if (_noise_type == NONE) std::cout << "noise type        NONE\n";
-  else if (_noise_type == ISOTROPIC) std::cout << "noise type        ISOTROPIC\n";
-  else if (_noise_type == UNCORRELATED) std::cout << "noise type        UNCORRELATED\n";
-  else if (_noise_type == FULL) std::cout << "noise type        FULL\n";
+  std::cout << "seed                    " << _seed << "\n";
+  std::cout << "stabilizing generations " << _stabilizing_generations << "\n";
+  std::cout << "generations             " << _generations << "\n";
+  std::cout << "shutoff distance        " << _shutoff_distance << "\n";
+  std::cout << "shutoff generation      " << _shutoff_generation << "\n";
+  std::cout << "dimensions              " << _number_of_dimensions << "\n";
+  std::cout << "alpha                   " << _alpha << "\n";
+  std::cout << "beta                    " << _beta << "\n";
+  std::cout << "Q                       " << _Q << "\n";
+  std::cout << "population size         " << _population_size << "\n";
+  std::cout << "initial X               " << _initial_X << "\n";
+  std::cout << "initial Ve              " << _initial_Ve << "\n";
+  std::cout << "initial Theta           " << _initial_Theta << "\n";
+  std::cout << "1d shift                " << _oneD_shift << "\n";
+  std::cout << "X mut rate              " << _m_X << "\n";
+  std::cout << "Ve mut rate             " << _m_Ve << "\n";
+  std::cout << "Theta mut rate          " << _m_Theta << "\n";
+  std::cout << "X mut size              " << _s_X << "\n";
+  std::cout << "Ve mut size             " << _s_Ve << "\n";
+  std::cout << "Theta mut size          " << _s_Theta << "\n";
+  if (_noise_type == NONE) std::cout << "noise type              NONE\n";
+  else if (_noise_type == ISOTROPIC) std::cout << "noise type              ISOTROPIC\n";
+  else if (_noise_type == UNCORRELATED) std::cout << "noise type              UNCORRELATED\n";
+  else if (_noise_type == FULL) std::cout << "noise type              FULL\n";
   std::cout << "#######################################\n";
 }

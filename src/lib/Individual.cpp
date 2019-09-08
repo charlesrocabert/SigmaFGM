@@ -60,15 +60,15 @@ Individual::Individual( Prng* prng, int n, double X_init, double Ve_init, double
   _identifier = 0;
   _generation = 0;
   
-  /******************************/
-  /* Initialize matrices        */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 1) Initialize matrices        */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _Sigma    = NULL;
   _Cholesky = NULL;
   
-  /******************************/
-  /* Initialize X               */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 2) Initialize X               */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _X = gsl_vector_alloc(_n);
   if (oneD_shift)
   {
@@ -80,9 +80,9 @@ Individual::Individual( Prng* prng, int n, double X_init, double Ve_init, double
     gsl_vector_set_all(_X, X_init);
   }
   
-  /******************************/
-  /* Initialize Ve              */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 3) Initialize Ve              */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _Ve = NULL;
   if (_noise_type != NONE)
   {
@@ -90,9 +90,9 @@ Individual::Individual( Prng* prng, int n, double X_init, double Ve_init, double
     gsl_vector_set_all(_Ve, Ve_init);
   }
   
-  /******************************/
-  /* Initialize Theta           */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 4) Initialize Theta           */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _Theta = NULL;
   if (_n > 1 && _noise_type == FULL)
   {
@@ -100,15 +100,15 @@ Individual::Individual( Prng* prng, int n, double X_init, double Ve_init, double
     gsl_vector_set_all(_Theta, Theta_init);
   }
   
-  /******************************/
-  /* Initialize z               */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 5) Initialize z               */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _z = gsl_vector_alloc(_n);
   gsl_vector_set_zero(_z);
   
-  /******************************/
-  /* Initialize other variables */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 6) Initialize other variables */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _dX = 0.0;
   _dz = 0.0;
   _WX = 0.0;
@@ -149,21 +149,21 @@ Individual::Individual( const Individual& individual )
   _identifier = individual._identifier;
   _generation = individual._generation;
   
-  /******************************/
-  /* Initialize matrices        */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 1) Initialize matrices        */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _Sigma    = NULL;
   _Cholesky = NULL;
   
-  /******************************/
-  /* Initialize X               */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 2) Initialize X               */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _X = gsl_vector_alloc(_n);
   gsl_vector_memcpy(_X, individual._X);
   
-  /******************************/
-  /* Initialize Ve              */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 3) Initialize Ve              */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _Ve = NULL;
   if (_noise_type != NONE)
   {
@@ -171,9 +171,9 @@ Individual::Individual( const Individual& individual )
     gsl_vector_memcpy(_Ve, individual._Ve);
   }
   
-  /******************************/
-  /* Initialize Theta           */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 4) Initialize Theta           */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _Theta = NULL;
   if (_n > 1 && _noise_type == FULL)
   {
@@ -181,15 +181,15 @@ Individual::Individual( const Individual& individual )
     gsl_vector_memcpy(_Theta, individual._Theta);
   }
   
-  /******************************/
-  /* Initialize z               */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 5) Initialize z               */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _z = gsl_vector_alloc(_n);
   gsl_vector_memcpy(_z, individual._z);
   
-  /******************************/
-  /* Initialize other variables */
-  /******************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  /* 6) Initialize other variables */
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _dX = individual._dX;
   _dz = individual._dz;
   _WX = individual._WX;
@@ -267,9 +267,9 @@ void Individual::mutate( double m_X, double m_Ve, double m_Theta, double s_X, do
   gsl_vector* previous_Ve    = NULL;
   gsl_vector* previous_Theta = NULL;
   
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 1) Save current genotype  */
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   previous_X = gsl_vector_alloc(_n);
   gsl_vector_memcpy(previous_X, _X);
   if (_noise_type != NONE)
@@ -283,9 +283,9 @@ void Individual::mutate( double m_X, double m_Ve, double m_Theta, double s_X, do
     }
   }
   
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 2) Mutate X vector        */
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   if (_prng->uniform() < m_X)
   {
     for (int i = 0; i < _n; i++)
@@ -295,9 +295,9 @@ void Individual::mutate( double m_X, double m_Ve, double m_Theta, double s_X, do
     _phenotype_is_built = false;
   }
   
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 3) Mutate Ve vector       */
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   if (_noise_type != NONE && _prng->uniform() < m_Ve)
   {
     if (_noise_type == ISOTROPIC)
@@ -315,9 +315,9 @@ void Individual::mutate( double m_X, double m_Ve, double m_Theta, double s_X, do
     _phenotype_is_built = false;
   }
   
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 4) Mutate Theta vector    */
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   if (_n > 1 && _noise_type == FULL && _prng->uniform() < m_Theta)
   {
     for (int i = 0; i < _n*(_n-1)/2; i++)
@@ -327,9 +327,9 @@ void Individual::mutate( double m_X, double m_Ve, double m_Theta, double s_X, do
   }
   _phenotype_is_built = false;
   
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 5) Compute mutation sizes */
-  /*****************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _r_X     = 0.0;
   _r_Ve    = 0.0;
   _r_Theta = 0.0;
@@ -447,17 +447,17 @@ void Individual::rotate( gsl_matrix* m, int a, int b, double theta )
  */
 void Individual::build_Sigma( void )
 {
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 1) Create eigenvectors matrix         */
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gsl_matrix* X = gsl_matrix_alloc(_n, _n);
   gsl_matrix_set_identity(X);
   
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 2) Starting from identity matrix,     */
   /*    apply the n(n-1)/2 rotations to    */
   /*    the eigenvectors                   */
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   if (_n > 1 && _noise_type == FULL)
   {
     int counter = 0;
@@ -472,9 +472,9 @@ void Individual::build_Sigma( void )
     assert(counter == _n*(_n-1)/2);
   }
   
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 3) Create the matrix D of eigenvalues */
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _max_Sigma_eigenvalue = 0.0;
   int max_Ve_index      = 0;
   double Ve_sum         = 0.0;
@@ -492,10 +492,10 @@ void Individual::build_Sigma( void )
     }
   }
   
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 4) Save maximum eigenvector and       */
   /*    eigenvalue contribution            */
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   _max_Sigma_eigenvector  = gsl_vector_alloc(_n);
   _max_Sigma_contribution = _max_Sigma_eigenvalue/Ve_sum;
   for (int i = 0; i < _n; i++)
@@ -503,9 +503,9 @@ void Individual::build_Sigma( void )
     gsl_vector_set(_max_Sigma_eigenvector, i, gsl_matrix_get(X, i, max_Ve_index));
   }
   
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   /* 5) Compute Sigma = X * D * X^-1       */
-  /*****************************************/
+  /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gsl_matrix* P = gsl_matrix_alloc(_n, _n);
   _Sigma        = gsl_matrix_alloc(_n, _n);
   

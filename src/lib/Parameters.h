@@ -65,10 +65,10 @@ public:
   
   /*----------------------------------------------- SIMULATION TIME */
   
-  inline int    get_stabilizing_time( void ) const;
-  inline int    get_simulation_time( void ) const;
+  inline int    get_number_of_stabilizing_generations( void ) const;
+  inline int    get_number_of_generations( void ) const;
   inline double get_shutoff_distance( void ) const;
-  inline int    get_shutoff_time( void ) const;
+  inline int    get_shutoff_generation( void ) const;
   
   /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
   
@@ -113,10 +113,10 @@ public:
   
   /*----------------------------------------------- SIMULATION TIME */
   
-  inline void set_stabilizing_time( int stabilizing_time );
-  inline void set_simulation_time( int simulation_time );
+  inline void set_number_of_stabilizing_generations( int stabilizing_generations );
+  inline void set_number_of_generations( int generations );
   inline void set_shutoff_distance( double shutoff_distance );
-  inline void set_shutoff_time( int shutoff_time );
+  inline void set_shutoff_generation( int shutoff_generation );
   
   /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
   
@@ -175,10 +175,10 @@ protected:
   
   /*----------------------------------------------- SIMULATION TIME */
   
-  int    _stabilizing_time; /*!< Time used to stabilize initial population */
-  int    _simulation_time;  /*!< Real simulation time                      */
-  double _shutoff_distance; /*!< Shutoff distance to reach                 */
-  int    _shutoff_time;     /*!< Shutoff time to maintain shutoff fitness  */
+  int    _stabilizing_generations; /*!< Number of generations used to stabilize initial population  */
+  int    _generations;             /*!< Number of generations                                       */
+  double _shutoff_distance;        /*!< Shutoff distance to reach                                   */
+  int    _shutoff_generation;      /*!< Maximum number of generations to reach the shutoff distance */
   
   /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
   
@@ -245,25 +245,25 @@ inline unsigned long int Parameters::get_seed( void ) const
 /*----------------------------------------------- SIMULATION TIME */
 
 /**
- * \brief    Get the stabilizing time
+ * \brief    Get the number of stabilizing generations
  * \details  --
  * \param    void
  * \return   \e int
  */
-inline int Parameters::get_stabilizing_time( void ) const
+inline int Parameters::get_number_of_stabilizing_generations( void ) const
 {
-  return _stabilizing_time;
+  return _stabilizing_generations;
 }
 
 /**
- * \brief    Get the simulation time
+ * \brief    Get the number of generations
  * \details  --
  * \param    void
  * \return   \e int
  */
-inline int Parameters::get_simulation_time( void ) const
+inline int Parameters::get_number_of_generations( void ) const
 {
-  return _simulation_time;
+  return _generations;
 }
 
 /**
@@ -278,14 +278,14 @@ inline double Parameters::get_shutoff_distance( void ) const
 }
 
 /**
- * \brief    Get the shutoff time
+ * \brief    Get the shutoff generations number
  * \details  --
  * \param    void
  * \return   \e int
  */
-inline int Parameters::get_shutoff_time( void ) const
+inline int Parameters::get_shutoff_generation( void ) const
 {
-  return _shutoff_time;
+  return _shutoff_generation;
 }
 
 /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
@@ -508,27 +508,27 @@ inline void Parameters::set_seed( unsigned long int seed )
 /*----------------------------------------------- SIMULATION TIME */
 
 /**
- * \brief    Set the stabilizing time
+ * \brief    Set the number of stabilizing generations
  * \details  --
- * \param    int stabilizing_time
+ * \param    int stabilizing_generations
  * \return   \e void
  */
-inline void Parameters::set_stabilizing_time( int stabilizing_time)
+inline void Parameters::set_number_of_stabilizing_generations( int stabilizing_generations )
 {
-  assert(stabilizing_time >= 0);
-  _stabilizing_time = stabilizing_time;
+  assert(stabilizing_generations >= 0);
+  _stabilizing_generations = stabilizing_generations;
 }
 
 /**
- * \brief    Set the simulation time
+ * \brief    Set the number of generations
  * \details  --
- * \param    int simulation_time
+ * \param    int generations
  * \return   \e void
  */
-inline void Parameters::set_simulation_time( int simulation_time )
+inline void Parameters::set_number_of_generations( int generations )
 {
-  assert(simulation_time >= 0);
-  _simulation_time = simulation_time;
+  assert(generations >= 0);
+  _generations = generations;
 }
 
 /**
@@ -544,15 +544,15 @@ inline void Parameters::set_shutoff_distance( double shutoff_distance )
 }
 
 /**
- * \brief    Set the shutoff time
+ * \brief    Set the shutoff generations number
  * \details  --
- * \param    int shutoff time
+ * \param    int shutoff_generation
  * \return   \e void
  */
-inline void Parameters::set_shutoff_time( int shutoff_time )
+inline void Parameters::set_shutoff_generation( int shutoff_generation )
 {
-  assert(shutoff_time >= 0);
-  _shutoff_time = shutoff_time;
+  assert(shutoff_generation >= 0);
+  _shutoff_generation = shutoff_generation;
 }
 
 /*----------------------------------------------- PHENOTYPIC COMPLEXITY */
