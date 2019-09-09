@@ -87,6 +87,7 @@ public:
   inline double get_initial_Ve( void ) const;
   inline double get_initial_Theta( void ) const;
   inline bool   get_oneD_shift( void ) const;
+  inline bool   get_mean_fitness( void ) const;
   
   /*----------------------------------------------- MUTATIONS */
   
@@ -135,6 +136,7 @@ public:
   inline void set_initial_Ve( double initial_Ve );
   inline void set_initial_Theta( double initial_Theta );
   inline void set_oneD_shift( bool oneD_shift );
+  inline void set_mean_fitness( bool mean_fitness );
   
   /*----------------------------------------------- MUTATIONS */
   
@@ -197,6 +199,7 @@ protected:
   double _initial_Ve;      /*!< Initial Ve value                           */
   double _initial_Theta;   /*!< Initial Theta value                        */
   bool   _oneD_shift;      /*!< The population is shifted in one dimension */
+  bool   _mean_fitness;    /*!< The mean fitness is computed               */
   
   /*----------------------------------------------- MUTATIONS */
   
@@ -392,6 +395,17 @@ inline double Parameters::get_initial_Theta( void ) const
 inline bool Parameters::get_oneD_shift( void ) const
 {
   return _oneD_shift;
+}
+
+/**
+ * \brief    Get mean fitness boolean
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline bool Parameters::get_mean_fitness( void ) const
+{
+  return _mean_fitness;
 }
 
 /*----------------------------------------------- MUTATIONS */
@@ -665,6 +679,17 @@ inline void Parameters::set_initial_Theta( double initial_Theta )
 inline void Parameters::set_oneD_shift( bool oneD_shift )
 {
   _oneD_shift = oneD_shift;
+}
+
+/**
+ * \brief    Set the mean fitness boolean
+ * \details  --
+ * \param    bool mean_fitness
+ * \return   \e void
+ */
+inline void Parameters::set_mean_fitness( bool mean_fitness )
+{
+  _mean_fitness = mean_fitness;
 }
 
 /*----------------------------------------------- MUTATIONS */

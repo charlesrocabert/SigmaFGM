@@ -318,6 +318,10 @@ void readArgs( int argc, char const** argv, Parameters* parameters )
     {
       parameters->set_oneD_shift(true);
     }
+    else if (strcmp(argv[i], "-meanfitness") == 0 || strcmp(argv[i], "--mean-fitness") == 0)
+    {
+      parameters->set_mean_fitness(true);
+    }
     
     /*----------------------------------------------- MUTATIONS */
     
@@ -505,6 +509,8 @@ void printUsage( void )
   std::cout << "        specify initial Theta value (mandatory)\n";
   std::cout << "  -oneDshift, --oneD-shift\n";
   std::cout << "        Indicates if the initial population is shifted in a single dimension\n";
+  std::cout << "  -meanfitness, --mean-fitness\n";
+  std::cout << "        Indicates if the mean fitness should be computed (by sampling the phenotypes)\n";
   std::cout << "  -mx, --m-x\n";
   std::cout << "        specify the X mutation rate (mandatory)\n";
   std::cout << "  -mve, --m-ve\n";

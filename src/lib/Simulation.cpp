@@ -135,6 +135,7 @@ void Simulation::run( int generations )
  */
 void Simulation::run_with_shutoff( double shutoff_distance, int shutoff_generation )
 {
+  _environment->normal_environment();
   _statistics->write_headers();
   int  g       = 0;
   bool shutoff = false;

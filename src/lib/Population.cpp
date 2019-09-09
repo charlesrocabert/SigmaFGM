@@ -65,7 +65,14 @@ Population::Population( Parameters* parameters, Environment* environment, Tree* 
     _pop[i]->set_identifier(_current_identifier++);
     _pop[i]->set_generation(0);
     _pop[i]->build_phenotype();
-    _pop[i]->compute_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
+    if (!_parameters->get_mean_fitness())
+    {
+      _pop[i]->compute_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
+    }
+    else
+    {
+      _pop[i]->compute_mean_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
+    }
     //_tree->add_root(_pop[i]);
     _w[i]   = _pop[i]->get_Wz();
     _w_sum += _w[i];
@@ -129,7 +136,14 @@ void Population::compute_next_generation( int next_generation )
       new_pop[new_index]->set_identifier(_current_identifier++);
       new_pop[new_index]->set_generation(next_generation);
       new_pop[new_index]->build_phenotype();
-      _pop[i]->compute_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
+      if (!_parameters->get_mean_fitness())
+      {
+        _pop[i]->compute_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
+      }
+      else
+      {
+        _pop[i]->compute_mean_fitness(_parameters->get_alpha(), _parameters->get_beta(), _parameters->get_Q());
+      }
       //_tree->add_reproduction_event(_pop[i], new_pop[new_index]);
       _w[new_index]  = _pop[i]->get_Wz();
       _w_sum        += _w[new_index];

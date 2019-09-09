@@ -104,7 +104,7 @@ void Statistics::write_headers( void )
   
   /*----------------------------------------------- MEAN VALUES */
   
-  _mean_file << "t" << " ";
+  _mean_file << "g" << " ";
   _mean_file << "dX" << " ";
   _mean_file << "dz" << " ";
   _mean_file << "WX" << " ";
@@ -118,7 +118,7 @@ void Statistics::write_headers( void )
   
   /*----------------------------------------------- STANDARD DEVIATION VALUES */
   
-  _sd_file << "t" << " ";
+  _sd_file << "g" << " ";
   _sd_file << "dX" << " ";
   _sd_file << "dz" << " ";
   _sd_file << "WX" << " ";

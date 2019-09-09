@@ -69,6 +69,8 @@ Parameters::Parameters( void )
   _initial_X       = 0.0;
   _initial_Ve      = 0.0;
   _initial_Theta   = 0.0;
+  _oneD_shift      = false;
+  _mean_fitness    = false;
   
   /*----------------------------------------------- MUTATIONS */
   
@@ -127,6 +129,7 @@ void Parameters::print_parameters( void )
   std::cout << "initial Ve              " << _initial_Ve << "\n";
   std::cout << "initial Theta           " << _initial_Theta << "\n";
   std::cout << "1d shift                " << _oneD_shift << "\n";
+  std::cout << "mean fitness            " << _mean_fitness << "\n";
   std::cout << "X mut rate              " << _m_X << "\n";
   std::cout << "Ve mut rate             " << _m_Ve << "\n";
   std::cout << "Theta mut rate          " << _m_Theta << "\n";

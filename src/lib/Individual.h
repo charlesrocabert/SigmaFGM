@@ -103,6 +103,7 @@ public:
   void mutate( double m_X, double m_Ve, double m_Theta, double s_X, double s_Ve, double s_Theta );
   void build_phenotype( void );
   void compute_fitness( double alpha, double beta, double Q );
+  void compute_mean_fitness( double alpha, double beta, double Q );
   void delete_vectors_and_matrices( void );
   
   /*----------------------------
