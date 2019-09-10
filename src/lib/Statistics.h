@@ -56,7 +56,9 @@ public:
    * GETTERS
    *----------------------------*/
   inline double get_dX_mean( void ) const;
+  inline double get_dz_mean( void ) const;
   inline double get_WX_mean( void ) const;
+  inline double get_Wz_mean( void ) const;
   
   /*----------------------------
    * SETTERS
@@ -136,6 +138,17 @@ inline double Statistics::get_dX_mean( void ) const
 }
 
 /**
+ * \brief    Get mean phenotypic distance
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Statistics::get_dz_mean( void ) const
+{
+  return _dz_mean;
+}
+
+/**
  * \brief    Get mean genetic fitness
  * \details  --
  * \param    void
@@ -144,6 +157,17 @@ inline double Statistics::get_dX_mean( void ) const
 inline double Statistics::get_WX_mean( void ) const
 {
   return _WX_mean;
+}
+
+/**
+ * \brief    Get mean phenotypic fitness
+ * \details  --
+ * \param    void
+ * \return   \e double
+ */
+inline double Statistics::get_Wz_mean( void ) const
+{
+  return _Wz_mean;
 }
 
 /*----------------------------

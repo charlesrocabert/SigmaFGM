@@ -425,15 +425,15 @@ void Individual::compute_mean_fitness( double alpha, double beta, double Q )
 {
   double mean_WX = 0.0;
   double mean_Wz = 0.0;
-  for (int i = 0; i < 10000; i++)
+  for (int i = 0; i < 1000; i++)
   {
     draw_z();
     compute_fitness(alpha, beta, Q);
     mean_WX += _WX;
     mean_Wz += _Wz;
   }
-  _WX = mean_WX/10000.0;
-  _Wz = mean_Wz/10000.0;
+  _WX = mean_WX/1000.0;
+  _Wz = mean_Wz/1000.0;
 }
 
 /*----------------------------

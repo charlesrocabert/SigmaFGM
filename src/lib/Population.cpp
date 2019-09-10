@@ -126,6 +126,7 @@ void Population::compute_next_generation( int next_generation )
   Individual**  new_pop   = new Individual*[_parameters->get_population_size()];
   unsigned int* draws     = new unsigned int[_parameters->get_population_size()];
   int           new_index = 0;
+  _w_sum                  = 0.0;
   _prng->multinomial(draws, _w, _parameters->get_population_size(), _parameters->get_population_size());
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
