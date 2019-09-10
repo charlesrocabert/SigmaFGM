@@ -55,9 +55,9 @@ public:
   /*----------------------------
    * GETTERS
    *----------------------------*/
-  inline double get_dX_mean( void ) const;
+  inline double get_dmu_mean( void ) const;
   inline double get_dz_mean( void ) const;
-  inline double get_WX_mean( void ) const;
+  inline double get_Wmu_mean( void ) const;
   inline double get_Wz_mean( void ) const;
   
   /*----------------------------
@@ -91,29 +91,29 @@ protected:
   
   /*----------------------------------------------- MEAN VALUES */
   
-  double _dX_mean;              /*!< Genetic distance                 */
+  double _dmu_mean;             /*!< Genetic distance                 */
   double _dz_mean;              /*!< Phenotypic distance              */
-  double _WX_mean;              /*!< Genetic fitness                  */
+  double _Wmu_mean;             /*!< Genetic fitness                  */
   double _Wz_mean;              /*!< Phenotypic fitness               */
   double _EV_mean;              /*!< Best eigen value                 */
   double _EV_contribution_mean; /*!< Best eigen value contribution    */
   double _EV_dot_product_mean;  /*!< Best dot product                 */
-  double _r_X_mean;             /*!< Euclidean size of X mutation     */
-  double _r_Ve_mean;            /*!< Euclidean size of Ve mutation    */
-  double _r_Theta_mean;         /*!< Euclidean size of Theta mutation */
+  double _r_mu_mean;            /*!< Euclidean size of mu mutation    */
+  double _r_sigma_mean;         /*!< Euclidean size of sigma mutation */
+  double _r_theta_mean;         /*!< Euclidean size of theta mutation */
   
   /*----------------------------------------------- STANDARD DEVIATION VALUES */
   
-  double _dX_sd;              /*!< Genetic distance                 */
+  double _dmu_sd;             /*!< Genetic distance                 */
   double _dz_sd;              /*!< Phenotypic distance              */
-  double _WX_sd;              /*!< Genetic fitness                  */
+  double _Wmu_sd;             /*!< Genetic fitness                  */
   double _Wz_sd;              /*!< Phenotypic fitness               */
   double _EV_sd;              /*!< Best eigen value                 */
   double _EV_contribution_sd; /*!< Best eigen value contribution    */
   double _EV_dot_product_sd;  /*!< Best dot product                 */
-  double _r_X_sd;             /*!< Euclidean size of X mutation     */
-  double _r_Ve_sd;            /*!< Euclidean size of Ve mutation    */
-  double _r_Theta_sd;         /*!< Euclidean size of Theta mutation */
+  double _r_mu_sd;            /*!< Euclidean size of mu mutation    */
+  double _r_sigma_sd;         /*!< Euclidean size of sigma mutation */
+  double _r_theta_sd;         /*!< Euclidean size of theta mutation */
   
   /*----------------------------------------------- STATISTIC FILES */
   
@@ -132,9 +132,9 @@ protected:
  * \param    void
  * \return   \e double
  */
-inline double Statistics::get_dX_mean( void ) const
+inline double Statistics::get_dmu_mean( void ) const
 {
-  return _dX_mean;
+  return _dmu_mean;
 }
 
 /**
@@ -154,9 +154,9 @@ inline double Statistics::get_dz_mean( void ) const
  * \param    void
  * \return   \e double
  */
-inline double Statistics::get_WX_mean( void ) const
+inline double Statistics::get_Wmu_mean( void ) const
 {
-  return _WX_mean;
+  return _Wmu_mean;
 }
 
 /**

@@ -83,20 +83,20 @@ public:
   /*----------------------------------------------- POPULATION */
   
   inline int    get_population_size( void ) const;
-  inline double get_initial_X( void ) const;
-  inline double get_initial_Ve( void ) const;
-  inline double get_initial_Theta( void ) const;
+  inline double get_initial_mu( void ) const;
+  inline double get_initial_sigma( void ) const;
+  inline double get_initial_theta( void ) const;
   inline bool   get_oneD_shift( void ) const;
   inline bool   get_mean_fitness( void ) const;
   
   /*----------------------------------------------- MUTATIONS */
   
-  inline double get_m_X( void ) const;
-  inline double get_m_Ve( void ) const;
-  inline double get_m_Theta( void ) const;
-  inline double get_s_X( void ) const;
-  inline double get_s_Ve( void ) const;
-  inline double get_s_Theta( void ) const;
+  inline double get_m_mu( void ) const;
+  inline double get_m_sigma( void ) const;
+  inline double get_m_theta( void ) const;
+  inline double get_s_mu( void ) const;
+  inline double get_s_sigma( void ) const;
+  inline double get_s_theta( void ) const;
   
   /*----------------------------------------------- NOISE PROPERTIES */
   
@@ -132,20 +132,20 @@ public:
   /*----------------------------------------------- POPULATION */
   
   inline void set_population_size( int population_size );
-  inline void set_initial_X( double initial_X );
-  inline void set_initial_Ve( double initial_Ve );
-  inline void set_initial_Theta( double initial_Theta );
+  inline void set_initial_mu( double initial_mu );
+  inline void set_initial_sigma( double initial_sigma );
+  inline void set_initial_theta( double initial_theta );
   inline void set_oneD_shift( bool oneD_shift );
   inline void set_mean_fitness( bool mean_fitness );
   
   /*----------------------------------------------- MUTATIONS */
   
-  inline void set_m_X( double m_X );
-  inline void set_m_Ve( double m_Ve );
-  inline void set_m_Theta( double m_Theta );
-  inline void set_s_X( double s_X );
-  inline void set_s_Ve( double s_Ve );
-  inline void set_s_Theta( double s_Theta );
+  inline void set_m_mu( double m_mu );
+  inline void set_m_sigma( double m_sigma );
+  inline void set_m_theta( double m_theta );
+  inline void set_s_mu( double s_mu );
+  inline void set_s_sigma( double s_sigma );
+  inline void set_s_theta( double s_theta );
   
   /*----------------------------------------------- NOISE PROPERTIES */
   
@@ -195,20 +195,20 @@ protected:
   /*----------------------------------------------- POPULATION */
   
   int    _population_size; /*!< Number of particles                        */
-  double _initial_X;       /*!< Initial X value                            */
-  double _initial_Ve;      /*!< Initial Ve value                           */
-  double _initial_Theta;   /*!< Initial Theta value                        */
+  double _initial_mu;      /*!< Initial mu value                           */
+  double _initial_sigma;   /*!< Initial sigma value                        */
+  double _initial_theta;   /*!< Initial theta value                        */
   bool   _oneD_shift;      /*!< The population is shifted in one dimension */
   bool   _mean_fitness;    /*!< The mean fitness is computed               */
   
   /*----------------------------------------------- MUTATIONS */
   
-  double _m_X;     /*!< X mutation rate     */
-  double _m_Ve;    /*!< Ve mutation rate    */
-  double _m_Theta; /*!< Theta mutation rate */
-  double _s_X;     /*!< X mutation size     */
-  double _s_Ve;    /*!< Ve mutation size    */
-  double _s_Theta; /*!< Theta mutation size */
+  double _m_mu;    /*!< mu mutation rate    */
+  double _m_sigma; /*!< sigma mutation rate */
+  double _m_theta; /*!< theta mutation rate */
+  double _s_mu;    /*!< mu mutation size    */
+  double _s_sigma; /*!< sigma mutation size */
+  double _s_theta; /*!< theta mutation size */
   
   /*----------------------------------------------- NOISE PROPERTIES */
   
@@ -354,36 +354,36 @@ inline int Parameters::get_population_size( void ) const
 }
 
 /**
- * \brief    Get the initial X value
+ * \brief    Get the initial mu value
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_initial_X( void ) const
+inline double Parameters::get_initial_mu( void ) const
 {
-  return _initial_X;
+  return _initial_mu;
 }
 
 /**
- * \brief    Get the initial Ve value
+ * \brief    Get the initial sigma value
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_initial_Ve( void ) const
+inline double Parameters::get_initial_sigma( void ) const
 {
-  return _initial_Ve;
+  return _initial_sigma;
 }
 
 /**
- * \brief    Get the initial Theta value
+ * \brief    Get the initial theta value
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_initial_Theta( void ) const
+inline double Parameters::get_initial_theta( void ) const
 {
-  return _initial_Theta;
+  return _initial_theta;
 }
 
 /**
@@ -411,69 +411,69 @@ inline bool Parameters::get_mean_fitness( void ) const
 /*----------------------------------------------- MUTATIONS */
 
 /**
- * \brief    Get X mutation rate
+ * \brief    Get mu mutation rate
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_m_X( void ) const
+inline double Parameters::get_m_mu( void ) const
 {
-  return _m_X;
+  return _m_mu;
 }
 
 /**
- * \brief    Get Ve mutation rate
+ * \brief    Get sigma mutation rate
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_m_Ve( void ) const
+inline double Parameters::get_m_sigma( void ) const
 {
-  return _m_Ve;
+  return _m_sigma;
 }
 
 /**
- * \brief    Get Theta mutation rate
+ * \brief    Get theta mutation rate
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_m_Theta( void ) const
+inline double Parameters::get_m_theta( void ) const
 {
-  return _m_Theta;
+  return _m_theta;
 }
 
 /**
- * \brief    Get X mutation size
+ * \brief    Get mu mutation size
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_s_X( void ) const
+inline double Parameters::get_s_mu( void ) const
 {
-  return _s_X;
+  return _s_mu;
 }
 
 /**
- * \brief    Get Ve mutation size
+ * \brief    Get sigma mutation size
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_s_Ve( void ) const
+inline double Parameters::get_s_sigma( void ) const
 {
-  return _s_Ve;
+  return _s_sigma;
 }
 
 /**
- * \brief    Get Theta mutation size
+ * \brief    Get theta mutation size
  * \details  --
  * \param    void
  * \return   \e double
  */
-inline double Parameters::get_s_Theta( void ) const
+inline double Parameters::get_s_theta( void ) const
 {
-  return _s_Theta;
+  return _s_theta;
 }
 
 /*----------------------------------------------- NOISE PROPERTIES */
@@ -637,37 +637,37 @@ inline void Parameters::set_population_size( int population_size )
 }
 
 /**
- * \brief    Set the initial X value
+ * \brief    Set the initial mu value
  * \details  --
- * \param    double initial_X
+ * \param    double initial_mu
  * \return   \e void
  */
-inline void Parameters::set_initial_X( double initial_X )
+inline void Parameters::set_initial_mu( double initial_mu )
 {
-  _initial_X = initial_X;
+  _initial_mu = initial_mu;
 }
 
 /**
- * \brief    Set the initial Ve value
+ * \brief    Set the initial sigma value
  * \details  --
- * \param    double initial_Ve
+ * \param    double initial_sigma
  * \return   \e void
  */
-inline void Parameters::set_initial_Ve( double initial_Ve )
+inline void Parameters::set_initial_sigma( double initial_sigma )
 {
-  assert(initial_Ve >= 0.0);
-  _initial_Ve = initial_Ve;
+  assert(initial_sigma >= 0.0);
+  _initial_sigma = initial_sigma;
 }
 
 /**
- * \brief    Set the initial Theta value
+ * \brief    Set the initial theta value
  * \details  --
- * \param    double initial_Theta
+ * \param    double initial_theta
  * \return   \e void
  */
-inline void Parameters::set_initial_Theta( double initial_Theta )
+inline void Parameters::set_initial_theta( double initial_theta )
 {
-  _initial_Theta = initial_Theta;
+  _initial_theta = initial_theta;
 }
 
 /**
@@ -695,78 +695,78 @@ inline void Parameters::set_mean_fitness( bool mean_fitness )
 /*----------------------------------------------- MUTATIONS */
 
 /**
- * \brief    Set the X mutation rate
+ * \brief    Set the mu mutation rate
  * \details  --
- * \param    double m_X
+ * \param    double m_mu
  * \return   \e void
  */
-inline void Parameters::set_m_X( double m_X )
+inline void Parameters::set_m_mu( double m_mu )
 {
-  assert(m_X >= 0.0);
-  assert(m_X <= 1.0);
-  _m_X = m_X;
+  assert(m_mu >= 0.0);
+  assert(m_mu <= 1.0);
+  _m_mu = m_mu;
 }
 
 /**
- * \brief    Set the Ve mutation rate
+ * \brief    Set the sigma mutation rate
  * \details  --
- * \param    double m_Ve
+ * \param    double m_sigma
  * \return   \e void
  */
-inline void Parameters::set_m_Ve( double m_Ve )
+inline void Parameters::set_m_sigma( double m_sigma )
 {
-  assert(m_Ve >= 0.0);
-  assert(m_Ve <= 1.0);
-  _m_Ve = m_Ve;
+  assert(m_sigma >= 0.0);
+  assert(m_sigma <= 1.0);
+  _m_sigma = m_sigma;
 }
 
 /**
- * \brief    Set the Theta mutation rate
+ * \brief    Set the theta mutation rate
  * \details  --
- * \param    double m_Theta
+ * \param    double m_theta
  * \return   \e void
  */
-inline void Parameters::set_m_Theta( double m_Theta )
+inline void Parameters::set_m_theta( double m_theta )
 {
-  assert(m_Theta >= 0.0);
-  assert(m_Theta <= 1.0);
-  _m_Theta = m_Theta;
+  assert(m_theta >= 0.0);
+  assert(m_theta <= 1.0);
+  _m_theta = m_theta;
 }
 
 /**
- * \brief    Set the X mutation size
+ * \brief    Set the mu mutation size
  * \details  --
- * \param    double s_X
+ * \param    double s_mu
  * \return   \e void
  */
-inline void Parameters::set_s_X( double s_X )
+inline void Parameters::set_s_mu( double s_mu )
 {
-  assert(s_X >= 0.0);
-  _s_X = s_X;
+  assert(s_mu >= 0.0);
+  _s_mu = s_mu;
 }
 
 /**
- * \brief    Set the Ve mutation size
+ * \brief    Set the sigma mutation size
  * \details  --
- * \param    double s_Ve
+ * \param    double s_sigma
  * \return   \e void
  */
-inline void Parameters::set_s_Ve( double s_Ve )
+inline void Parameters::set_s_sigma( double s_sigma )
 {
-  assert(s_Ve >= 0.0);
-  _s_Ve = s_Ve;
+  assert(s_sigma >= 0.0);
+  _s_sigma = s_sigma;
 }
 
 /**
- * \brief    Set the Theta mutation size
+ * \brief    Set the theta mutation size
  * \details  --
- * \param    double s_Theta
+ * \param    double s_theta
  * \return   \e void
  */
-inline void Parameters::set_s_Theta( double s_Theta )
+inline void Parameters::set_s_theta( double s_theta )
 {
-  assert(s_Theta >= 0.0);
-  _s_Theta = s_Theta;
+  assert(s_theta >= 0.0);
+  _s_theta = s_theta;
 }
 
 /*----------------------------------------------- NOISE PROPERTIES */

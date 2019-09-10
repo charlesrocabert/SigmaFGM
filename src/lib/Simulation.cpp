@@ -147,7 +147,7 @@ void Simulation::run_with_shutoff( double shutoff_distance, int shutoff_generati
     _statistics->compute_statistics(_population);
     _statistics->write_statistics(g);
     _statistics->flush();
-    if (fabs(_statistics->get_dX_mean()) <= fabs(shutoff_distance))
+    if (fabs(_statistics->get_dmu_mean()) <= fabs(shutoff_distance))
     {
       shutoff = true;
     }

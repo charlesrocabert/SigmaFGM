@@ -61,7 +61,7 @@ Population::Population( Parameters* parameters, Environment* environment, Tree* 
   _w_sum = 0.0;
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
-    _pop[i] = new Individual(_prng, _parameters->get_number_of_dimensions(), _parameters->get_initial_X(), _parameters->get_initial_Ve(), _parameters->get_initial_Theta(), _parameters->get_oneD_shift(), _parameters->get_noise_type(), _environment->get_z_opt());
+    _pop[i] = new Individual(_prng, _parameters->get_number_of_dimensions(), _parameters->get_initial_mu(), _parameters->get_initial_sigma(), _parameters->get_initial_theta(), _parameters->get_oneD_shift(), _parameters->get_noise_type(), _environment->get_z_opt());
     _pop[i]->set_identifier(_current_identifier++);
     _pop[i]->set_generation(0);
     _pop[i]->build_phenotype();
@@ -133,7 +133,7 @@ void Population::compute_next_generation( int next_generation )
     for (unsigned int j = 0; j < draws[i]; j++)
     {
       new_pop[new_index] = new Individual(*_pop[i]);
-      new_pop[new_index]->mutate(_parameters->get_m_X(), _parameters->get_m_Ve(), _parameters->get_m_Theta(), _parameters->get_s_X(), _parameters->get_s_Ve(), _parameters->get_s_Theta());
+      new_pop[new_index]->mutate(_parameters->get_m_mu(), _parameters->get_m_sigma(), _parameters->get_m_theta(), _parameters->get_s_mu(), _parameters->get_s_sigma(), _parameters->get_s_theta());
       new_pop[new_index]->set_identifier(_current_identifier++);
       new_pop[new_index]->set_generation(next_generation);
       new_pop[new_index]->build_phenotype();

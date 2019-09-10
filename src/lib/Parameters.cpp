@@ -66,20 +66,20 @@ Parameters::Parameters( void )
   /*----------------------------------------------- POPULATION */
   
   _population_size = 0.0;
-  _initial_X       = 0.0;
-  _initial_Ve      = 0.0;
-  _initial_Theta   = 0.0;
+  _initial_mu      = 0.0;
+  _initial_sigma   = 0.0;
+  _initial_theta   = 0.0;
   _oneD_shift      = false;
   _mean_fitness    = false;
   
   /*----------------------------------------------- MUTATIONS */
   
-  _m_X     = 0.0;
-  _m_Ve    = 0.0;
-  _m_Theta = 0.0;
-  _s_X     = 0.0;
-  _s_Ve    = 0.0;
-  _s_Theta = 0.0;
+  _m_mu    = 0.0;
+  _m_sigma = 0.0;
+  _m_theta = 0.0;
+  _s_mu    = 0.0;
+  _s_sigma = 0.0;
+  _s_theta = 0.0;
   
   /*----------------------------------------------- NOISE PROPERTIES */
   
@@ -125,17 +125,17 @@ void Parameters::print_parameters( void )
   std::cout << "beta                    " << _beta << "\n";
   std::cout << "Q                       " << _Q << "\n";
   std::cout << "population size         " << _population_size << "\n";
-  std::cout << "initial X               " << _initial_X << "\n";
-  std::cout << "initial Ve              " << _initial_Ve << "\n";
-  std::cout << "initial Theta           " << _initial_Theta << "\n";
+  std::cout << "initial mu              " << _initial_mu << "\n";
+  std::cout << "initial sigma           " << _initial_sigma << "\n";
+  std::cout << "initial theta           " << _initial_theta << "\n";
   std::cout << "1d shift                " << _oneD_shift << "\n";
   std::cout << "mean fitness            " << _mean_fitness << "\n";
-  std::cout << "X mut rate              " << _m_X << "\n";
-  std::cout << "Ve mut rate             " << _m_Ve << "\n";
-  std::cout << "Theta mut rate          " << _m_Theta << "\n";
-  std::cout << "X mut size              " << _s_X << "\n";
-  std::cout << "Ve mut size             " << _s_Ve << "\n";
-  std::cout << "Theta mut size          " << _s_Theta << "\n";
+  std::cout << "mu mut rate             " << _m_mu << "\n";
+  std::cout << "sigma mut rate          " << _m_sigma << "\n";
+  std::cout << "theta mut rate          " << _m_theta << "\n";
+  std::cout << "mu mut size             " << _s_mu << "\n";
+  std::cout << "sigma mut size          " << _s_sigma << "\n";
+  std::cout << "theta mut size          " << _s_theta << "\n";
   if (_noise_type == NONE) std::cout << "noise type              NONE\n";
   else if (_noise_type == ISOTROPIC) std::cout << "noise type              ISOTROPIC\n";
   else if (_noise_type == UNCORRELATED) std::cout << "noise type              UNCORRELATED\n";

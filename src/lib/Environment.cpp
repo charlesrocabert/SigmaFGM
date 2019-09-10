@@ -87,11 +87,11 @@ void Environment::stabilizing_environment( void )
   if (_parameters->get_oneD_shift())
   {
     gsl_vector_set_zero(_z_opt);
-    gsl_vector_set(_z_opt, 0, _parameters->get_initial_X());
+    gsl_vector_set(_z_opt, 0, _parameters->get_initial_mu());
   }
   else
   {
-    gsl_vector_set_all(_z_opt, _parameters->get_initial_X());
+    gsl_vector_set_all(_z_opt, _parameters->get_initial_mu());
   }
 }
 

@@ -236,30 +236,30 @@ void Tree::write_best_lineage_statistics( void )
   std::ofstream file("best_lineage.txt", std::ios::out | std::ios::trunc);
   file << "id" << " ";
   file << "t" << " ";
-  file << "dX" << " ";
+  file << "dmu" << " ";
   file << "dz" << " ";
-  file << "WX" << " ";
+  file << "Wmu" << " ";
   file << "Wz" << " ";
   file << "EV" << " ";
   file << "EV_contrib" << " ";
   file << "EV_dot_product" << " ";
-  file << "r_X" << " ";
-  file << "r_Ve" << " ";
-  file << "r_Theta" << "\n";
+  file << "r_mu" << " ";
+  file << "r_sigma" << " ";
+  file << "r_theta" << "\n";
   while (!node->isMasterRoot())
   {
     file << node->get_identifier() << " ";
     file << node->get_generation() << " ";
-    file << node->get_individual()->get_dX() << " ";
+    file << node->get_individual()->get_dmu() << " ";
     file << node->get_individual()->get_dz() << " ";
-    file << node->get_individual()->get_WX() << " ";
+    file << node->get_individual()->get_Wmu() << " ";
     file << node->get_individual()->get_Wz() << " ";
     file << node->get_individual()->get_max_Sigma_eigenvalue() << " ";
     file << node->get_individual()->get_max_Sigma_contribution() << " ";
     file << node->get_individual()->get_max_dot_product() << " ";
-    file << node->get_individual()->get_r_X() << " ";
-    file << node->get_individual()->get_r_Ve() << " ";
-    file << node->get_individual()->get_r_Theta() << "\n";
+    file << node->get_individual()->get_r_mu() << " ";
+    file << node->get_individual()->get_r_sigma() << " ";
+    file << node->get_individual()->get_r_theta() << "\n";
     node = node->get_parent();
   }
   file.close();
