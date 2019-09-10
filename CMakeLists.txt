@@ -40,7 +40,7 @@ set(PACKAGE "\"SigmaFGM\"")
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 3)
-set(VERSION_PATCH 0)
+set(VERSION_PATCH 3)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -125,4 +125,3 @@ configure_file(
   "${PROJECT_BINARY_DIR}/Config.h"
 )
 include_directories("${PROJECT_BINARY_DIR}")
-
