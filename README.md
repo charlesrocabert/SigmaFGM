@@ -4,11 +4,7 @@
 <br/>
 <em>Numerical solver for Fisher's geometric model (FGM, Fisher 1930), with evolvable phenotypic noise</em>
 <br/><br/>
-<<<<<<< HEAD
 <a href="https://github.com/charlesrocabert/SigmaFGM/releases/latest"><img src="https://img.shields.io/badge/version- 0.3.4-green.svg" /></a>&nbsp;</a>&nbsp;<a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/license-GPL v3-blue.svg" /></a>&nbsp;
-=======
-<a href="https://github.com/charlesrocabert/SigmaFGM/releases/latest"><img src="https://img.shields.io/badge/version- 0.3.3-orange.svg" /></a>&nbsp;</a>&nbsp;<a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/license-GPL v3-blue.svg" /></a>&nbsp;
->>>>>>> d024b0fbd32065ceb78260e6572ace3fa64dcb2b
 </p>
 
 <p align="justify">
