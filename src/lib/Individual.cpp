@@ -443,6 +443,90 @@ void Individual::compute_mean_fitness( double alpha, double beta, double Q )
   _Wz  = mean_Wz/1000.0;
 }
 
+/**
+ * \brief    Delete all vectors and matrices
+ * \details  --
+ * \param    void
+ * \return   \e void
+ */
+void Individual::delete_vectors_and_matrices( void )
+{
+  gsl_vector_free(_mu);
+  _mu = NULL;
+  if (_noise_type != NONE)
+  {
+    gsl_vector_free(_sigma);
+    _sigma = NULL;
+    gsl_matrix_free(_Sigma);
+    _Sigma = NULL;
+    gsl_matrix_free(_Cholesky);
+    _Cholesky = NULL;
+    gsl_vector_free(_max_Sigma_eigenvector);
+    _max_Sigma_eigenvector = NULL;
+    if (_n > 1 && _noise_type == FULL)
+    {
+      gsl_vector_free(_theta);
+      _theta = NULL;
+    }
+  }
+  gsl_vector_free(_z);
+  _z = NULL;
+}
+
+/**
+ * \brief    Write mu vector
+ * \details  --
+ * \param    int generation
+ * \return   \e void
+ */
+void Individual::write_mu( int generation )
+{
+  std::stringstream filename;
+  filename << "output/mu_" << generation << ".txt";
+  std::ofstream file(filename.str(), std::ios::out | std::ios::trunc);
+  for (int i = 0; i < _n; i++)
+  {
+    file << gsl_vector_get(_mu, i) << "\n";
+  }
+  file.close();
+}
+
+/**
+ * \brief    Write sigma vector
+ * \details  --
+ * \param    int generation
+ * \return   \e void
+ */
+void Individual::write_sigma( int generation )
+{
+  std::stringstream filename;
+  filename << "output/sigma_" << generation << ".txt";
+  std::ofstream file(filename.str(), std::ios::out | std::ios::trunc);
+  for (int i = 0; i < _n; i++)
+  {
+    file << gsl_vector_get(_sigma, i) << "\n";
+  }
+  file.close();
+}
+
+/**
+ * \brief    Write theta vector
+ * \details  --
+ * \param    int generation
+ * \return   \e void
+ */
+void Individual::write_theta( int generation )
+{
+  std::stringstream filename;
+  filename << "output/theta_" << generation << ".txt";
+  std::ofstream file(filename.str(), std::ios::out | std::ios::trunc);
+  for (int i = 0; i < _n*(_n-1)/2; i++)
+  {
+    file << gsl_vector_get(_theta, i) << "\n";
+  }
+  file.close();
+}
+
 /*----------------------------
  * PROTECTED METHODS
  *----------------------------*/
@@ -627,35 +711,5 @@ void Individual::clear_memory( void )
   _Sigma = NULL;
   gsl_vector_free(_max_Sigma_eigenvector);
   _max_Sigma_eigenvector = NULL;
-}
-
-/**
- * \brief    Delete all vectors and matrices
- * \details  --
- * \param    void
- * \return   \e void
- */
-void Individual::delete_vectors_and_matrices( void )
-{
-  gsl_vector_free(_mu);
-  _mu = NULL;
-  if (_noise_type != NONE)
-  {
-    gsl_vector_free(_sigma);
-    _sigma = NULL;
-    gsl_matrix_free(_Sigma);
-    _Sigma = NULL;
-    gsl_matrix_free(_Cholesky);
-    _Cholesky = NULL;
-    gsl_vector_free(_max_Sigma_eigenvector);
-    _max_Sigma_eigenvector = NULL;
-    if (_n > 1 && _noise_type == FULL)
-    {
-      gsl_vector_free(_theta);
-      _theta = NULL;
-    }
-  }
-  gsl_vector_free(_z);
-  _z = NULL;
 }
 

@@ -56,9 +56,11 @@ Population::Population( Parameters* parameters, Environment* environment, Tree* 
   
   /*----------------------------------------------- POPULATION */
   
-  _pop   = new Individual*[_parameters->get_population_size()];
-  _w     = new double[_parameters->get_population_size()];
-  _w_sum = 0.0;
+  _pop          = new Individual*[_parameters->get_population_size()];
+  _w            = new double[_parameters->get_population_size()];
+  _w_sum        = 0.0;
+  int    best   = 0;
+  double best_w = 0.0;
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
     _pop[i] = new Individual(_prng, _parameters->get_number_of_dimensions(), _parameters->get_initial_mu(), _parameters->get_initial_sigma(), _parameters->get_initial_theta(), _parameters->get_oneD_shift(), _parameters->get_noise_type(), _environment->get_z_opt());
@@ -76,12 +78,20 @@ Population::Population( Parameters* parameters, Environment* environment, Tree* 
     //_tree->add_root(_pop[i]);
     _w[i]   = _pop[i]->get_Wz();
     _w_sum += _w[i];
+    if (best_w < _w[i])
+    {
+      best_w = _w[i];
+      best   = i;
+    }
   }
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
     _w[i] /= _w_sum;
   }
   //_tree->prune();
+  //_pop[best]->write_mu(0);
+  //_pop[best]->write_sigma(0);
+  //_pop[best]->write_theta(0);
 }
 
 /*----------------------------
@@ -127,6 +137,8 @@ void Population::compute_next_generation( int next_generation )
   unsigned int* draws     = new unsigned int[_parameters->get_population_size()];
   int           new_index = 0;
   _w_sum                  = 0.0;
+  int    best             = 0;
+  double best_w           = 0.0;
   _prng->multinomial(draws, _w, _parameters->get_population_size(), _parameters->get_population_size());
   for (int i = 0; i < _parameters->get_population_size(); i++)
   {
@@ -148,6 +160,11 @@ void Population::compute_next_generation( int next_generation )
       //_tree->add_reproduction_event(_pop[i], new_pop[new_index]);
       _w[new_index]  = _pop[i]->get_Wz();
       _w_sum        += _w[new_index];
+      if (best_w < _w[new_index])
+      {
+        best_w = _w[new_index];
+        best   = new_index;
+      }
       new_index++;
     }
     delete _pop[i];
@@ -162,6 +179,9 @@ void Population::compute_next_generation( int next_generation )
     _w[i] /= _w_sum;
   }
   //_tree->prune();
+  //_pop[best]->write_mu(next_generation);
+  //_pop[best]->write_sigma(next_generation);
+  //_pop[best]->write_theta(next_generation);
 }
 
 /*----------------------------

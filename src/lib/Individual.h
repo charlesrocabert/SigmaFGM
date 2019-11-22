@@ -30,6 +30,8 @@
 #define __SigmaFGM__Individual__
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cmath>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
@@ -105,6 +107,9 @@ public:
   void compute_fitness( double alpha, double beta, double Q );
   void compute_mean_fitness( double alpha, double beta, double Q );
   void delete_vectors_and_matrices( void );
+  void write_mu( int generation );
+  void write_sigma( int generation );
+  void write_theta( int generation );
   
   /*----------------------------
    * PUBLIC ATTRIBUTES
