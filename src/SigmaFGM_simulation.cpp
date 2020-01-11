@@ -3,13 +3,13 @@
  * \file      SigmaFGM_simulation.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2020 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Run a simulation
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2019
+ * Copyright (C) 2016-2020
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -466,7 +466,7 @@ void printUsage( void )
   std::cout << " " << PACKAGE << " " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << " ( release )\n";
 #endif
   std::cout << "                                                                     \n";
-  std::cout << " Copyright (C) 2016-2019                                             \n";
+  std::cout << " Copyright (C) 2016-2020                                             \n";
   std::cout << " Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon   \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";
@@ -545,7 +545,7 @@ void printHeader( void )
   std::cout << " " << PACKAGE << " " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << " ( release )\n";
 #endif
   std::cout << "                                                                     \n";
-  std::cout << " Copyright (C) 2016-2019                                             \n";
+  std::cout << " Copyright (C) 2016-2020                                             \n";
   std::cout << " Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon   \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";

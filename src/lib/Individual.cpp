@@ -3,13 +3,13 @@
  * \file      Individual.cpp
  * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  * \date      28-03-2018
- * \copyright Copyright (C) 2016-2019 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2020 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Individual class definition
  */
 
 /***********************************************************************
- * Copyright (C) 2016-2019
+ * Copyright (C) 2016-2020
  * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
  *
  * This program is free software: you can redistribute it and/or modify
@@ -669,7 +669,7 @@ void Individual::Cholesky_decomposition( void )
   _Cholesky = gsl_matrix_alloc(_n, _n);
   gsl_matrix_memcpy(_Cholesky, _Sigma);
   gsl_linalg_cholesky_decomp(_Cholesky);
-  /* L est dans le triangle inférieur */
+  /* L is in the lower triangle */
 }
 
 /**

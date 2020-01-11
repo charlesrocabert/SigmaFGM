@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #***********************************************************************
-# Copyright (C) 2016-2019
+# Copyright (C) 2016-2020
 # Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
 #
 # This program is free software: you can redistribute it and/or modify
