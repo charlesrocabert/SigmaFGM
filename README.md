@@ -2,14 +2,10 @@
 <p align="center">
 <img src="logo/logo.png" width="100">
 <br/>
-<em>Numerical solver for Fisher's geometric model (FGM, Fisher 1930), with evolvable phenotypic noise</em>
+<em>Individual-based implementation of Fisher's geometric model with evolvable phenotypic noise</em>
 <br/><br/>
 <a href="https://github.com/charlesrocabert/SigmaFGM/releases/latest"><img src="https://img.shields.io/github/release/charlesrocabert/SigmaFGM/all.svg" /></a>&nbsp;
 <a href="https://github.com/charlesrocabert/SigmaFGM/LICENSE.html"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
-</p>
-
-<p align="justify">
-&sigma;FGM extends Fisher's geometric model with an evolvable phenotypic noise and an extended form of the fitness function. 
 </p>
 
 ## License
@@ -60,5 +56,3 @@ This mode should only be used for test or development phases.
 #### Executable files emplacement
 Binary executable files are in <code>build/bin</code> folder.
 
-## References
-* Fisher, R. A. (1930). <em>The genetical theory of natural selection: a complete variorum edition</em>. Oxford University Press, Oxford (UK).
