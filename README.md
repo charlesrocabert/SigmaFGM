@@ -22,7 +22,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 ## Publications
 
-• Phenotypic Noise and the Cost of Complexity (2020). _Evolution_, in press. https://doi.org/10.1111/evo.14083
+• Rocabert C., Beslon G., Knibbe C. and Bernard S. (2020). Phenotypic Noise and the Cost of Complexity, _Evolution_, in press. https://doi.org/10.1111/evo.14083
 
 ## Installation instructions
 
