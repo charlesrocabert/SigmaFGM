@@ -44,7 +44,9 @@ jobs:
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: |
-        ls ../SigmaFGM
+        mkdir ../cmake
+        cp config.h ../cmake/.
+        ls ../
         cmake --build . --config $BUILD_TYPE
 
     - name: Test
