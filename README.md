@@ -1,6 +1,6 @@
 <h1 align="center">&sigma;FGM</h1>
 <p align="center">
-<img src="logo/logo.png" width="100">
+<img src="logo/logo.png" width="150">
 <br/>
 <em>Individual-based implementation of Fisher's geometric model with evolvable phenotypic noise</em>
 <br/><br/>
