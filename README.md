@@ -18,7 +18,11 @@ You should have received a copy of the GNU General Public License along with thi
 
 ## Authors
 
-&sigma;FGM is being developed by Charles Rocabert, Samuel Bernard, Carole Knibbe and Guillaume Beslon.
+&sigma;FGM is being developed by Charles Rocabert, Guillaume Beslon, Carole Knibbe and Samuel Bernard.
+
+## Publications
+
+• Phenotypic Noise and the Cost of Complexity (2020). _Evolution_, in press. https://doi.org/10.1111/evo.14083
 
 ## Installation instructions
 
