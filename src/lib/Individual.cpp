@@ -1,16 +1,16 @@
 
 /**
  * \file      Individual.cpp
- * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
+ * \authors   Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard
  * \date      28-03-2018
- * \copyright Copyright (C) 2016-2020 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2020 Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Individual class definition
  */
 
 /***********************************************************************
  * Copyright (C) 2016-2020
- * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
+ * Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

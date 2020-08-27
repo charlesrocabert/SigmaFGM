@@ -1,16 +1,16 @@
 
 /**
  * \file      SigmaFGM_simulation.cpp
- * \authors   Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
+ * \authors   Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard
  * \date      07-06-2016
- * \copyright Copyright (C) 2016-2020 Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon. All rights reserved
+ * \copyright Copyright (C) 2016-2020 Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard. All rights reserved
  * \license   This project is released under the GNU General Public License
  * \brief     Run a simulation
  */
 
 /***********************************************************************
  * Copyright (C) 2016-2020
- * Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
+ * Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -467,7 +467,7 @@ void printUsage( void )
 #endif
   std::cout << "                                                                     \n";
   std::cout << " Copyright (C) 2016-2020                                             \n";
-  std::cout << " Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon   \n";
+  std::cout << " Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard   \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";
   std::cout << " This is free software, and you are welcome to redistribute it under \n";
@@ -546,7 +546,7 @@ void printHeader( void )
 #endif
   std::cout << "                                                                     \n";
   std::cout << " Copyright (C) 2016-2020                                             \n";
-  std::cout << " Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon   \n";
+  std::cout << " Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard   \n";
   std::cout << "                                                                     \n";
   std::cout << " This program comes with ABSOLUTELY NO WARRANTY.                     \n";
   std::cout << " This is free software, and you are welcome to redistribute it under \n";

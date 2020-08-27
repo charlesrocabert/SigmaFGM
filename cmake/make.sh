@@ -2,7 +2,7 @@
 
 #***********************************************************************
 # Copyright (C) 2016-2020
-# Charles Rocabert, Samuel Bernard, Carole Knibbe, Guillaume Beslon
+# Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
