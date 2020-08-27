@@ -46,7 +46,7 @@ jobs:
       run: |
         ls .
         mkdir ../cmake
-        cp config.h ../cmake/.
+        cp Config.h ../cmake/.
         ls ../
         cmake --build . --config $BUILD_TYPE
 
