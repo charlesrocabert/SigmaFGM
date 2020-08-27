@@ -1,9 +1,9 @@
 name: CMake
 
-#on:
-#  release:
-#    types: [created]
-on: push
+on:
+  release:
+    types: [created]
+#on: push
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -43,11 +43,10 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
+      # The configuration file must be moved to work with Github CMake
       run: |
-        ls .
         mkdir ../cmake
         cp Config.h ../cmake/.
-        ls ../
         cmake --build . --config $BUILD_TYPE
 
     - name: Test
