@@ -70,64 +70,64 @@ This mode should only be used for test or development phases.
 Binary executable files are in <code>build/bin</code> folder.
 
 ## First usage <a name="first_usage"></a>
-Open a terminal and use the <code>cd</code> command to navigate to this directory. Then follow the steps below for a first usage.
+Open a terminal and use the <code>cd</code> command to navigate to the <code>example</code> directory. Then follow the steps below for a first usage.
 
-To run a simulation, use the following command line:
+As a first step, one can execute the Python file available in the <code>example</code> directory:
+
+    Python3 run_SigmaFGM_simulation.py
+
+The parameters of the simulation can be edited in this file (see below for a description of the parameters).
+
+To directly run a simulation from the main executable, use the following command line:
 
     ../build/bin/SigmaFGM_simulation <parameters>
 
-The command line parameters are described below:
+The command line parameters are described below (see <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. (2020)</a> for details on mathematical terms). Other non-essential parameters are also available, and are described by typing in a terminal:
 
-    -h, --help
-        print this help, then exit
-    -v, --version
-        print the current version, then exit
-    -seed, --seed
-        specify the prng seed (mandatory, random if 0)
-    -stabg, --stabilizing-generations
-        specify the number of stabilizing generations
-    -g, --generations
-        specify the number of generations (mandatory)
-    -shutoffd, --shutoff-distance
-        specify the shutoff distance
-    -shutoffg, --shutoff-generation
-        specify the shutoff generation
-    -nbdim, --nb-dimensions
-        specify the number of dimensions (mandatory)
-    -alpha, --alpha
-        specify the alpha parameter of the fitness function (0.0 < mandatory)
-    -beta, --beta
-        specify the beta parameter of the fitness function (0.0 <= mandatory <= 1.0)
-    -Q, --Q
-        specify the Q parameter of the fitness function (0.0 <= mandatory)
-    -popsize, --population-size
-        specify the population size (mandatory)
-    -initmu, --initial-mu
-        specify the initial mu value (mandatory)
-    -initsigma, --initial-sigma
-        specify initial sigma value (mandatory)
-    -inittheta, --initial-theta
-        specify initial theta value (mandatory)
-    -oneDshift, --oneD-shift
-        Indicates if the initial population is shifted in a single dimension
-    -meanfitness, --mean-fitness
-        Indicates if the mean fitness should be computed (by sampling the phenotypes)
-    -mmu, --m-mu
-        specify mu mutation rate (mandatory)
-    -msigma, --m-sigma
-        specify sigma mutation rate (mandatory)
-    -mtheta, --m-theta
-        specify theta mutation rate (mandatory)
-    -smu, --s-mu
-        specify mu mutation size (mandatory)
-    -ssigma, --s-sigma
-        specify sigma mutation size (mandatory)
-    -stheta, --stheta
-        specify theta mutation size (mandatory)
-    -noise, --noise-type
-        Specify the type of noise (mandatory, NONE/ISOTROPIC/UNCORRELATED/FULL)
+    ../build/bin/SigmaFGM_simulation -h
 
-The software will outputs two statistics files during the course of the simulation, containing the mean and the standard deviation of many metrics allowing to track the state of the evolving population (see <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. (2020)</a> for a full description):
+#### <code>-h</code>, <code>--help</code>
+Print this help, then exit
+#### <code>-v</code>, <code>--version</code>
+Print the current version, then exit
+#### <code>-seed</code>, <code>--seed</code>
+Specify the PRNG seed (**mandatory**, random if 0)
+#### <code>-g</code>, <code>--generations</code>
+Specify the number of generations (**mandatory**)
+#### <code>-nbdim</code>, <code>--nb-dimensions</code>
+Specify the number of dimensions _n_ (**mandatory**)
+#### <code>-alpha</code>, <code>--alpha</code>
+Specify the &alpha; parameter of the fitness function (**mandatory**)
+#### <code>-beta</code>, <code>--beta</code>
+Specify the &beta; parameter of the fitness function (**mandatory**)
+#### <code>-Q</code>, <code>--Q</code>
+Specify the _Q_ parameter of the fitness function (**mandatory**)
+#### <code>-popsize</code>, <code>--population-size</code>
+Specify the population size _N_ (**mandatory**)
+#### <code>-initmu</code>, <code>--initial-mu</code>
+Specify the initial distance of the mean phenotype **&mu;** from the fitness optimum (**mandatory**)
+#### <code>-initsigma</code>, <code>--initial-sigma</code>
+Specify the initial phenotypic noise amplitude (**mandatory**)
+#### <code>-inittheta</code>, <code>--initial-theta</code>
+Specify the initial phenotypic noise orientation (**mandatory**, usually 0)
+#### <code>-mmu</code>, <code>--m-mu</code>
+Specify **&mu;** mutation rate (**mandatory**)
+#### <code>-msigma</code>, <code>--m-sigma</code>
+Specify **&sigma;** mutation rate (**mandatory**)
+#### <code>-mtheta</code>, <code>--m-theta</code>
+Specify **&theta;** mutation rate (**mandatory**)
+#### <code>-smu</code>, <code>--s-mu</code>
+Specify **&mu;** mutation size (**mandatory**)
+#### <code>-ssigma</code>, <code>--s-sigma</code>
+Specify **&sigma;** mutation size (**mandatory**)
+#### <code>-stheta</code>, <code>--stheta</code>
+Specify **&theta;** mutation size (**mandatory**)
+#### <code>-noise</code>, <code>--noise-type</code>
+Specify the type of phenotypic noise (**mandatory**, NONE/ISOTROPIC/UNCORRELATED/FULL)
+
+Note that setting <code>-initsigma</code> and <code>-msigma</code> to 0 leads to a simulation with the classical Fisher's geometric model.
+
+The software outputs two statistics files during the course of the simulation, containing the mean (<code>mean.txt</code>) and the standard deviation (<code>sd.txt</code>) of some metrics allowing to track the state of the evolving population (see <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. (2020)</a> for a full description):
 - <code>g</code>: Current generation,
 - <code>dmu</code>: Distance of the mean phenotype &mu; from the optimum,
 - <code>dz</code>: Distance of the phenotype _z_ from the optimum,
