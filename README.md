@@ -118,7 +118,7 @@ The software outputs two statistics files during the course of the simulation, c
 - <code>EV</code>: Maximal eigenvalue of the phenotypic noise distribution,
 - <code>EV_contrib</code>: Contribution of the maximal eigenvalue to the sum of eigenvalues,
 - <code>EV_dot_product</code>: Alignment of the eigenvector corresponding to the maximum eigenvalue with the dirction of the fitness optimum, 
-- <code>r_mu</code>: Mutation size on the mean phenotype &mu;,
+- <code>r_mu</code>: Mutation size on the mean phenotype **&mu;**,
 - <code>r_sigma</code>: Mutation size on the phenotypic noise amplitudes **&sigma;**,
 - <code>r_theta</code>: Mutation size on the phenotypic rotation angles **&theta;**.
 
