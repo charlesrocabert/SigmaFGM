@@ -74,7 +74,7 @@ Open a terminal and use the <code>cd</code> command to navigate to the <code>exa
 
 As a first step, one can execute the Python file available in the <code>example</code> directory:
 
-    Python3 run_SigmaFGM_simulation.py
+    python3 run_SigmaFGM_simulation.py
 
 The parameters of the simulation can be edited in this file (see below for a description of the parameters).
 
