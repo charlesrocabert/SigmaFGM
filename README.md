@@ -107,7 +107,7 @@ The command line parameters are described below (see <a href="https://doi.org/10
 - <code>-stheta</code>, <code>--stheta</code>: Specify **&theta;** mutation size (**mandatory**)
 - <code>-noise</code>, <code>--noise-type</code>: Specify the type of phenotypic noise (**mandatory**, NONE/ISOTROPIC/UNCORRELATED/FULL)
 
-Note that setting <code>-initsigma</code> and <code>-msigma</code> to 0 leads to a simulation with the classical Fisher's geometric model.
+Note that setting <code>-noise</code> to <code>NONE</code> leads to a simulation with the classical Fisher's geometric model.
 
 The software outputs two statistics files during the course of the simulation, containing the mean (<code>mean.txt</code>) and the standard deviation (<code>sd.txt</code>) of some metrics allowing to track the state of the evolving population (see <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. (2020)</a> for a full description):
 - <code>g</code>: Current generation,
