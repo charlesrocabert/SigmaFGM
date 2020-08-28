@@ -86,44 +86,26 @@ The command line parameters are described below (see <a href="https://doi.org/10
 
     ../build/bin/SigmaFGM_simulation -h
 
-#### <code>-h</code>, <code>--help</code>
-Print this help, then exit
-#### <code>-v</code>, <code>--version</code>
-Print the current version, then exit
-#### <code>-seed</code>, <code>--seed</code>
-Specify the PRNG seed (**mandatory**, random if 0)
-#### <code>-g</code>, <code>--generations</code>
-Specify the number of generations (**mandatory**)
-#### <code>-nbdim</code>, <code>--nb-dimensions</code>
-Specify the number of dimensions _n_ (**mandatory**)
-#### <code>-alpha</code>, <code>--alpha</code>
-Specify the &alpha; parameter of the fitness function (**mandatory**)
-#### <code>-beta</code>, <code>--beta</code>
-Specify the &beta; parameter of the fitness function (**mandatory**)
-#### <code>-Q</code>, <code>--Q</code>
-Specify the _Q_ parameter of the fitness function (**mandatory**)
-#### <code>-popsize</code>, <code>--population-size</code>
-Specify the population size _N_ (**mandatory**)
-#### <code>-initmu</code>, <code>--initial-mu</code>
-Specify the initial distance of the mean phenotype **&mu;** from the fitness optimum (**mandatory**)
-#### <code>-initsigma</code>, <code>--initial-sigma</code>
-Specify the initial phenotypic noise amplitude (**mandatory**)
-#### <code>-inittheta</code>, <code>--initial-theta</code>
-Specify the initial phenotypic noise orientation (**mandatory**, usually 0)
-#### <code>-mmu</code>, <code>--m-mu</code>
-Specify **&mu;** mutation rate (**mandatory**)
-#### <code>-msigma</code>, <code>--m-sigma</code>
-Specify **&sigma;** mutation rate (**mandatory**)
-#### <code>-mtheta</code>, <code>--m-theta</code>
-Specify **&theta;** mutation rate (**mandatory**)
-#### <code>-smu</code>, <code>--s-mu</code>
-Specify **&mu;** mutation size (**mandatory**)
-#### <code>-ssigma</code>, <code>--s-sigma</code>
-Specify **&sigma;** mutation size (**mandatory**)
-#### <code>-stheta</code>, <code>--stheta</code>
-Specify **&theta;** mutation size (**mandatory**)
-#### <code>-noise</code>, <code>--noise-type</code>
-Specify the type of phenotypic noise (**mandatory**, NONE/ISOTROPIC/UNCORRELATED/FULL)
+#### Parameters:
+- <code>-h</code>, <code>--help</code>: Print this help, then exit
+- <code>-v</code>, <code>--version</code>: Print the current version, then exit
+- <code>-seed</code>, <code>--seed</code>: Specify the PRNG seed (**mandatory**, random if 0)
+- <code>-g</code>, <code>--generations</code>: Specify the number of generations (**mandatory**)
+- <code>-nbdim</code>, <code>--nb-dimensions</code>: Specify the number of dimensions _n_ (**mandatory**)
+- <code>-alpha</code>, <code>--alpha</code>: Specify the &alpha; parameter of the fitness function (**mandatory**)
+- <code>-beta</code>, <code>--beta</code>: Specify the &beta; parameter of the fitness function (**mandatory**)
+- <code>-Q</code>, <code>--Q</code>: Specify the _Q_ parameter of the fitness function (**mandatory**)
+- <code>-popsize</code>, <code>--population-size</code>: Specify the population size _N_ (**mandatory**)
+- <code>-initmu</code>, <code>--initial-mu</code>: Specify the initial distance of the mean phenotype **&mu;** from the fitness optimum (**mandatory**)
+- <code>-initsigma</code>, <code>--initial-sigma</code>: Specify the initial phenotypic noise amplitude (**mandatory**)
+- <code>-inittheta</code>, <code>--initial-theta</code>: Specify the initial phenotypic noise orientation (**mandatory**, usually 0)
+- <code>-mmu</code>, <code>--m-mu</code>: Specify **&mu;** mutation rate (**mandatory**)
+- <code>-msigma</code>, <code>--m-sigma</code>: Specify **&sigma;** mutation rate (**mandatory**)
+- <code>-mtheta</code>, <code>--m-theta</code>: Specify **&theta;** mutation rate (**mandatory**)
+- <code>-smu</code>, <code>--s-mu</code>: Specify **&mu;** mutation size (**mandatory**)
+- <code>-ssigma</code>, <code>--s-sigma</code>: Specify **&sigma;** mutation size (**mandatory**)
+- <code>-stheta</code>, <code>--stheta</code>: Specify **&theta;** mutation size (**mandatory**)
+- <code>-noise</code>, <code>--noise-type</code>: Specify the type of phenotypic noise (**mandatory**, NONE/ISOTROPIC/UNCORRELATED/FULL)
 
 Note that setting <code>-initsigma</code> and <code>-msigma</code> to 0 leads to a simulation with the classical Fisher's geometric model.
 
