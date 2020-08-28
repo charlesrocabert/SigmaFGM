@@ -82,7 +82,7 @@ To directly run a simulation from the main executable, use the following command
 
     ../build/bin/SigmaFGM_simulation <parameters>
 
-The command line parameters are described below (see <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. (2020)</a> for details on mathematical terms). Other non-essential parameters are also available, and are described by typing in a terminal:
+The command line parameters are described below (see <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. 2020</a> for details on the mathematical terms). Other non-mandatory parameters are also available, and are described by writing the following command line in a terminal:
 
     ../build/bin/SigmaFGM_simulation -h
 
