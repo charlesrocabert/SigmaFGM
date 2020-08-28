@@ -48,6 +48,7 @@ Download the latest release of &sigma;FGM, and save it to a directory of your ch
 * CBLAS
 
 ### 3. Software compilation
+Download the latest release of &sigma;FGM, and save it to a directory of your choice. Open a terminal and use the <code>cd</code> command to navigate to this directory. Then follow the steps below to compile and build the executables.
 
 #### User mode
 To compile &sigma;FGM, run the following instructions on the command line:
@@ -67,6 +68,68 @@ This mode should only be used for test or development phases.
 
 #### Executable files emplacement
 Binary executable files are in <code>build/bin</code> folder.
+
+## First usage <a name="first_usage"></a>
+Open a terminal and use the <code>cd</code> command to navigate to this directory. Then follow the steps below for a first usage.
+
+### 1. Run a simulation
+To run a simulation, use the following command line:
+
+    ../build/bin/SigmaFGM_simulation <parameters>
+
+The command line parameters are described below:
+
+
+    -h, --help
+        print this help, then exit
+    -v, --version
+        print the current version, then exit
+    -seed, --seed
+        specify the prng seed (mandatory, random if 0)
+    -stabg, --stabilizing-generations
+        specify the number of stabilizing generations
+    -g, --generations
+        specify the number of generations (mandatory)
+    -shutoffd, --shutoff-distance
+        specify the shutoff distance
+    -shutoffg, --shutoff-generation
+        specify the shutoff generation
+    -nbdim, --nb-dimensions
+        specify the number of dimensions (mandatory)
+    -alpha, --alpha
+        specify the alpha parameter of the fitness function (0.0 < mandatory)
+    -beta, --beta
+        specify the beta parameter of the fitness function (0.0 <= mandatory <= 1.0)
+    -Q, --Q
+        specify the Q parameter of the fitness function (0.0 <= mandatory)
+    -popsize, --population-size
+        specify the population size (mandatory)
+    -initmu, --initial-mu
+        specify the initial mu value (mandatory)
+    -initsigma, --initial-sigma
+        specify initial sigma value (mandatory)
+    -inittheta, --initial-theta
+        specify initial theta value (mandatory)
+    -oneDshift, --oneD-shift
+        Indicates if the initial population is shifted in a single dimension
+    -meanfitness, --mean-fitness
+        Indicates if the mean fitness should be computed (by sampling the phenotypes)
+    -mmu, --m-mu
+        specify mu mutation rate (mandatory)
+    -msigma, --m-sigma
+        specify sigma mutation rate (mandatory)
+    -mtheta, --m-theta
+        specify theta mutation rate (mandatory)
+    -smu, --s-mu
+        specify mu mutation size (mandatory)
+    -ssigma, --s-sigma
+        specify sigma mutation size (mandatory)
+    -stheta, --stheta
+        specify theta mutation size (mandatory)
+    -noise, --noise-type
+        Specify the type of noise (mandatory, NONE/ISOTROPIC/UNCORRELATED/FULL)
+
+### 2. Example
 
 ## Copyright <a name="copyright"></a>
 Copyright &copy; 2016-2020 Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard.
