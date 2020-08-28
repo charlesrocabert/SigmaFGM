@@ -72,13 +72,11 @@ Binary executable files are in <code>build/bin</code> folder.
 ## First usage <a name="first_usage"></a>
 Open a terminal and use the <code>cd</code> command to navigate to this directory. Then follow the steps below for a first usage.
 
-### 1. Run a simulation
 To run a simulation, use the following command line:
 
     ../build/bin/SigmaFGM_simulation <parameters>
 
 The command line parameters are described below:
-
 
     -h, --help
         print this help, then exit
@@ -129,7 +127,18 @@ The command line parameters are described below:
     -noise, --noise-type
         Specify the type of noise (mandatory, NONE/ISOTROPIC/UNCORRELATED/FULL)
 
-### 2. Example
+The software will outputs two statistics files during the course of the simulation, containing the mean and the standard deviation of many metrics allowing to track the state of the evolving population (see <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. (2020)</a> for a full description):
+- <code>g</code>: Current generation,
+- <code>dmu</code>: Distance of the mean phenotype &mu; from the optimum,
+- <code>dz</code>: Distance of the phenotype _z_ from the optimum,
+- <code>Wmu</code>: Absolute fitness of the mean phenotype &mu;,
+- <code>Wz</code>: Absolute fitness of the phenotype _z_,
+- <code>EV</code>: Maximal eigenvalue of the phenotypic noise distribution,
+- <code>EV_contrib</code>: Contribution of the maximal eigenvalue to the sum of eigenvalues,
+- <code>EV_dot_product</code>: Alignment of the eigenvector corresponding to the maximum eigenvalue with the dirction of the fitness optimum, 
+- <code>r_mu</code>: Mutation size on the mean phenotype &mu;,
+- <code>r_sigma</code>: Mutation size on the phenotypic noise amplitudes **&sigma;**,
+- <code>r_theta</code>: Mutation size on the phenotypic rotation angles **&theta;**.
 
 ## Copyright <a name="copyright"></a>
 Copyright &copy; 2016-2020 Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard.
