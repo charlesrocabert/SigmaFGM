@@ -44,10 +44,8 @@ Download the latest release of &sigma;FGM, and save it to a directory of your ch
 ### 2. Required dependencies
 * A C++ compiler (GCC, LLVM, ...)
 * CMake (command line version)
-* zlib
 * GSL
 * CBLAS
-* TBB
 
 ### 3. Software compilation
 
