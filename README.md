@@ -109,7 +109,7 @@ The command line parameters are described below (see <a href="https://doi.org/10
 
 Note that setting <code>-noise</code> to <code>NONE</code> leads to a simulation with the classical Fisher's geometric model.
 
-The software outputs two statistics files during the course of the simulation, containing the mean (<code>mean.txt</code>) and the standard deviation (<code>sd.txt</code>) of some metrics allowing to track the state of the evolving population (see <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. (2020)</a> for a full description):
+The software outputs two statistics files during the course of the simulation, containing the mean (<code>mean.txt</code>) and the standard deviation (<code>sd.txt</code>) of some metrics allowing to track the state of the evolving population (see <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. 2020</a> for a full description):
 - <code>g</code>: Current generation,
 - <code>dmu</code>: Distance of the mean phenotype &mu; from the optimum,
 - <code>dz</code>: Distance of the phenotype _z_ from the optimum,
