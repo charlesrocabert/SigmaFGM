@@ -11,7 +11,8 @@
 /***********************************************************************
 * Copyright (C) 2016-2020
 * Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard
-*
+* Web: https://github.com/charlesrocabert/SigmaFGM/
+* 
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
@@ -30,15 +31,15 @@
 #define __SigmaFGM__Config__
 
 
-/*-------------------------------------*/
-/* 1) DEFINE PACKAGE NAME              */
-/*-------------------------------------*/
+/*--------------------------*/
+/* 1) DEFINE PACKAGE NAME   */
+/*--------------------------*/
 
 #define PACKAGE @PACKAGE@
 
-/*-------------------------------------*/
-/* 2) DEFINE VERSION NUMBER            */
-/*-------------------------------------*/
+/*--------------------------*/
+/* 2) DEFINE VERSION NUMBER */
+/*--------------------------*/
 
 #define VERSION_MAJOR @VERSION_MAJOR@
 #define VERSION_MINOR @VERSION_MINOR@

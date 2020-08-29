@@ -3,6 +3,7 @@
 #***********************************************************************
 # Copyright (C) 2016-2020
 # Charles Rocabert, Guillaume Beslon, Carole Knibbe, Samuel Bernard
+# Web: https://github.com/charlesrocabert/SigmaFGM/
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
