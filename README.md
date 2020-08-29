@@ -16,7 +16,7 @@ Experimental studies demonstrate the existence of phenotypic diversity despite c
 </p>
 
 <p align="justify">
-&sigma;FGM simulates adaptive evolution in Fisher's geometric model with an evolvable phenotypic noise. The fitness function is configurable and can adopt non-Gaussian shapes. Phenotypic noise is modeled by an evolvable multivariate normal distribution. See below for a first usage, and <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. (2020)</a> for a full description of the simulation model.
+&sigma;FGM simulates adaptive evolution in Fisher's geometric model with an evolvable phenotypic noise. A population of individuals is placed under stabilizing selection and must evolve towards a fitness optimum. The fitness function is configurable and can adopt non-Gaussian shapes. Phenotypic noise is modeled by an evolvable multivariate normal distribution. Simulations are fully configurable. See below for <a href="#installation">installation instructions</a> and a <a href="#first_usage">first usage</a>, and <a href="https://doi.org/10.1111/evo.14083">Rocabert et al. (2020)</a> for a full description of the underlying mathematical model.
 </p>
 
 <p align="justify">
@@ -36,7 +36,7 @@ Experimental studies demonstrate the existence of phenotypic diversity despite c
 
 ## Installation instructions <a name="installation"></a>
 
-Download the latest release of &sigma;FGM, and save it to a directory of your choice. Open a terminal and use the <code>cd</code> command to navigate to this directory. Then follow the steps below to compile and build the executables.
+Download the <a href="https://github.com/charlesrocabert/SigmaFGM/releases/latest">latest release</a> of &sigma;FGM, and save it to a directory of your choice. Open a terminal and use the <code>cd</code> command to navigate to this directory. Then follow the steps below to compile and build the executables.
 
 ### 1. Supported platforms
 &sigma;FGM software has been developed for Unix and OSX (macOS) systems.
