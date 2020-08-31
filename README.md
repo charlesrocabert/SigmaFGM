@@ -39,7 +39,7 @@ Experimental studies demonstrate the existence of phenotypic diversity despite c
 Download the <a href="https://github.com/charlesrocabert/SigmaFGM/releases/latest">latest release</a> of &sigma;FGM, and save it to a directory of your choice. Open a terminal and use the <code>cd</code> command to navigate to this directory. Then follow the steps below to compile and build the executables.
 
 ### 1. Supported platforms
-&sigma;FGM software has been developed for Unix and OSX (macOS) systems.
+&sigma;FGM software has been developed for Unix/Linux and macOS systems.
 
 ### 2. Required dependencies
 * A C++ compiler (GCC, LLVM, ...)
