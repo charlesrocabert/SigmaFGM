@@ -5,7 +5,7 @@
 <em>Individual-based implementation of Fisher's geometric model with evolvable phenotypic noise</em>
 <br/><br/>
 <a href="https://github.com/charlesrocabert/SigmaFGM/releases/latest"><img src="https://img.shields.io/github/release/charlesrocabert/SigmaFGM/all.svg" /></a>&nbsp;
-<a href="https://action-badges.now.sh/charlesrocabert/SigmaFGM"><img src="https://action-badges.now.sh/charlesrocabert/MetEvolSim" /></a>&nbsp;
+<a href="https://github.com/charlesrocabert/SigmaFGM/actions"><img src="https://github.com/charlesrocabert/SigmaFGM/workflows/CMake/badge.svg" /></a>&nbsp;
 <a href="https://github.com/charlesrocabert/SigmaFGM/LICENSE.html"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
 </p>
 
